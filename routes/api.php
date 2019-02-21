@@ -16,3 +16,24 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['namespace' => 'Api\V1'], function () {
+    // clients
+    Route::get('/regions/list', 'RegionsController@list');
+    // clients
+    Route::post('/clients/create', 'ClientsController@create');
+    Route::get('/clients/edit/{id}', 'ClientsController@edit');
+    Route::post('/clients/update/{id}', 'ClientsController@update');
+    Route::delete('/clients/delete/{id}', 'ClientsController@delete');
+    Route::get('/clients/list', 'ClientsController@list');
+    // articles
+    Route::post('/articles/create', 'ArticlesController@create');
+    Route::get('/articles/edit/{id}', 'ArticlesController@edit');
+    Route::post('/articles/update/{id}', 'ArticlesController@update');
+    Route::delete('/articles/delete/{id}', 'ArticlesController@delete');
+    Route::get('/articles/list', 'ArticlesController@list');
+});
+
+/*Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], function () {
+    Route::resource('articles', 'ArticlesController', ['except' => ['create', 'edit']]);
+});*/
