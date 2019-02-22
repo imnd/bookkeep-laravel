@@ -12,7 +12,7 @@ use App\Http\Resources\ArticleCollection;
  * Контроллер товаров
  * 
  * @author Андрей Сердюк
- * @copyright (c) 2018 IMND
+ * @copyright (c) 2019 IMND
  */ 
 class ArticlesController extends Controller
 {

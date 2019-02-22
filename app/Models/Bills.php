@@ -7,6 +7,8 @@ use Carbon\Carbon;
 
 class Bills extends Model
 {
+    public $timestamps = false;
+
     protected $table = 'bills';
 
     protected $fillable = [

@@ -39,3 +39,7 @@ Route::get('/', function() {
 Route::get('/clients/{any}', function () {
     return view('clients');
 })->where('any', '.*');
+// VUE JS
+Route::get('/articles/{any}', function () {
+    return view('articles');
+})->where('any', '.*');

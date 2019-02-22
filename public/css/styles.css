@@ -13,20 +13,35 @@ a {
     margin-top: 10px;
 }
 a.button,
+button.button,
 input.button
 {
-    background-color: #ddd;
+    background-color: #DDD;
     border: 1px solid #999;
+    border-radius: 10px;
     color: #000;
-    float: right;
     margin-bottom: 10px;
     margin-left: 4px;
-    padding: 1px 8px;
+    padding: 4px 12px;
     text-align: center;
     width: auto;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
-    border-radius: 4px;
+}
+a.button,
+input.button
+{
+    float: right;
+}
+.danger {
+    background-color: #D00;
+    color: #FFF;
+    font-weight: bold;
+}
+.primary {
+    background-color: #007 !important;
+    color: #FFF !important;
+    font-weight: bold !important;
 }
 a.create,
 a.view,
@@ -65,6 +80,7 @@ a.printout {
 a.view_diff {
     background-image: url('../img/view_diff.gif');
 }
+
 .delete-btn input[type="button"],
 .add input[type="button"] {
     min-width: 16px;
@@ -104,8 +120,7 @@ code {
     margin: 14px 0 14px 0;
     padding: 12px 10px 12px 10px;
 }
-#body
-    {margin: 0 15px;}
+#body {margin: 0 15px;}
 
 p.footer {
     text-align: right;
@@ -129,14 +144,12 @@ p.footer {
     background: -moz-linear-gradient(bottom, #DEE7F0, #FFF);
     border-radius: 32px 0 0 0;
 }
-#menu
-    {padding: 0;}
+#menu {padding: 0;}
 
 body.clients_debtors #container,
 body.clients_debtors #menu
-    {width: 960px;}
-body.invoices_list #container
-    {width: 990px;}
+{width: 960px;}
+body.invoices_list #container {width: 990px;}
 body.error #container #container {
     width: 844px;
     background: none;
@@ -156,7 +169,7 @@ body.error #container #container {
 /* МЕНЮ */
 ul.top_menu,
 ul.main_menu
-    {padding: 0;}
+{padding: 0;}
 ul.main_menu {
     width: auto;
     margin: -32px 4px 0 0;
@@ -187,12 +200,9 @@ ul.top_menu li {
     background-color: #EEE;
     border: 1px solid #999;
 }
-ul.top_menu li a
-    {color: #000;}
-ul.top_menu .left
-    {border-radius: 6px 0 0 6px;}
-ul.top_menu .right
-    {border-radius: 0 6px 6px 0;}
+ul.top_menu li a { color: #000; }
+ul.top_menu .left { border-radius: 6px 0 0 6px; }
+ul.top_menu .right { border-radius: 0 6px 6px 0; }
 
 ul.main_menu li {
     background-color: #AAA;
@@ -213,13 +223,11 @@ ul.main_menu li a {
 }
 ul.top_menu li a,
 ul.main_menu li a
-    {line-height: 0;}
+{line-height: 0;}
 
-ul.invoices
-    {padding-left: 20px;}
+ul.invoices {padding-left: 20px;}
 
-body.invoices_list ul.main_menu
-    {margin-right: -109px;}
+body.invoices_list ul.main_menu {margin-right: -109px;}
 
 /* top_menu */
 body.invoices li.invoices,
@@ -233,7 +241,7 @@ body.clients li.clients,
 body.regions li.clients,
 body.bills li.bills,
 body.settings li.settings
-    {background-color: #900;}
+{ background-color: #900; }
 
 /* top_menu */
 body.bills li.payment a,
@@ -545,8 +553,7 @@ input#date_to
     width: 78px;
 }
 
-.articles_edit p input
-    {width: 400px;}
+.articles_edit p input {width: 400px;}
 select {
     max-width: 600px !important;
 }
@@ -691,6 +698,7 @@ td.btn-column {
 .button-printout {
     background: transparent url('../img/printout.png') no-repeat;
 }
+
 .pager {
     margin-top: 12px;
 }
@@ -702,7 +710,6 @@ td.btn-column {
 .control input {
     width: 66px;
 }
-
 .control select {
     max-width: 430px !important;
 }

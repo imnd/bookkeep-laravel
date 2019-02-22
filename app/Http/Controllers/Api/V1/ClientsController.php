@@ -9,10 +9,10 @@ use App\Models\Clients;
 use App\Http\Resources\ClientCollection;
 
 /**
- * Контроллер товаров
+ * Контроллер клиентов
  * 
  * @author Андрей Сердюк
- * @copyright (c) 2018 IMND
+ * @copyright (c) 2019 IMND
  */ 
 class ClientsController extends Controller
 {

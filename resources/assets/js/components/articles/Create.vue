@@ -1,39 +1,34 @@
-<div class="form-group">
-    <router-link to="/" class="btn btn-default">Back</router-link>
-</div>
+<template>
+    <div>
+        <h1>Новый товар</h1>
 
-<div class="panel panel-default">
-    <div class="panel-heading">Create new article</div>
-    <div class="panel-body">
-        <form v-on:submit="saveForm()">
+        <router-link to="/articles/list" class="button primary">Список</router-link>
+
+        <form @submit.prevent="articleCreate">
             <div class="row">
-                <div class="col-xs-12 form-group">
-                    <label class="control-label">Article name</label>
-                    <input type="text" v-model="article.name" class="form-control">
-                </div>
+                <label>Подкатегория:</label>
+                <select v-model="client.subcat_id">
+                    <option v-for="subcat in subcats.data" v-bind:value="subcat.id">{{ subcat.name }}</option>
+                </select>
             </div>
             <div class="row">
-                <div class="col-xs-12 form-group">
-                    <label class="control-label">Article unit</label>
-                    <input type="text" v-model="article.unit" class="form-control">
-                </div>
+                <label class="control-label">название</label>
+                <input type="text" class="form-control" v-model="article.name">
             </div>
             <div class="row">
-                <div class="col-xs-12 form-group">
-                    <label class="control-label">Article price</label>
-                    <input type="text" v-model="article.price" class="form-control">
-                </div>
+                <label class="control-label">ед.изм.</label>
+                <input type="text" class="form-control" v-model="article.unit">
             </div>
             <div class="row">
-                <div class="col-xs-12 form-group">
-                    <label class="control-label">Article active</label>
-                    <input type="text" v-model="article.active" class="form-control">
-                </div>
+                <label class="control-label">цена</label>
+                <input type="text" class="form-control" v-model="article.price">
             </div>
             <div class="row">
-                <div class="col-xs-12 form-group">
-                    <button class="btn btn-success">Create</button>
-                </div>
+                <label class="control-label">активный</label>
+                <input type="text" class="form-control" v-model="article.active">
+            </div>
+            <div class="row">
+                <button class="button success">Сохранить</button>
             </div>
         </form>
     </div>
@@ -47,8 +42,14 @@
                     unit: '',
                     price: '',
                     active: '',
-                }
+                },
+                subcats: []
             }
+        },
+        created() {
+            this.axios.get(`/api/subcats/list`).then(response => {
+                this.subcats = response.data;
+            });
         },
         methods: {
             saveForm() {

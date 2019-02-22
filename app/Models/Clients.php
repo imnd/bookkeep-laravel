@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Clients extends Model
 {
+    public $timestamps = false;
+
     protected $table = 'clients';
 
     protected $fillable = [

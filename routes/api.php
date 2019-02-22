@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => 'Api\V1'], function () {
-    // clients
+    // regions
     Route::get('/regions/list', 'RegionsController@list');
     // clients
     Route::post('/clients/create', 'ClientsController@create');
@@ -34,6 +34,3 @@ Route::group(['namespace' => 'Api\V1'], function () {
     Route::get('/articles/list', 'ArticlesController@list');
 });
 
-/*Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], function () {
-    Route::resource('articles', 'ArticlesController', ['except' => ['create', 'edit']]);
-});*/

@@ -1,60 +1,63 @@
 <template>
     <div>
-        <h1>Edit Client</h1>
+        <h1>Редактирование клиента</h1>
+
+        <router-link to="/clients/list" class="button primary">Список</router-link>
+
         <form @submit.prevent="updateClient">
             <div class="row">
                 <label>Название:</label>
-                <input type="text" class="form-control" v-model="сlient.name">
+                <input type="text" class="form-control" v-model="client.name">
             </div>
             <div class="row">
                 <label>Адрес:</label>
-                <input type="text" class="form-control" v-model="сlient.address">
+                <input type="text" class="form-control" v-model="client.address">
             </div>
             <div class="row">
                 <label>Район:</label>
-                <select name="region_id" v-for="region in regions" :key="region.id">
-                    <option value="region.id">region.name</option>
+                <select v-model="client.region_id">
+                    <option v-for="region in regions.data" v-bind:value="region.id">{{ region.name }}</option>
                 </select>
             </div>
             <div class="row">
                 <label>Телефон:</label>
-                <input type="text" class="form-control" v-model="сlient.telephone">
+                <input type="text" class="form-control" v-model="client.telephone">
             </div>
             <div class="row">
                 <label>Факс:</label>
-                <input type="text" class="form-control" v-model="сlient.fax">
+                <input type="text" class="form-control" v-model="client.fax">
             </div>
             <div class="row">
                 <label>контакт. лицо:</label>
-                <input type="text" class="form-control" v-model="сlient.contact_fio">
+                <input type="text" class="form-control" v-model="client.contact_fio">
             </div>
             <div class="row">
                 <label>должность конт. лица:</label>
-                <input type="text" class="form-control" v-model="сlient.contact_post">
+                <input type="text" class="form-control" v-model="client.contact_post">
             </div>
             <div class="row">
                 <label>расчетный счет:</label>
-                <input type="text" class="form-control" v-model="сlient.account">
+                <input type="text" class="form-control" v-model="client.account">
             </div>
             <div class="row">
                 <label>В банке:</label>
-                <input type="text" class="form-control" v-model="сlient.bank">
+                <input type="text" class="form-control" v-model="client.bank">
             </div>
             <div class="row">
                 <label>ИНН:</label>
-                <input type="text" class="form-control" v-model="сlient.INN">
+                <input type="text" class="form-control" v-model="client.INN">
             </div>
             <div class="row">
                 <label>КПП:</label>
-                <input type="text" class="form-control" v-model="сlient.KPP">
+                <input type="text" class="form-control" v-model="client.KPP">
             </div>
             <div class="row">
                 <label>БИК:</label>
-                <input type="text" class="form-control" v-model="сlient.BIK">
+                <input type="text" class="form-control" v-model="client.BIK">
             </div>
             <div class="row">
                 <label>порядок сортировки:</label>
-                <input type="text" class="form-control" v-model="сlient.sort">
+                <input type="text" class="form-control" v-model="client.sort">
             </div>
             <br />
             <div class="form-group">
@@ -68,24 +71,24 @@
     export default {
         data() {
             return {
-                сlient: {},
-                regions: {}
+                client: {},
+                regions: []
             }
         },
         created() {
             let uri = `/api/clients/edit/${this.$route.params.id}`;
-            this.axios.get(uri).then((response) => {
-                this.сlient = response.data;
+            this.axios.get(uri).then(response => {
+                this.client = response.data;
             });
-            this.axios.get(`/api/regions/list`).then((response) => {
+            this.axios.get(`/api/regions/list`).then(response => {
                 this.regions = response.data;
             });
         },
         methods: {
             updateClient() {
-                let uri = `/api/сlients/update/${this.$route.params.id}`;
-                this.axios.сlient(uri, this.сlient).then((response) => {
-                    this.$router.push({name: 'сlients'});
+                let uri = `/api/clients/update/${this.$route.params.id}`;
+                this.axios.post(uri, this.client).then(response => {
+                    this.$router.push({name: 'clientsList'});
                 });
             }
         }

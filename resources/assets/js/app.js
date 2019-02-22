@@ -10,34 +10,49 @@ import axios from 'axios';
 Vue.use(VueAxios, axios);
 
 import App from './components/App.vue';
-import Home from './components/Home.vue';
 
-import CreateClient from './components/clients/Create.vue';
-import IndexClient  from './components/clients/Index.vue';
-import EditClient  from './components/clients/Edit.vue';
+import ClientCreate from './components/clients/Create.vue';
+import ClientsList  from './components/clients/List.vue';
+import ClientEdit  from './components/clients/Edit.vue';
+
+import ArticleCreate from './components/articles/Create.vue';
+import ArticlesList from './components/articles/List.vue';
+import ArticleEdit from './components/articles/Edit.vue';
 
 const routes = [
     {
-        name: 'home',
-        path: '/home',
-        component: Home
-    },
-    {
-        name: 'create',
+        name: 'clientCreate',
         path: '/clients/create',
-        component: CreateClient
+        component: ClientCreate
     },
     {
-        name: 'list',
+        name: 'clientsList',
         path: '/clients/list',
-        component: IndexClient
+        component: ClientsList
     },
     {
-        name: 'edit',
+        name: 'clientEdit',
         path: '/clients/edit/:id',
-        component: EditClient
+        component: ClientEdit
+    },
+    {
+        name: 'articleCreate',
+        path: '/articles/create',
+        component: ArticleCreate
+    },
+    {
+        name: 'articlesList',
+        path: '/articles/list',
+        component: ArticlesList
+    },
+    {
+        name: 'articleEdit',
+        path: '/articles/edit/:id',
+        component: ArticleEdit
     },
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes});
+
 const app = new Vue(Vue.util.extend({ router }, App)).$mount('#app');
+

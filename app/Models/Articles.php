@@ -9,6 +9,7 @@ class Articles extends Model
     public $timestamps = false;
 
     protected $table = 'articles';
+
     protected $fillable = [
     	'subcat_id', 'name', 'unit', 'price', 'active'
    	];
