@@ -1,7 +1,11 @@
-@extends('vue-layout')
+@extends('layout')
 
 @section('content')
 
-<client-component></client-component>
+    <?php
+    $bodyClass = 'clients';
+    $pageTitle = 'Клиенты';
+    ?>
+    <client-component></client-component>
 
 @endsection

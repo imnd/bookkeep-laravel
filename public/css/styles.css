@@ -33,25 +33,33 @@ input.button
 {
     float: right;
 }
-.danger {
-    background-color: #D00;
-    color: #FFF;
-    font-weight: bold;
-}
-.primary {
-    background-color: #007 !important;
+.danger,
+.primary,
+.nav
+{
     color: #FFF !important;
     font-weight: bold !important;
 }
-a.create,
-a.view,
-a.update,
-a.delete,
-a.printout
-{
-    background-repeat: no-repeat;
-    display: block;
-    height: 20px;
+.danger {
+    background-color: #D00 !important;
+}
+.primary {
+    background-color: #58C !important;
+}
+.nav {
+    background-color: #D90 !important;
+}
+.error {
+    color: #A00;
+    font-style: italic;
+}
+.success {
+    color: #0A0;
+    font-style: italic;
+}
+
+a.top {
+    margin-top: 4px;
 }
 a.center {
     background-position: center;
@@ -61,6 +69,22 @@ a.left {
     background-position: left;
     background-position-x: 4px;
     padding-left: 24px;
+}
+a.create,
+a.view,
+a.update,
+a.delete,
+a.remove,
+a.add,
+a.printout
+{
+    background-repeat: no-repeat;
+    display: block;
+    height: 20px;
+    min-width: 16px;
+}
+a.add {
+    background-image: url(../img/add.gif);
 }
 a.create {
     background-image: url('../img/create.gif');
@@ -74,6 +98,9 @@ a.update {
 a.delete {
     background-image: url('../img/delete.png');
 }
+a.remove {
+    background-image: url('../img/remove.png');
+}
 a.printout {
     background-image: url('../img/printout.png')
 }
@@ -82,19 +109,11 @@ a.view_diff {
 }
 
 .delete-btn input[type="button"],
-.add input[type="button"] {
-    min-width: 16px;
-    cursor: pointer;
-}
 .delete-btn input[type="button"] {
     background-image: url('../img/delete.png');
 }
-.add input[type="button"] {
-    background-image: url('../img/add.gif');
-}
 
-h1, h2
-{
+h1, h2 {
     color: #444;
     background-color: transparent;
     font-weight: normal;
@@ -135,7 +154,7 @@ p.footer {
 #menu
 {
     margin: 0 10px 40px;
-    width: 1280px;
+    width: 97%;
 }
 #container {
     padding: 10px;
@@ -157,14 +176,6 @@ body.error #container #container {
     border: none;
     margin-top: 20px;
     padding: 0 10px;
-}
-.error {
-    color: #A00;
-    font-style: italic;
-}
-.success {
-    color: #0A0;
-    font-style: italic;
 }
 /* МЕНЮ */
 ul.top_menu,
@@ -310,8 +321,9 @@ body.purchases.index li.index,
 
 body.regions.index li.index,
 body.regions.create li.create
-
-    {background-color: #FF0000;}
+{
+    background-color: #FF0000;
+}
 
 /* ТАБЛИЦЫ */
 table {

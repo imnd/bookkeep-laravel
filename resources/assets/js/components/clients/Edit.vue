@@ -1,67 +1,67 @@
 <template>
     <div>
-        <h1>Редактирование клиента</h1>
+        <router-link to="/clients/list" class="button primary top">Список</router-link>
 
-        <router-link to="/clients/list" class="button primary">Список</router-link>
+        <h1>Редактирование клиента</h1>
 
         <form @submit.prevent="updateClient">
             <div class="row">
                 <label>Название:</label>
-                <input type="text" class="form-control" v-model="client.name">
+                <input v-model="client.name">
             </div>
             <div class="row">
                 <label>Адрес:</label>
-                <input type="text" class="form-control" v-model="client.address">
+                <input v-model="client.address">
             </div>
             <div class="row">
                 <label>Район:</label>
                 <select v-model="client.region_id">
-                    <option v-for="region in regions.data" v-bind:value="region.id">{{ region.name }}</option>
+                    <option v-for="region in regions" v-bind:value="region.id">{{ region.name }}</option>
                 </select>
             </div>
             <div class="row">
                 <label>Телефон:</label>
-                <input type="text" class="form-control" v-model="client.telephone">
+                <input v-model="client.telephone">
             </div>
             <div class="row">
                 <label>Факс:</label>
-                <input type="text" class="form-control" v-model="client.fax">
+                <input v-model="client.fax">
             </div>
             <div class="row">
                 <label>контакт. лицо:</label>
-                <input type="text" class="form-control" v-model="client.contact_fio">
+                <input v-model="client.contact_fio">
             </div>
             <div class="row">
                 <label>должность конт. лица:</label>
-                <input type="text" class="form-control" v-model="client.contact_post">
+                <input v-model="client.contact_post">
             </div>
             <div class="row">
                 <label>расчетный счет:</label>
-                <input type="text" class="form-control" v-model="client.account">
+                <input v-model="client.account">
             </div>
             <div class="row">
                 <label>В банке:</label>
-                <input type="text" class="form-control" v-model="client.bank">
+                <input v-model="client.bank">
             </div>
             <div class="row">
                 <label>ИНН:</label>
-                <input type="text" class="form-control" v-model="client.INN">
+                <input v-model="client.INN">
             </div>
             <div class="row">
                 <label>КПП:</label>
-                <input type="text" class="form-control" v-model="client.KPP">
+                <input v-model="client.KPP">
             </div>
             <div class="row">
                 <label>БИК:</label>
-                <input type="text" class="form-control" v-model="client.BIK">
+                <input v-model="client.BIK">
             </div>
             <div class="row">
                 <label>порядок сортировки:</label>
-                <input type="text" class="form-control" v-model="client.sort">
+                <input v-model="client.sort">
             </div>
             <br />
             <div class="form-group">
-                <button class="btn btn-primary">Сохранить</button>
+                <button class="button success">Сохранить</button>
             </div>
         </form>
     </div>
@@ -81,7 +81,7 @@
                 this.client = response.data;
             });
             this.axios.get(`/api/regions/list`).then(response => {
-                this.regions = response.data;
+                this.regions = response.data.data;
             });
         },
         methods: {

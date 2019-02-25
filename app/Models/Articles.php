@@ -31,14 +31,6 @@ class Articles extends Model
     }
 
     /**
-     * Get the subcategory.
-     */
-    public function subcategory()
-    {
-        return $this->belongsTo('App\Models\ArticleSubcats', 'subcat_id');
-    }
-
-    /**
      * @return array
      */
     public static function getUnits(): array
@@ -49,8 +41,16 @@ class Articles extends Model
     /**
      * @return array
      */
-    public function getActiveReadable()
+    /*public function getActiveReadable()
     {
-        return array('нет', 'да')[$this->active];
+        return ['нет', 'да'][$this->active];
+    }*/
+
+    /**
+     * Get the subcategory.
+     */
+    public function subcategory()
+    {
+        return $this->belongsTo('App\Models\ArticleSubcats', 'subcat_id');
     }
 }

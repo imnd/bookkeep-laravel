@@ -17,20 +17,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['namespace' => 'Api\V1'], function () {
-    // regions
+Route::group([
+    'namespace' => 'Api\V1',
+    //'middleware' => 'auth',
+], function () {
+    Route::get('/subcats/list', 'SubcatsController@list');
     Route::get('/regions/list', 'RegionsController@list');
-    // clients
-    Route::post('/clients/create', 'ClientsController@create');
-    Route::get('/clients/edit/{id}', 'ClientsController@edit');
-    Route::post('/clients/update/{id}', 'ClientsController@update');
-    Route::delete('/clients/delete/{id}', 'ClientsController@delete');
-    Route::get('/clients/list', 'ClientsController@list');
-    // articles
-    Route::post('/articles/create', 'ArticlesController@create');
-    Route::get('/articles/edit/{id}', 'ArticlesController@edit');
-    Route::post('/articles/update/{id}', 'ArticlesController@update');
-    Route::delete('/articles/delete/{id}', 'ArticlesController@delete');
-    Route::get('/articles/list', 'ArticlesController@list');
+    Route::get('/invoicesRows/list/{invoiceId}', 'InvoicesRowsController@list');
+
+    foreach (['articles', 'clients', 'invoices', 'contracts', 'purchases', 'bills'] as $modelName) {
+        $controllerName = ucfirst($modelName) . 'Controller';
+        Route::post("/$modelName/create", "$controllerName@create");
+        Route::get("/$modelName/edit/{id}", "$controllerName@edit");
+        Route::post("/$modelName/update/{id}", "$controllerName@update");
+        Route::delete("/$modelName/delete/{id}", "$controllerName@delete");
+        Route::get("/$modelName/list", "$controllerName@list");
+    }
 });
 

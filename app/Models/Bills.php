@@ -16,14 +16,24 @@ class Bills extends Model
         'contract_num',
         'sum',
         'remainder',
-        'contents',
         'date',
+        'contents',
    	];
+
+    protected $with = ['client'];
 
     protected $dates = ['date'];
 
     public function getDates()
     {
         return $this->dates;
+    }
+
+    /**
+     * Get the client.
+     */
+    public function client()
+    {
+        return $this->belongsTo('App\Models\Clients', 'client_id');
     }
 }

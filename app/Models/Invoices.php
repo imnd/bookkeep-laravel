@@ -7,16 +7,20 @@ use Carbon\Carbon;
 
 class Invoices extends Model
 {
+    public $timestamps = false;
+
     protected $table = 'invoices';
 
     protected $fillable = [
         'client_id',
+        'contract_num',
         'number',
         'date',
-        'contract_num',
         'sum',
         'payed',
    	];
+
+    protected $with = ['client'];
 
     protected $dates = ['date'];
 
@@ -26,10 +30,18 @@ class Invoices extends Model
     }
 
     /**
-     * Get the article.
+     * Get the client.
      */
-    public function article()
+    public function client()
     {
-        return $this->hasOne('App\Models\Articles', 'article_id');
+        return $this->belongsTo('App\Models\Clients', 'client_id');
+    }
+
+    /**
+     * Get the invoice rows.
+     */
+    public function rows()
+    {
+        return $this->hasMany('App\Models\InvoicesRows', 'invoice_id', 'id');
     }
 }

@@ -7,14 +7,14 @@ namespace App\Http\Controllers\Api\V1;
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
  */ 
-class RegionsController extends ApiController
+class SubcatsController extends ApiController
 {
     /**
      * @inheritdoc
      */
-    protected $modelName = 'App\Models\Regions';
+    protected $modelName = 'App\Models\ArticleSubcats';
     /**
      * @inheritdoc
      */
-    protected $collectionName = 'App\Http\Resources\RegionCollection';
+    protected $collectionName = 'App\Http\Resources\ArticleSubcatCollection';
 }

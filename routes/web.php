@@ -1,14 +1,5 @@
 <?php
 
-/* VUE SPA */
-/*Route::get('/articles', function () {
-  return view('articles.index');
-});
-
-Route::get('/articles/{any}', function () {
-    return view('articles.index');
-})->where('any', '.*');*/
-
 Auth::routes();
 
 Route::get('/', function() {
@@ -17,29 +8,14 @@ Route::get('/', function() {
 
 //Route::group(['middleware' => 'auth'], function()
 //{
-    Route::get('/articles', function () {
-        return view('articles.index');
+    // VUE JS
+    foreach (['articles', 'clients', 'invoices', 'contracts', 'purchases', 'bills'] as $modelName) {
+        Route::get("/$modelName/{any}", function () use ($modelName) {
+            return view($modelName);
+        })->where('any', '.*');
+    }
+
+    Route::get('settings', function() {
+        return view('settings');
     });
-
-    Route::get('/articles/items', [
-        'uses' => 'ArticlesController@items'
-    ]);
-    Route::get('/articles/view/{article}', [
-        'uses' => 'ArticlesController@view'
-    ]);
-    Route::any('/articles/create', [
-        'uses' => 'ArticlesController@create'
-    ]);
-    Route::any('/articles/update/{article}', [
-        'uses' => 'ArticlesController@update'
-    ]);
 //});
-
-// VUE JS
-Route::get('/clients/{any}', function () {
-    return view('clients');
-})->where('any', '.*');
-// VUE JS
-Route::get('/articles/{any}', function () {
-    return view('articles');
-})->where('any', '.*');

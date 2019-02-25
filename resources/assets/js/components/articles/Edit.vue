@@ -1,31 +1,31 @@
 <template>
     <div>
-        <h1>Редактирование товара</h1>
+        <router-link to="/articles/list" class="button primary top">Список</router-link>
 
-        <router-link to="/articles/list" class="button primary">Список</router-link>
+        <h1>Редактирование товара</h1>
 
         <form @submit.prevent="updateArticle">
             <div class="row">
                 <label>Подкатегория:</label>
-                <select v-model="client.subcat_id">
-                    <option v-for="subcat in subcats.data" v-bind:value="subcat.id">{{ subcat.name }}</option>
+                <select v-model="article.subcat_id">
+                    <option v-for="subcat in subcats" v-bind:value="subcat.id">{{ subcat.name }}</option>
                 </select>
             </div>
             <div class="row">
-                <label class="control-label">название</label>
-                <input type="text" class="form-control" v-model="article.name">
+                <label class="control-label">Название:</label>
+                <input v-model="article.name">
             </div>
             <div class="row">
-                <label class="control-label">ед.изм.</label>
-                <input type="text" class="form-control" v-model="article.unit">
+                <label class="control-label">Ед. изм.:</label>
+                <input v-model="article.unit">
             </div>
             <div class="row">
-                <label class="control-label">цена</label>
-                <input type="text" class="form-control" v-model="article.price">
+                <label class="control-label">Цена:</label>
+                <input v-model="article.price">
             </div>
             <div class="row">
-                <label class="control-label">активный</label>
-                <input type="text" class="form-control" v-model="article.active">
+                <label class="control-label">Активный:</label>
+                <input v-model="article.active">
             </div>
             <div class="row">
                 <button class="button success">Сохранить</button>
@@ -48,7 +48,7 @@
                 this.article = response.data;
             });
             this.axios.get(`/api/subcats/list`).then(response => {
-                this.subcats = response.data;
+                this.subcats = response.data.data;
             });
         },
         methods: {

@@ -1,7 +1,9 @@
 <template>
     <div>
+        <router-link to="/clients/create" class="button primary top">Создать</router-link>
+
         <h1>Клиенты</h1>
-        <router-link to="/clients/create" class="button primary">Создать</router-link>
+
         <table>
             <thead>
                 <tr>
@@ -21,24 +23,29 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="client in clients" :key="client.id">
-                    <td>{{ client.name }}</td>
-                    <td>{{ client.address }}</td>
-                    <td>{{ client.region_id }}</td>
-                    <td>{{ client.telephone }}</td>
-                    <td>{{ client.fax }}</td>
-                    <td>{{ client.contact_fio }}</td>
-                    <td>{{ client.contact_post }}</td>
-                    <td>{{ client.bank }}</td>
-                    <td>{{ client.account }}</td>
-                    <td>{{ client.INN }}</td>
-                    <td>{{ client.KPP }}</td>
-                    <td>{{ client.BIK }}</td>
-                    <td><router-link :to="{name: 'clientEdit', params: { id: client.id }}" class="update">&nbsp;</router-link></td>
-                    <td><a class="delete" @click.prevent="deleteClient(client.id)">&nbsp;</a></td>
+                <tr v-for="item, index in paginatedData">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.address }}</td>
+                    <td>{{ item.region ? item.region.name : '' }}</td>
+                    <td>{{ item.telephone }}</td>
+                    <td>{{ item.fax }}</td>
+                    <td>{{ item.contact_fio }}</td>
+                    <td>{{ item.contact_post }}</td>
+                    <td>{{ item.bank }}</td>
+                    <td>{{ item.account }}</td>
+                    <td>{{ item.INN }}</td>
+                    <td>{{ item.KPP }}</td>
+                    <td>{{ item.BIK }}</td>
+                    <td><router-link :to="{name: 'clientEdit', params: { id: item.id }}" class="update">&nbsp;</router-link></td>
+                    <td><a href="#" class="delete" @click.prevent="deleteItem(item.id, index)">&nbsp;</a></td>
                 </tr>
             </tbody>
         </table>
+        <!--<pagination v-bind:data="listData"></pagination>-->
+        <div>
+            <button class="button nav" @click="prevPage"><</button>
+            <button class="button nav" @click="nextPage">></button>
+        </div>
     </div>
 </template>
 
@@ -46,21 +53,39 @@
     export default {
         data() {
             return {
-                clients: []
+                listData: [],
+                pageNumber: 0,
+                pageSize: 50,
             }
         },
         created() {
             this.axios.get('/api/clients/list').then(response => {
-                this.clients = response.data.data;
+                this.listData = response.data.data;
             });
         },
-        methods: {
-            deleteClient(id) {
-                let uri = `/api/clients/delete/${id}`;
-                this.axios.delete(uri).then(response => {
-                    this.clients.splice(this.clients.indexOf(id), 1);
-                });
+        computed: {
+            pageCount() {
+                return Math.ceil(this.listData.length / this.pageSize);
+            },
+            paginatedData() {
+                const start = this.pageNumber * this.pageSize,
+                      end = start + this.pageSize;
+
+                return this.listData.slice(start, end);
             }
+        },
+        methods: {
+            deleteItem(id, index) {
+                this.axios.delete(`/api/clients/delete/${id}`).then(response => {
+                    this.listData.splice(index, 1);
+                });
+            },
+            nextPage() {
+                this.pageNumber++;
+            },
+            prevPage() {
+                this.pageNumber--;
+            },
         }
     }
 </script>

@@ -1,7 +1,12 @@
-@extends('vue-layout')
+@extends('layout')
 
 @section('content')
 
-<article-component></article-component>
+    <?php
+    $bodyClass = 'articles';
+    $pageTitle = 'Товары';
+
+    ?>
+    <article-component></article-component>
 
 @endsection
