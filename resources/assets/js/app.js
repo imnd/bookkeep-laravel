@@ -31,101 +31,77 @@ import BillsList from './components/bills/List.vue';
 import BillCreate from './components/bills/Create.vue';
 import BillEdit from './components/bills/Edit.vue';
 
-/*Vue.component('pagination', {
-    data: function() {
+Vue.component('grid', {
+    props: {
+        heading: {
+            type: String,
+            required: true,
+        },
+        entity: {
+            type: String,
+            required: true,
+        },
+        pageSize: {
+            type: String,
+            required: false,
+            default: 50,
+            validator: function(value){
+                return value >= 0;
+            }
+        },
+    },
+    template: `<div>
+        <router-link :to="'/api/' + entity + '/create'" class="button primary top">Создать</router-link>
+        <h1>{{ this.heading }}</h1>
+        <table>
+            <grid-head></grid-head>
+            <grid-body :editUrl="'/api/' + entity + '/edit'" :listData="paginatedData"></grid-body>
+        </table>
+        <div>
+            <button class="button nav" @click="prevPage"><</button>
+            <button class="button nav" @click="nextPage">></button>
+        </div>
+    </div>`,
+    data: function () {
         return {
-            pageNumber: 0
+            listData: [],
+            paginatedData: [],
+            pageNumber: 0,
         }
     },
-    props: {
-        size: {
-            type: Number,
-            required: false,
-            default: 50
-        },
-        data: {
-            type: Array,
-            required: true,
+    created() {
+        this.axios.get('/api/' + this.entity + '/list').then(response => {
+            this.listData = response.data.data;
+            this.paginatedData = this.getPaginatedData();
+        });
+    },
+    computed: {
+        pageCount() {
+            return Math.ceil(this.listData.length / this.pageSize);
         },
     },
     methods: {
+        deleteItem(id, index) {
+            this.axios.delete('/api/' + this.entity + `/delete/${id}`).then(response => {
+                this.listData.splice(index, 1);
+            });
+        },
+        getPaginatedData() {
+            const start = this.pageNumber * this.pageSize,
+                  end = start + parseInt(this.pageSize);
+
+            return this.listData.slice(start, end);
+        },
         nextPage() {
             this.pageNumber++;
+            this.paginatedData = this.getPaginatedData();
         },
         prevPage() {
             this.pageNumber--;
+            this.paginatedData = this.getPaginatedData();
         },
-        pageCount() {
-            let l = this.data.length,
-                s = this.size;
-
-            return Math.ceil(l/s);
-        },
-        paginatedData() {
-            const start = this.pageNumber * this.size,
-                end = start + this.size;
-
-            return this.data.slice(start, end);
-        }
-    },
-    template: '<div>\n' +
-        '<button class="button success" @click="prevPage"><</button>\n' +
-        '<button class="button success" @click="nextPage">></button>\n' +
-    '</div>'
-});*/
-
-/*Vue.component('grid', {
-    template: '#grid-template',
-    props: {
-        heroes: Array,
-        columns: Array,
-        filterKey: String
-    },
-    data: function () {
-        let sortOrders = {};
-        this.columns.forEach(function (key) {
-            sortOrders[key] = 1
-        });
-        return {
-            sortKey: '',
-            sortOrders: sortOrders
-        }
-    },
-    computed: {
-        filteredHeroes: function () {
-            let sortKey = this.sortKey;
-            let filterKey = this.filterKey && this.filterKey.toLowerCase();
-            let order = this.sortOrders[sortKey] || 1;
-            let heroes = this.heroes;
-            if (filterKey) {
-                heroes = heroes.filter(function (row) {
-                    return Object.keys(row).some(function (key) {
-                        return String(row[key]).toLowerCase().indexOf(filterKey) > -1
-                    })
-                })
-            }
-            if (sortKey) {
-                heroes = heroes.slice().sort(function (a, b) {
-                    a = a[sortKey];
-                    b = b[sortKey];
-                    return (a === b ? 0 : a > b ? 1 : -1) * order
-                })
-            }
-            return heroes
-        }
-    },
-    filters: {
-        capitalize: function (str) {
-            return str.charAt(0).toUpperCase() + str.slice(1)
-        }
-    },
-    methods: {
-        sortBy: function (key) {
-            this.sortKey = key;
-            this.sortOrders[key] = this.sortOrders[key] * -1;
-        }
     }
-});*/
+});
 
 const router = new VueRouter({
     mode: 'history',

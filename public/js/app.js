@@ -1157,101 +1157,71 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_axios___default.a, __WEBPACK_IMPORTED_MO
 
 
 
-/*Vue.component('pagination', {
-    data: function() {
-        return {
-            pageNumber: 0
-        }
-    },
+Vue.component('grid', {
     props: {
-        size: {
-            type: Number,
+        heading: {
+            type: String,
+            required: true
+        },
+        entity: {
+            type: String,
+            required: true
+        },
+        pageSize: {
+            type: String,
             required: false,
-            default: 50
-        },
-        data: {
-            type: Array,
-            required: true,
-        },
-    },
-    methods: {
-        nextPage() {
-            this.pageNumber++;
-        },
-        prevPage() {
-            this.pageNumber--;
-        },
-        pageCount() {
-            let l = this.data.length,
-                s = this.size;
-
-            return Math.ceil(l/s);
-        },
-        paginatedData() {
-            const start = this.pageNumber * this.size,
-                end = start + this.size;
-
-            return this.data.slice(start, end);
+            default: 50,
+            validator: function validator(value) {
+                return value >= 0;
+            }
         }
     },
-    template: '<div>\n' +
-        '<button class="button success" @click="prevPage"><</button>\n' +
-        '<button class="button success" @click="nextPage">></button>\n' +
-    '</div>'
-});*/
-
-/*Vue.component('grid', {
-    template: '#grid-template',
-    props: {
-        heroes: Array,
-        columns: Array,
-        filterKey: String
-    },
-    data: function () {
-        let sortOrders = {};
-        this.columns.forEach(function (key) {
-            sortOrders[key] = 1
-        });
+    template: '<div>\n        <router-link :to="\'/api/\' + entity + \'/create\'" class="button primary top">\u0421\u043E\u0437\u0434\u0430\u0442\u044C</router-link>\n        <h1>{{ this.heading }}</h1>\n        <table>\n            <grid-head></grid-head>\n            <grid-body :editUrl="\'/api/\' + entity + \'/edit\'" :listData="paginatedData"></grid-body>\n        </table>\n        <div>\n            <button class="button nav" @click="prevPage"><</button>\n            <button class="button nav" @click="nextPage">></button>\n        </div>\n    </div>',
+    data: function data() {
         return {
-            sortKey: '',
-            sortOrders: sortOrders
-        }
+            listData: [],
+            paginatedData: [],
+            pageNumber: 0
+        };
     },
+    created: function created() {
+        var _this = this;
+
+        this.axios.get('/api/' + this.entity + '/list').then(function (response) {
+            _this.listData = response.data.data;
+            _this.paginatedData = _this.getPaginatedData();
+        });
+    },
+
     computed: {
-        filteredHeroes: function () {
-            let sortKey = this.sortKey;
-            let filterKey = this.filterKey && this.filterKey.toLowerCase();
-            let order = this.sortOrders[sortKey] || 1;
-            let heroes = this.heroes;
-            if (filterKey) {
-                heroes = heroes.filter(function (row) {
-                    return Object.keys(row).some(function (key) {
-                        return String(row[key]).toLowerCase().indexOf(filterKey) > -1
-                    })
-                })
-            }
-            if (sortKey) {
-                heroes = heroes.slice().sort(function (a, b) {
-                    a = a[sortKey];
-                    b = b[sortKey];
-                    return (a === b ? 0 : a > b ? 1 : -1) * order
-                })
-            }
-            return heroes
-        }
-    },
-    filters: {
-        capitalize: function (str) {
-            return str.charAt(0).toUpperCase() + str.slice(1)
+        pageCount: function pageCount() {
+            return Math.ceil(this.listData.length / this.pageSize);
         }
     },
     methods: {
-        sortBy: function (key) {
-            this.sortKey = key;
-            this.sortOrders[key] = this.sortOrders[key] * -1;
+        deleteItem: function deleteItem(id, index) {
+            var _this2 = this;
+
+            this.axios.delete('/api/' + this.entity + ('/delete/' + id)).then(function (response) {
+                _this2.listData.splice(index, 1);
+            });
+        },
+        getPaginatedData: function getPaginatedData() {
+            var start = this.pageNumber * this.pageSize,
+                end = start + parseInt(this.pageSize);
+
+            return this.listData.slice(start, end);
+        },
+        nextPage: function nextPage() {
+            this.pageNumber++;
+            this.paginatedData = this.getPaginatedData();
+        },
+        prevPage: function prevPage() {
+            this.pageNumber--;
+            this.paginatedData = this.getPaginatedData();
         }
     }
-});*/
+});
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
     mode: 'history',
@@ -51110,86 +51080,24 @@ module.exports = Component.exports
 
 /***/ }),
 /* 88 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            listData: [],
-            pageNumber: 0,
-            pageSize: 50
-        };
+window.Vue = __webpack_require__(36);
+
+Vue.component('grid-head', {
+    template: '<thead>\n    <tr>\n        <th>\u043D\u043E\u043C\u0435\u0440</th>\n        <th>\u0434\u0430\u0442\u0430</th>\n        <th>\u0441\u0443\u043C\u043C\u0430</th>\n        <th colspan=2>\u043E\u043F\u0435\u0440\u0430\u0446\u0438\u0438</th>\n    </tr>\n</thead>'
+});
+Vue.component('grid-body', {
+    props: {
+        listData: Array,
+        editUrl: String
     },
-    created: function created() {
-        var _this = this;
-
-        this.axios.get('/api/purchases/list').then(function (response) {
-            _this.listData = response.data.data;
-        });
-    },
-
-    computed: {
-        pageCount: function pageCount() {
-            return Math.ceil(this.listData.length / this.pageSize);
-        },
-        paginatedData: function paginatedData() {
-            var start = this.pageNumber * this.pageSize,
-                end = start + this.pageSize;
-
-            return this.listData.slice(start, end);
-        }
-    },
-    methods: {
-        deleteItem: function deleteItem(id, index) {
-            var _this2 = this;
-
-            this.axios.delete('/api/purchases/delete/' + id).then(function (response) {
-                _this2.listData.splice(index, 1);
-            });
-        },
-        nextPage: function nextPage() {
-            this.pageNumber++;
-        },
-        prevPage: function prevPage() {
-            this.pageNumber--;
-        }
-    }
+    template: '<tbody>\n    <tr v-for="item, index in listData">\n        <td>{{ item.number }}</td>\n        <td>{{ item.date }}</td>\n        <td>{{ item.sum }}</td>\n        <td><router-link :to="{name: this.editUrl, params: { id: item.id }}" class="update">&nbsp;</router-link></td>\n        <td><a href="#" class="delete" @click.prevent="deleteItem(item.id, index)">&nbsp;</a></td>\n    </tr>\n</tbody>'
 });
 
 /***/ }),
@@ -51200,107 +51108,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "router-link",
-        {
-          staticClass: "button primary top",
-          attrs: { to: "/purchases/create" }
-        },
-        [_vm._v("Создать")]
-      ),
-      _vm._v(" "),
-      _c("h1", [_vm._v("Закупки")]),
-      _vm._v(" "),
-      _c("table", [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.paginatedData, function(item, index) {
-            return _c("tr", [
-              _c("td", [_vm._v(_vm._s(item.number))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.date))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.sum))]),
-              _vm._v(" "),
-              _c(
-                "td",
-                [
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "update",
-                      attrs: {
-                        to: { name: "purchaseEdit", params: { id: item.id } }
-                      }
-                    },
-                    [_vm._v(" ")]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("td", [
-                _c(
-                  "a",
-                  {
-                    staticClass: "delete",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.deleteItem(item.id, index)
-                      }
-                    }
-                  },
-                  [_vm._v(" ")]
-                )
-              ])
-            ])
-          }),
-          0
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "button",
-          { staticClass: "button nav", on: { click: _vm.prevPage } },
-          [_vm._v("<")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "button nav", on: { click: _vm.nextPage } },
-          [_vm._v(">")]
-        )
-      ])
-    ],
-    1
-  )
+  return _c("grid", {
+    attrs: { heading: "Закупки", entity: "purchases", pageSize: "20" }
+  })
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("номер")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("дата")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("сумма")]),
-        _vm._v(" "),
-        _c("th", { attrs: { colspan: "2" } }, [_vm._v("операции")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
