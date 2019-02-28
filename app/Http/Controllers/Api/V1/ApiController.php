@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Http\Controllers\Controller;
 
 /**
@@ -16,16 +17,16 @@ class ApiController extends Controller
      * Имя класса модели
      */
     protected $modelName;
-    /**
-     * Имя класса коллекции
-     */
-    protected $collectionName;
 
-    public function list()
+    public function list(Request $request)
     {
-        $collectionName = $this->collectionName;
         $modelName = $this->modelName;
-        return new $collectionName($modelName::all());
+        /**
+         * @var \Illuminate\Database\Eloquent\Builder $query
+         */
+        $query = $modelName::query();
+        $conditions = $modelName::getQueryConditions($request->all());
+        return new ResourceCollection($query->where($conditions)->get());
     }
 
     public function create(Request $request)

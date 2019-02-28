@@ -2,8 +2,8 @@
     <div>
         <router-link to="#" v-on:click="invoiceDelete()" class="button danger top">Удалить</router-link>
         <router-link to="/invoices/list" class="button primary top">Список</router-link>
-        <router-link v-bind:to="printoutBill" class="button primary top left printout">Распечатать фактуру</router-link>
-        <router-link v-bind:to="printoutInvoice" class="button primary top left printout">Распечатать накладную</router-link>
+        <router-link v-bind:to="{name: 'invoicesPrintoutBill', params: { id: this.$route.params.id }}" class="button primary top left printout">Распечатать фактуру</router-link>
+        <router-link v-bind:to="{name: 'invoicesPrintoutInvoice', params: { id: this.$route.params.id }}" class="button primary top left printout">Распечатать накладную</router-link>
 
         <h1>Редактирование фактуры</h1>
 
@@ -78,8 +78,6 @@
     export default {
         data() {
             return {
-                printoutBill: `/invoices/printout/type/bill/${this.$route.params.id}`,
-                printoutInvoice: `/invoices/printout/type/invoice/${this.$route.params.id}`,
                 invoice: {},
                 invoiceRow: {
                     'article_id' : '',
@@ -113,6 +111,12 @@
             });
         },
         methods: {
+            rowDelete(index) {
+                this.invoiceRows.splice(index, 1);
+            },
+            rowAdd() {
+                this.invoiceRows.push(Vue.util.extend({}, this.invoiceRow))
+            },
             invoiceUpdate() {
                 this.axios.post(`/api/invoices/update/${this.$route.params.id}`, {
                     'invoice': this.invoice,
@@ -120,12 +124,6 @@
                 }).then(response => {
                     this.$router.push({name: 'invoicesList'});
                 });
-            },
-            rowDelete(index) {
-                this.invoiceRows.splice(index, 1);
-            },
-            rowAdd() {
-                this.invoiceRows.push(Vue.util.extend({}, this.invoiceRow))
             },
             invoiceDelete() {
                 this.axios.delete(`/api/invoices/delete/` + this.invoice.id).then(response => {

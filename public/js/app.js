@@ -60,18 +60,127 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var bind = __webpack_require__(5);
-var isBuffer = __webpack_require__(19);
+var bind = __webpack_require__(6);
+var isBuffer = __webpack_require__(20);
 
 /*global toString:true*/
 
@@ -374,116 +483,18 @@ module.exports = {
 
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports) {
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
+if (false) {
+  module.exports = require('./vue.common.prod.js')
+} else {
+  module.exports = __webpack_require__(37)
 }
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 var g;
@@ -510,14 +521,14 @@ module.exports = g;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-var utils = __webpack_require__(0);
-var normalizeHeaderName = __webpack_require__(21);
+var utils = __webpack_require__(1);
+var normalizeHeaderName = __webpack_require__(22);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -533,10 +544,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(7);
+    adapter = __webpack_require__(8);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(7);
+    adapter = __webpack_require__(8);
   }
   return adapter;
 }
@@ -607,16 +618,16 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(18);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(19);
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -634,7 +645,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -824,19 +835,19 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
-var settle = __webpack_require__(22);
-var buildURL = __webpack_require__(24);
-var parseHeaders = __webpack_require__(25);
-var isURLSameOrigin = __webpack_require__(26);
-var createError = __webpack_require__(8);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(27);
+var utils = __webpack_require__(1);
+var settle = __webpack_require__(23);
+var buildURL = __webpack_require__(25);
+var parseHeaders = __webpack_require__(26);
+var isURLSameOrigin = __webpack_require__(27);
+var createError = __webpack_require__(9);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(28);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -933,7 +944,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(28);
+      var cookies = __webpack_require__(29);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -1011,13 +1022,13 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var enhanceError = __webpack_require__(23);
+var enhanceError = __webpack_require__(24);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -1036,7 +1047,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1048,7 +1059,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1074,15 +1085,15 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(12);
-module.exports = __webpack_require__(77);
+__webpack_require__(13);
+module.exports = __webpack_require__(112);
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1090,43 +1101,142 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_axios__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_App_vue__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_articles_List_vue__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_articles_List_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_articles_List_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_articles_Create_vue__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_articles_Create_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_articles_Create_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_articles_Edit_vue__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_articles_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_articles_Edit_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_clients_List_vue__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_clients_List_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_clients_List_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_clients_Create_vue__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_clients_Create_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_clients_Create_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_clients_Edit_vue__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_clients_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_clients_Edit_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_invoices_List_vue__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_invoices_List_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_invoices_List_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_invoices_Create_vue__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_invoices_Create_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_invoices_Create_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_invoices_Edit_vue__ = __webpack_require__(74);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_invoices_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_invoices_Edit_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_purchases_List_vue__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_purchases_List_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_purchases_List_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_purchases_Create_vue__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_purchases_Create_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_purchases_Create_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_purchases_Edit_vue__ = __webpack_require__(93);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_purchases_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_purchases_Edit_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_bills_List_vue__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_bills_List_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_bills_List_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_bills_Create_vue__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_bills_Create_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__components_bills_Create_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_bills_Edit_vue__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_bills_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__components_bills_Edit_vue__);
-__webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Home_vue__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Home_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_Home_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_articles_List_vue__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_articles_List_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_articles_List_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_articles_Create_vue__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_articles_Create_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_articles_Create_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_articles_Edit_vue__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_articles_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_articles_Edit_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_clients_List_vue__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_clients_List_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_clients_List_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_clients_Create_vue__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_clients_Create_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_clients_Create_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_clients_Edit_vue__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_clients_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_clients_Edit_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_invoices_List_vue__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_invoices_List_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_invoices_List_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_invoices_Create_vue__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_invoices_Create_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_invoices_Create_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_invoices_Edit_vue__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_invoices_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_invoices_Edit_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_invoices_PrintoutBill_vue__ = __webpack_require__(77);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_invoices_PrintoutBill_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_invoices_PrintoutBill_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_invoices_PrintoutInvoice_vue__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_invoices_PrintoutInvoice_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_invoices_PrintoutInvoice_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_purchases_List_vue__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_purchases_List_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_purchases_List_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_purchases_Create_vue__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_purchases_Create_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__components_purchases_Create_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_purchases_Edit_vue__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_purchases_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__components_purchases_Edit_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_purchases_Printout_vue__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_purchases_Printout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__components_purchases_Printout_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_bills_List_vue__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_bills_List_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__components_bills_List_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_bills_Create_vue__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_bills_Create_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__components_bills_Create_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_bills_Edit_vue__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_bills_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__components_bills_Edit_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_contracts_List_vue__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_contracts_List_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__components_contracts_List_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_contracts_Create_vue__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_contracts_Create_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__components_contracts_Create_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_contracts_Edit_vue__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_contracts_Edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_25__components_contracts_Edit_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_contracts_Printout_vue__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_contracts_Printout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26__components_contracts_Printout_vue__);
+__webpack_require__(14);
 
-window.Vue = __webpack_require__(36);
+window.Vue = __webpack_require__(2);
+
+Vue.component('grid', {
+    props: {
+        heading: {
+            type: String,
+            required: true
+        },
+        entity: {
+            type: String,
+            required: true
+        },
+        pageSize: {
+            type: String,
+            required: false,
+            default: 50,
+            validator: function validator(value) {
+                return value >= 0;
+            }
+        }
+    },
+    template: '<div>\n        <router-link :to="\'/api/\' + entity + \'/create\'" class="button primary top">\u0421\u043E\u0437\u0434\u0430\u0442\u044C</router-link>\n        \n        <h1>{{ this.heading }}</h1>\n        \n        <!--\u0444\u043E\u0440\u043C\u0430 \u043F\u043E\u0438\u0441\u043A\u0430-->\n        <form @submit.prevent="listUpdate" class="search-form" method="GET">\n            <component :is="\'search-form-\' + entity"></component>\n            <input type="submit" class="button" value="\u043F\u043E\u0438\u0441\u043A">\n            <div class="clear"></div>\n        </form>\n\n        <!--\u0441\u043F\u0438\u0441\u043E\u043A-->\n        <table>\n            <thead>\n                <component :is="\'grid-head-\' + entity"></component>\n            </thead>\n            <component :is="\'grid-body-\' + entity" :listData="paginatedData"></component>\n        </table>\n        <div>\n            <button class="button nav" @click="prevPage"><</button>\n            <button class="button nav" @click="nextPage">></button>\n        </div>\n    </div>',
+    data: function data() {
+        return {
+            listData: [],
+            paginatedData: [],
+            pageNumber: 0
+        };
+    },
+    created: function created() {
+        var _this = this;
+
+        this.axios.get('/api/' + this.entity + '/list').then(function (response) {
+            _this.listData = response.data.data;
+            _this.setPaginatedData();
+        });
+    },
+
+    /*computed: {
+        pageCount() {
+            return Math.ceil(this.listData.length / this.pageSize);
+        },
+    },*/
+    methods: {
+        listUpdate: function listUpdate(event) {
+            var _this2 = this;
+
+            var params = {};
+            var formData = new FormData(event.target);
+            formData.forEach(function (value, key) {
+                if (value !== '' && value !== undefined) {
+                    params[key] = value;
+                }
+            });
+            this.axios.get('/api/' + this.entity + '/list', {
+                params: params
+            }).then(function (response) {
+                _this2.listData = response.data.data;
+                _this2.setPaginatedData();
+            });
+        },
+        deleteItem: function deleteItem(id, index) {
+            var _this3 = this;
+
+            this.axios.delete('/api/' + this.entity + '/delete/' + id).then(function (response) {
+                _this3.listData.splice(index, 1);
+            });
+        },
+        setPaginatedData: function setPaginatedData() {
+            var start = this.pageNumber * this.pageSize,
+                end = start + parseInt(this.pageSize);
+
+            this.paginatedData = this.listData.slice(start, end);
+        },
+        nextPage: function nextPage() {
+            this.pageNumber++;
+            this.setPaginatedData();
+        },
+        prevPage: function prevPage() {
+            this.pageNumber--;
+            this.setPaginatedData();
+        }
+    }
+});
 
 
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
@@ -1157,145 +1267,121 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_axios___default.a, __WEBPACK_IMPORTED_MO
 
 
 
-Vue.component('grid', {
-    props: {
-        heading: {
-            type: String,
-            required: true
-        },
-        entity: {
-            type: String,
-            required: true
-        },
-        pageSize: {
-            type: String,
-            required: false,
-            default: 50,
-            validator: function validator(value) {
-                return value >= 0;
-            }
-        }
-    },
-    template: '<div>\n        <router-link :to="\'/api/\' + entity + \'/create\'" class="button primary top">\u0421\u043E\u0437\u0434\u0430\u0442\u044C</router-link>\n        <h1>{{ this.heading }}</h1>\n        <table>\n            <grid-head></grid-head>\n            <grid-body :editUrl="\'/api/\' + entity + \'/edit\'" :listData="paginatedData"></grid-body>\n        </table>\n        <div>\n            <button class="button nav" @click="prevPage"><</button>\n            <button class="button nav" @click="nextPage">></button>\n        </div>\n    </div>',
-    data: function data() {
-        return {
-            listData: [],
-            paginatedData: [],
-            pageNumber: 0
-        };
-    },
-    created: function created() {
-        var _this = this;
 
-        this.axios.get('/api/' + this.entity + '/list').then(function (response) {
-            _this.listData = response.data.data;
-            _this.paginatedData = _this.getPaginatedData();
-        });
-    },
 
-    computed: {
-        pageCount: function pageCount() {
-            return Math.ceil(this.listData.length / this.pageSize);
-        }
-    },
-    methods: {
-        deleteItem: function deleteItem(id, index) {
-            var _this2 = this;
 
-            this.axios.delete('/api/' + this.entity + ('/delete/' + id)).then(function (response) {
-                _this2.listData.splice(index, 1);
-            });
-        },
-        getPaginatedData: function getPaginatedData() {
-            var start = this.pageNumber * this.pageSize,
-                end = start + parseInt(this.pageSize);
 
-            return this.listData.slice(start, end);
-        },
-        nextPage: function nextPage() {
-            this.pageNumber++;
-            this.paginatedData = this.getPaginatedData();
-        },
-        prevPage: function prevPage() {
-            this.pageNumber--;
-            this.paginatedData = this.getPaginatedData();
-        }
-    }
-});
+
+
+
+
+
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
     mode: 'history',
     routes: [{
+        name: 'home',
+        path: '/',
+        component: __WEBPACK_IMPORTED_MODULE_4__components_Home_vue___default.a
+    }, {
         name: 'articlesList',
         path: '/articles/list',
-        component: __WEBPACK_IMPORTED_MODULE_4__components_articles_List_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_5__components_articles_List_vue___default.a
     }, {
-        name: 'articleCreate',
+        name: 'articlesCreate',
         path: '/articles/create',
-        component: __WEBPACK_IMPORTED_MODULE_5__components_articles_Create_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_6__components_articles_Create_vue___default.a
     }, {
-        name: 'articleEdit',
+        name: 'articlesEdit',
         path: '/articles/edit/:id',
-        component: __WEBPACK_IMPORTED_MODULE_6__components_articles_Edit_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_7__components_articles_Edit_vue___default.a
     }, {
-        name: 'clientCreate',
+        name: 'clientsCreate',
         path: '/clients/create',
-        component: __WEBPACK_IMPORTED_MODULE_8__components_clients_Create_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_9__components_clients_Create_vue___default.a
     }, {
         name: 'clientsList',
         path: '/clients/list',
-        component: __WEBPACK_IMPORTED_MODULE_7__components_clients_List_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_8__components_clients_List_vue___default.a
     }, {
         name: 'clientEdit',
         path: '/clients/edit/:id',
-        component: __WEBPACK_IMPORTED_MODULE_9__components_clients_Edit_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_10__components_clients_Edit_vue___default.a
     }, {
         name: 'invoicesList',
         path: '/invoices/list',
-        component: __WEBPACK_IMPORTED_MODULE_10__components_invoices_List_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_11__components_invoices_List_vue___default.a
     }, {
-        name: 'invoiceCreate',
+        name: 'invoicesCreate',
         path: '/invoices/create',
-        component: __WEBPACK_IMPORTED_MODULE_11__components_invoices_Create_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_12__components_invoices_Create_vue___default.a
     }, {
-        name: 'invoiceEdit',
+        name: 'invoicesEdit',
         path: '/invoices/edit/:id',
-        component: __WEBPACK_IMPORTED_MODULE_12__components_invoices_Edit_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_13__components_invoices_Edit_vue___default.a
+    }, {
+        name: 'invoicesPrintoutBill',
+        path: '/invoices/printout/bill/:id',
+        component: __WEBPACK_IMPORTED_MODULE_14__components_invoices_PrintoutBill_vue___default.a
+    }, {
+        name: 'invoicesPrintoutInvoice',
+        path: '/invoices/printout/invoice/:id',
+        component: __WEBPACK_IMPORTED_MODULE_15__components_invoices_PrintoutInvoice_vue___default.a
     }, {
         name: 'purchasesList',
         path: '/purchases/list',
-        component: __WEBPACK_IMPORTED_MODULE_13__components_purchases_List_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_16__components_purchases_List_vue___default.a
     }, {
-        name: 'purchaseCreate',
+        name: 'purchasesCreate',
         path: '/purchases/create',
-        component: __WEBPACK_IMPORTED_MODULE_14__components_purchases_Create_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_17__components_purchases_Create_vue___default.a
     }, {
-        name: 'purchaseEdit',
+        name: 'purchasesEdit',
         path: '/purchases/edit/:id',
-        component: __WEBPACK_IMPORTED_MODULE_15__components_purchases_Edit_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_18__components_purchases_Edit_vue___default.a
+    }, {
+        name: 'purchasesPrintout',
+        path: '/purchases/printout/:id',
+        component: __WEBPACK_IMPORTED_MODULE_19__components_purchases_Printout_vue___default.a
     }, {
         name: 'billsList',
         path: '/bills/list',
-        component: __WEBPACK_IMPORTED_MODULE_16__components_bills_List_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_20__components_bills_List_vue___default.a
     }, {
-        name: 'billCreate',
+        name: 'billsCreate',
         path: '/bills/create',
-        component: __WEBPACK_IMPORTED_MODULE_17__components_bills_Create_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_21__components_bills_Create_vue___default.a
     }, {
-        name: 'billEdit',
+        name: 'billsEdit',
         path: '/bills/edit/:id',
-        component: __WEBPACK_IMPORTED_MODULE_18__components_bills_Edit_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_22__components_bills_Edit_vue___default.a
+    }, {
+        name: 'contractsList',
+        path: '/contracts/list',
+        component: __WEBPACK_IMPORTED_MODULE_23__components_contracts_List_vue___default.a
+    }, {
+        name: 'contractsCreate',
+        path: '/contracts/create',
+        component: __WEBPACK_IMPORTED_MODULE_24__components_contracts_Create_vue___default.a
+    }, {
+        name: 'contractsEdit',
+        path: '/contracts/edit/:id',
+        component: __WEBPACK_IMPORTED_MODULE_25__components_contracts_Edit_vue___default.a
+    }, {
+        name: 'contractsPrintout',
+        path: '/contracts/printout/:id',
+        component: __WEBPACK_IMPORTED_MODULE_26__components_contracts_Printout_vue___default.a
     }]
 });
 
 var app = new Vue(Vue.util.extend({ router: router }, __WEBPACK_IMPORTED_MODULE_3__components_App_vue___default.a)).$mount('#app');
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-window._ = __webpack_require__(14);
+window._ = __webpack_require__(15);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -1304,9 +1390,9 @@ window._ = __webpack_require__(14);
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(16);
+  window.$ = window.jQuery = __webpack_require__(17);
 
-  __webpack_require__(17);
+  __webpack_require__(18);
 } catch (e) {}
 
 /**
@@ -1315,7 +1401,7 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(4);
+window.axios = __webpack_require__(5);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -1349,7 +1435,7 @@ if (token) {
 // });
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -18461,10 +18547,10 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(15)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(16)(module)))
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -18492,7 +18578,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -28863,7 +28949,7 @@ return jQuery;
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 /*!
@@ -31449,16 +31535,16 @@ if (typeof jQuery === 'undefined') {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
-var bind = __webpack_require__(5);
-var Axios = __webpack_require__(20);
-var defaults = __webpack_require__(3);
+var utils = __webpack_require__(1);
+var bind = __webpack_require__(6);
+var Axios = __webpack_require__(21);
+var defaults = __webpack_require__(4);
 
 /**
  * Create an instance of Axios
@@ -31491,15 +31577,15 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(10);
-axios.CancelToken = __webpack_require__(34);
-axios.isCancel = __webpack_require__(9);
+axios.Cancel = __webpack_require__(11);
+axios.CancelToken = __webpack_require__(35);
+axios.isCancel = __webpack_require__(10);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(35);
+axios.spread = __webpack_require__(36);
 
 module.exports = axios;
 
@@ -31508,7 +31594,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 /*!
@@ -31535,18 +31621,18 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var defaults = __webpack_require__(3);
-var utils = __webpack_require__(0);
-var InterceptorManager = __webpack_require__(29);
-var dispatchRequest = __webpack_require__(30);
-var isAbsoluteURL = __webpack_require__(32);
-var combineURLs = __webpack_require__(33);
+var defaults = __webpack_require__(4);
+var utils = __webpack_require__(1);
+var InterceptorManager = __webpack_require__(30);
+var dispatchRequest = __webpack_require__(31);
+var isAbsoluteURL = __webpack_require__(33);
+var combineURLs = __webpack_require__(34);
 
 /**
  * Create a new instance of Axios
@@ -31628,13 +31714,13 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(1);
 
 module.exports = function normalizeHeaderName(headers, normalizedName) {
   utils.forEach(headers, function processHeader(value, name) {
@@ -31647,13 +31733,13 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var createError = __webpack_require__(8);
+var createError = __webpack_require__(9);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -31680,7 +31766,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31708,13 +31794,13 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(1);
 
 function encode(val) {
   return encodeURIComponent(val).
@@ -31783,13 +31869,13 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(1);
 
 /**
  * Parse headers into an object
@@ -31827,13 +31913,13 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(1);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -31902,7 +31988,7 @@ module.exports = (
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31945,13 +32031,13 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(1);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -32005,13 +32091,13 @@ module.exports = (
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(1);
 
 function InterceptorManager() {
   this.handlers = [];
@@ -32064,16 +32150,16 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
-var transformData = __webpack_require__(31);
-var isCancel = __webpack_require__(9);
-var defaults = __webpack_require__(3);
+var utils = __webpack_require__(1);
+var transformData = __webpack_require__(32);
+var isCancel = __webpack_require__(10);
+var defaults = __webpack_require__(4);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -32150,13 +32236,13 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(1);
 
 /**
  * Transform the data for a request or a response
@@ -32177,7 +32263,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32198,7 +32284,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32219,13 +32305,13 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Cancel = __webpack_require__(10);
+var Cancel = __webpack_require__(11);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -32283,7 +32369,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32314,17 +32400,6 @@ module.exports = function spread(callback) {
     return callback.apply(null, arr);
   };
 };
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-if (false) {
-  module.exports = require('./vue.common.prod.js')
-} else {
-  module.exports = __webpack_require__(37)
-}
 
 
 /***/ }),
@@ -44182,7 +44257,7 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(38).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(38).setImmediate))
 
 /***/ }),
 /* 38 */
@@ -44252,7 +44327,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 39 */
@@ -44445,7 +44520,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(7)))
 
 /***/ }),
 /* 40 */
@@ -47089,7 +47164,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(43)
 }
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(48)
 /* template */
@@ -47574,11 +47649,120 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(51)
 /* template */
 var __vue_template__ = __webpack_require__(52)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/articles/List.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9c835e6e", Component.options)
+  } else {
+    hotAPI.reload("data-v-9c835e6e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+//
+//
+//
+//
+
+window.Vue = __webpack_require__(2);
+
+// форма поиска
+Vue.component('search-form-articles', {
+    data: function data() {
+        return {
+            subcats: []
+        };
+    },
+    beforeCreate: function beforeCreate() {
+        var _this = this;
+
+        this.axios.get('/api/subcats/list').then(function (response) {
+            _this.subcats = response.data.data;
+        });
+    },
+
+    template: '<div class="clear">\n        <div class="control">\n            <label>\u0446\u0435\u043D\u0430 \u043E\u0442:</label>\n            <input name="priceFrom" type="text">\n        </div>\n        <div class="control">\n            <label>\u0446\u0435\u043D\u0430 \u0434\u043E:</label>\n            <input name="priceTo" type="text">\n        </div>\n        <div class="control">\n            <label>\u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435:</label>\n            <input name="name" />\n        </div>\n        <div class="control">\n            <label>\u043F\u043E\u0434\u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F:</label>\n            <select name="subcat_id">\n                <option v-for="subcat in subcats" v-bind:value="subcat.id">{{ subcat.name }}</option>\n            </select>\n        </div>\n        <div class="control">\n            <label>\u0435\u0434.\u0438\u0437\u043C.:</label>\n            <select name="unit">\n                <option v-for="unit in [\'\u043A\u0433\', \'\u0448\u0442\']" v-bind:value="unit">{{ unit }}</option>\n            </select>\n        </div>\n        <div class="control">\n            <label>\u0430\u043A\u0442\u0438\u0432\u043D\u044B\u0439:</label>\n            <select name="active">\n                <option v-for="active, key in [\'\u043D\u0435\u0442\', \'\u0434\u0430\']" v-bind:value="key">{{ active }}</option>\n            </select>\n        </div>\n    </div>'
+});
+// шапка таблицы
+Vue.component('grid-head-articles', {
+    template: '<tr>\n        <th>\u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435</th>\n        <th>\u0435\u0434.\u0438\u0437\u043C.</th>\n        <th>\u0446\u0435\u043D\u0430</th>\n        <th>\u0430\u043A\u0442\u0438\u0432\u043D\u044B\u0439</th>\n    </tr>'
+});
+// строки таблицы
+Vue.component('grid-body-articles', {
+    props: {
+        listData: Array
+    },
+    template: '<tbody>\n        <tr v-for="item, index in listData">\n            <td>{{ item.name }}</td>\n            <td>{{ item.unit }}</td>\n            <td>{{ item.price }}</td>\n            <td>{{ [\'\u043D\u0435\u0442\', \'\u0434\u0430\'][item.active] }}</td>\n            <td><router-link :to="{name: \'articleEdit\', params: { id: item.id }}" class="update">&nbsp;</router-link></td>\n            <td><a href="#" class="delete" @click.prevent="deleteItem(item.id, index)">&nbsp;</a></td>\n        </tr>\n    </tbody>'
+});
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("grid", {
+    attrs: { heading: "Товары", entity: "articles", pageSize: "50" }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-9c835e6e", module.exports)
+  }
+}
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(54)
+/* template */
+var __vue_template__ = __webpack_require__(55)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47617,7 +47801,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 51 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47691,7 +47875,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 52 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -47890,266 +48074,11 @@ if (false) {
 }
 
 /***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(54)
-/* template */
-var __vue_template__ = __webpack_require__(55)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/articles/List.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-9c835e6e", Component.options)
-  } else {
-    hotAPI.reload("data-v-9c835e6e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            listData: [],
-            pageNumber: 0,
-            pageSize: 50
-        };
-    },
-    created: function created() {
-        var _this = this;
-
-        this.axios.get('/api/articles/list').then(function (response) {
-            _this.listData = response.data.data;
-        });
-    },
-
-    computed: {
-        pageCount: function pageCount() {
-            return Math.ceil(this.listData.length / this.pageSize);
-        },
-        paginatedData: function paginatedData() {
-            var start = this.pageNumber * this.pageSize,
-                end = start + this.pageSize;
-
-            return this.listData.slice(start, end);
-        }
-    },
-    methods: {
-        deleteItem: function deleteItem(id, index) {
-            var _this2 = this;
-
-            this.axios.delete('/api/articles/delete/' + id).then(function (response) {
-                _this2.listData.splice(index, 1);
-            });
-        },
-        nextPage: function nextPage() {
-            this.pageNumber++;
-        },
-        prevPage: function prevPage() {
-            this.pageNumber--;
-        }
-    }
-});
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "router-link",
-        {
-          staticClass: "button primary top",
-          attrs: { to: "/articles/create" }
-        },
-        [_vm._v("Создать")]
-      ),
-      _vm._v(" "),
-      _c("h1", [_vm._v("Товары")]),
-      _vm._v(" "),
-      _c("table", [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.paginatedData, function(item, index) {
-            return _c("tr", [
-              _c("td", [_vm._v(_vm._s(item.name))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.unit))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.price))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(["нет", "да"][item.active]))]),
-              _vm._v(" "),
-              _c(
-                "td",
-                [
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "update",
-                      attrs: {
-                        to: { name: "articleEdit", params: { id: item.id } }
-                      }
-                    },
-                    [_vm._v(" ")]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("td", [
-                _c(
-                  "a",
-                  {
-                    staticClass: "delete",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.deleteItem(item.id, index)
-                      }
-                    }
-                  },
-                  [_vm._v(" ")]
-                )
-              ])
-            ])
-          }),
-          0
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "button",
-          { staticClass: "button nav", on: { click: _vm.prevPage } },
-          [_vm._v("<")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "button nav", on: { click: _vm.nextPage } },
-          [_vm._v(">")]
-        )
-      ])
-    ],
-    1
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("название")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("ед.изм.")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("цена")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("активный")]),
-        _vm._v(" "),
-        _c("th", { attrs: { colspan: "2" } }, [_vm._v("операции")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-9c835e6e", module.exports)
-  }
-}
-
-/***/ }),
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(57)
 /* template */
@@ -48469,11 +48398,107 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(60)
 /* template */
 var __vue_template__ = __webpack_require__(61)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/clients/List.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2964877c", Component.options)
+  } else {
+    hotAPI.reload("data-v-2964877c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+//
+//
+//
+//
+
+window.Vue = __webpack_require__(2);
+
+// форма поиска
+Vue.component('search-form-clients', {
+    template: '<div class="clear">\n        <div class="control">\n            <label>\u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435:</label>\n            <input name="name" />\n        </div>\n        <div class="control">\n            <label>\u0430\u0434\u0440\u0435\u0441:</label>\n            <input name="address" />\n        </div>\n    </div>'
+});
+// шапка таблицы
+Vue.component('grid-head-clients', {
+    template: '<tr>\n        <th>\u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435</th>\n        <th>\u0430\u0434\u0440\u0435\u0441</th>\n        <th>\u0440\u0430\u0439\u043E\u043D</th>\n        <th>\u0442\u0435\u043B\u0435\u0444\u043E\u043D</th>\n        <th>\u0444\u0430\u043A\u0441</th>\n        <th>\u043A\u043E\u043D\u0442\u0430\u043A\u0442. \u043B\u0438\u0446\u043E</th>\n        <th>\u0434\u043E\u043B\u0436\u043D\u043E\u0441\u0442\u044C \u043A\u043E\u043D\u0442. \u043B\u0438\u0446\u0430</th>\n        <th>\u0440\u0430\u0441\u0447\u0435\u0442\u043D\u044B\u0439 \u0441\u0447\u0435\u0442</th>\n        <th>\u0432 \u0431\u0430\u043D\u043A\u0435</th>\n        <th>\u0418\u041D\u041D</th>\n        <th>\u041A\u041F\u041F</th>\n        <th>\u0411\u0418\u041A</th>\n    </tr>'
+});
+// строки таблицы
+Vue.component('grid-body-clients', {
+    props: {
+        listData: Array
+    },
+    template: '<tbody>\n        <tr v-for="item, index in listData">\n        <td>{{ item.name }}</td>\n        <td>{{ item.address }}</td>\n        <td>{{ item.region ? item.region.name : \'\' }}</td>\n        <td>{{ item.telephone }}</td>\n        <td>{{ item.fax }}</td>\n        <td>{{ item.contact_fio }}</td>\n        <td>{{ item.contact_post }}</td>\n        <td>{{ item.bank }}</td>\n        <td>{{ item.account }}</td>\n        <td>{{ item.INN }}</td>\n        <td>{{ item.KPP }}</td>\n        <td>{{ item.BIK }}</td>\n        <td><router-link :to="{name: \'clientEdit\', params: { id: item.id }}" class="update">&nbsp;</router-link></td>\n        <td><a href="#" class="delete" @click.prevent="deleteItem(item.id, index)">&nbsp;</a></td>\n    </tr>\n    </tbody>'
+});
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("grid", {
+    attrs: { heading: "Клиенты", entity: "clients", pageSize: "50" }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2964877c", module.exports)
+  }
+}
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(63)
+/* template */
+var __vue_template__ = __webpack_require__(64)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48512,7 +48537,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48614,7 +48639,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -49001,311 +49026,11 @@ if (false) {
 }
 
 /***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(63)
-/* template */
-var __vue_template__ = __webpack_require__(64)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/clients/List.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2964877c", Component.options)
-  } else {
-    hotAPI.reload("data-v-2964877c", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 63 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            listData: [],
-            pageNumber: 0,
-            pageSize: 50
-        };
-    },
-    created: function created() {
-        var _this = this;
-
-        this.axios.get('/api/clients/list').then(function (response) {
-            _this.listData = response.data.data;
-        });
-    },
-
-    computed: {
-        pageCount: function pageCount() {
-            return Math.ceil(this.listData.length / this.pageSize);
-        },
-        paginatedData: function paginatedData() {
-            var start = this.pageNumber * this.pageSize,
-                end = start + this.pageSize;
-
-            return this.listData.slice(start, end);
-        }
-    },
-    methods: {
-        deleteItem: function deleteItem(id, index) {
-            var _this2 = this;
-
-            this.axios.delete('/api/clients/delete/' + id).then(function (response) {
-                _this2.listData.splice(index, 1);
-            });
-        },
-        nextPage: function nextPage() {
-            this.pageNumber++;
-        },
-        prevPage: function prevPage() {
-            this.pageNumber--;
-        }
-    }
-});
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "router-link",
-        { staticClass: "button primary top", attrs: { to: "/clients/create" } },
-        [_vm._v("Создать")]
-      ),
-      _vm._v(" "),
-      _c("h1", [_vm._v("Клиенты")]),
-      _vm._v(" "),
-      _c("table", [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.paginatedData, function(item, index) {
-            return _c("tr", [
-              _c("td", [_vm._v(_vm._s(item.name))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.address))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.region ? item.region.name : ""))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.telephone))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.fax))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.contact_fio))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.contact_post))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.bank))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.account))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.INN))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.KPP))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.BIK))]),
-              _vm._v(" "),
-              _c(
-                "td",
-                [
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "update",
-                      attrs: {
-                        to: { name: "clientEdit", params: { id: item.id } }
-                      }
-                    },
-                    [_vm._v(" ")]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("td", [
-                _c(
-                  "a",
-                  {
-                    staticClass: "delete",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.deleteItem(item.id, index)
-                      }
-                    }
-                  },
-                  [_vm._v(" ")]
-                )
-              ])
-            ])
-          }),
-          0
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "button",
-          { staticClass: "button nav", on: { click: _vm.prevPage } },
-          [_vm._v("<")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "button nav", on: { click: _vm.nextPage } },
-          [_vm._v(">")]
-        )
-      ])
-    ],
-    1
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("название")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("адрес")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("район")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("телефон")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("факс")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("контакт. лицо")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("должность конт. лица")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("расчетный счет")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("в банке")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("ИНН")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("КПП")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("БИК")]),
-        _vm._v(" "),
-        _c("th", { attrs: { colspan: "2" } }, [_vm._v("операции")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2964877c", module.exports)
-  }
-}
-
-/***/ }),
 /* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(66)
 /* template */
@@ -49846,11 +49571,120 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(69)
 /* template */
 var __vue_template__ = __webpack_require__(70)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/invoices/List.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0182ae40", Component.options)
+  } else {
+    hotAPI.reload("data-v-0182ae40", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+//
+//
+//
+//
+
+window.Vue = __webpack_require__(2);
+
+// форма поиска
+Vue.component('search-form-invoices', {
+    data: function data() {
+        return {
+            clients: []
+        };
+    },
+    beforeCreate: function beforeCreate() {
+        var _this = this;
+
+        this.axios.get('/api/clients/list').then(function (response) {
+            _this.clients = response.data.data;
+        });
+    },
+
+    template: '<div class="clear">\n        <div class="control">\n            <label>\u0434\u0430\u0442\u0430 \u0441:</label>\n            <input name="dateFrom" type="text">\n        </div>\n        <div class="control">\n            <label>\u0434\u0430\u0442\u0430 \u043F\u043E:</label>\n            <input name="dateTo" type="text">\n        </div>\n        <div class="control">\n            <label>\u043D\u043E\u043C\u0435\u0440:</label>\n            <input name="number" class="required" type="text">\n        </div>\n        <div class="control">\n            <label>\u043D\u043E\u043C\u0435\u0440 \u0434\u043E\u0433\u043E\u0432\u043E\u0440\u0430:</label>\n            <input name="contract_num" class="required" type="text">\n        </div>\n        <div class="control">\n            <label>\u043A\u043B\u0438\u0435\u043D\u0442:</label>\n            <select name="client_id">\n                <option v-for="client in clients" v-bind:value="client.id">{{ client.name }}</option>\n            </select>\n        </div>\n    </div>'
+});
+// шапка таблицы
+Vue.component('grid-head-invoices', {
+    template: '<tr>\n        <th>\u043D\u043E\u043C\u0435\u0440</th>\n        <th>\u043D\u043E\u043C\u0435\u0440 \u0434\u043E\u0433\u043E\u0432\u043E\u0440\u0430</th>\n        <th>\u043A\u043B\u0438\u0435\u043D\u0442</th>\n        <th>\u0434\u0430\u0442\u0430</th>\n        <th>\u0441\u0443\u043C\u043C\u0430</th>\n        <th>\u043E\u043F\u043B\u0430\u0447\u0435\u043D\u043E</th>\n    </tr>'
+});
+// строки таблицы
+Vue.component('grid-body-invoices', {
+    props: {
+        listData: Array
+    },
+    template: '<tbody>\n        <tr v-for="item, index in listData">\n            <td>{{ item.number }}</td>\n            <td>{{ item.contract_num }}</td>\n            <td>{{ item.client ? item.client.name : \'\' }}</td>\n            <td>{{ item.date }}</td>\n            <td>{{ item.sum }}</td>\n            <td>{{ item.payed }}</td>\n            <td><router-link :to="{name: \'invoicesEdit\', params: { id: item.id }}" class="update">&nbsp;</router-link></td>\n            <td><a href="#" class="delete" @click.prevent="deleteItem(item.id, index)">&nbsp;</a></td>\n            <td><router-link :to="{name: \'invoicesPrintoutBill\', params: { id: item.id }}" class="button-printout">&nbsp;</router-link></td>\n            <td><router-link :to="{name: \'invoicesPrintoutInvoice\', params: { id: item.id }}" class="button-printout">&nbsp;</router-link></td>\n        </tr>\n    </tbody>'
+});
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("grid", {
+    attrs: { heading: "Фактуры", entity: "invoices", pageSize: "50" }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0182ae40", module.exports)
+  }
+}
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(72)
+/* template */
+var __vue_template__ = __webpack_require__(73)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49889,7 +49723,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 69 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49960,7 +49794,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 70 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50162,278 +49996,11 @@ if (false) {
 }
 
 /***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(72)
-/* template */
-var __vue_template__ = __webpack_require__(73)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/invoices/List.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0182ae40", Component.options)
-  } else {
-    hotAPI.reload("data-v-0182ae40", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 72 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            listData: [],
-            pageNumber: 0,
-            pageSize: 50
-        };
-    },
-    created: function created() {
-        var _this = this;
-
-        this.axios.get('/api/invoices/list').then(function (response) {
-            _this.listData = response.data.data;
-        });
-    },
-
-    computed: {
-        pageCount: function pageCount() {
-            return Math.ceil(this.listData.length / this.pageSize);
-        },
-        paginatedData: function paginatedData() {
-            var start = this.pageNumber * this.pageSize,
-                end = start + this.pageSize;
-
-            return this.listData.slice(start, end);
-        }
-    },
-    methods: {
-        deleteItem: function deleteItem(id, index) {
-            var _this2 = this;
-
-            this.axios.delete('/api/invoices/delete/' + id).then(function (response) {
-                _this2.listData.splice(index, 1);
-            });
-        },
-        nextPage: function nextPage() {
-            this.pageNumber++;
-        },
-        prevPage: function prevPage() {
-            this.pageNumber--;
-        }
-    }
-});
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "router-link",
-        {
-          staticClass: "button primary top",
-          attrs: { to: "/invoices/create" }
-        },
-        [_vm._v("Создать")]
-      ),
-      _vm._v(" "),
-      _c("h1", [_vm._v("Фактуры")]),
-      _vm._v(" "),
-      _c("table", [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.paginatedData, function(item, index) {
-            return _c("tr", [
-              _c("td", [_vm._v(_vm._s(item.number))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.contract_num))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.client ? item.client.name : ""))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.date))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.sum))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.payed))]),
-              _vm._v(" "),
-              _c(
-                "td",
-                [
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "update",
-                      attrs: {
-                        to: { name: "invoiceEdit", params: { id: item.id } }
-                      }
-                    },
-                    [_vm._v(" ")]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("td", [
-                _c(
-                  "a",
-                  {
-                    staticClass: "delete",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.deleteItem(item.id, index)
-                      }
-                    }
-                  },
-                  [_vm._v(" ")]
-                )
-              ])
-            ])
-          }),
-          0
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "button",
-          { staticClass: "button nav", on: { click: _vm.prevPage } },
-          [_vm._v("<")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "button nav", on: { click: _vm.nextPage } },
-          [_vm._v(">")]
-        )
-      ])
-    ],
-    1
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("номер")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("номер договора")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("клиент")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("дата")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("сумма")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("оплачено")]),
-        _vm._v(" "),
-        _c("th", { attrs: { colspan: "2" } }, [_vm._v("операции")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0182ae40", module.exports)
-  }
-}
-
-/***/ }),
 /* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(75)
 /* template */
@@ -50561,8 +50128,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            printoutBill: '/invoices/printout/type/bill/' + this.$route.params.id,
-            printoutInvoice: '/invoices/printout/type/invoice/' + this.$route.params.id,
             invoice: {},
             invoiceRow: {
                 'article_id': '',
@@ -50600,6 +50165,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        rowDelete: function rowDelete(index) {
+            this.invoiceRows.splice(index, 1);
+        },
+        rowAdd: function rowAdd() {
+            this.invoiceRows.push(Vue.util.extend({}, this.invoiceRow));
+        },
         invoiceUpdate: function invoiceUpdate() {
             var _this2 = this;
 
@@ -50609,12 +50180,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (response) {
                 _this2.$router.push({ name: 'invoicesList' });
             });
-        },
-        rowDelete: function rowDelete(index) {
-            this.invoiceRows.splice(index, 1);
-        },
-        rowAdd: function rowAdd() {
-            this.invoiceRows.push(Vue.util.extend({}, this.invoiceRow));
         },
         invoiceDelete: function invoiceDelete() {
             var _this3 = this;
@@ -50661,7 +50226,12 @@ var render = function() {
         "router-link",
         {
           staticClass: "button primary top left printout",
-          attrs: { to: _vm.printoutBill }
+          attrs: {
+            to: {
+              name: "invoicesPrintoutBill",
+              params: { id: this.$route.params.id }
+            }
+          }
         },
         [_vm._v("Распечатать фактуру")]
       ),
@@ -50670,7 +50240,12 @@ var render = function() {
         "router-link",
         {
           staticClass: "button primary top left printout",
-          attrs: { to: _vm.printoutInvoice }
+          attrs: {
+            to: {
+              name: "invoicesPrintoutInvoice",
+              params: { id: this.$route.params.id }
+            }
+          }
         },
         [_vm._v("Распечатать накладную")]
       ),
@@ -51018,29 +50593,148 @@ if (false) {
 
 /***/ }),
 /* 77 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(88)
+var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(89)
+var __vue_template__ = __webpack_require__(78)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/invoices/PrintoutBill.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2a774fca", Component.options)
+  } else {
+    hotAPI.reload("data-v-2a774fca", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div")
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2a774fca", module.exports)
+  }
+}
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__(80)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/invoices/PrintoutInvoice.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-87ce028c", Component.options)
+  } else {
+    hotAPI.reload("data-v-87ce028c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div")
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-87ce028c", module.exports)
+  }
+}
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(82)
+/* template */
+var __vue_template__ = __webpack_require__(83)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51079,7 +50773,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 88 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -51087,21 +50781,26 @@ module.exports = Component.exports
 //
 //
 
-window.Vue = __webpack_require__(36);
+window.Vue = __webpack_require__(2);
 
-Vue.component('grid-head', {
-    template: '<thead>\n    <tr>\n        <th>\u043D\u043E\u043C\u0435\u0440</th>\n        <th>\u0434\u0430\u0442\u0430</th>\n        <th>\u0441\u0443\u043C\u043C\u0430</th>\n        <th colspan=2>\u043E\u043F\u0435\u0440\u0430\u0446\u0438\u0438</th>\n    </tr>\n</thead>'
+// форма поиска
+Vue.component('search-form-purchases', {
+    template: '<div class="clear">\n        <div class="control">\n            <label>\u0434\u0430\u0442\u0430 \u0441:</label>\n            <input name="dateFrom" />\n        </div>\n        <div class="control">\n            <label>\u0434\u0430\u0442\u0430 \u043F\u043E:</label>\n            <input name="dateTo" />\n        </div>\n        <div class="control">\n            <label>\u043D\u043E\u043C\u0435\u0440:</label>\n            <input name="number" class="required" />\n        </div>\n    </div>'
 });
-Vue.component('grid-body', {
+// шапка таблицы
+Vue.component('grid-head-purchases', {
+    template: '<tr>\n        <th>\u043D\u043E\u043C\u0435\u0440</th>\n        <th>\u0434\u0430\u0442\u0430</th>\n        <th>\u0441\u0443\u043C\u043C\u0430</th>\n    </tr>'
+});
+// строки таблицы
+Vue.component('grid-body-purchases', {
     props: {
-        listData: Array,
-        editUrl: String
+        listData: Array
     },
-    template: '<tbody>\n    <tr v-for="item, index in listData">\n        <td>{{ item.number }}</td>\n        <td>{{ item.date }}</td>\n        <td>{{ item.sum }}</td>\n        <td><router-link :to="{name: this.editUrl, params: { id: item.id }}" class="update">&nbsp;</router-link></td>\n        <td><a href="#" class="delete" @click.prevent="deleteItem(item.id, index)">&nbsp;</a></td>\n    </tr>\n</tbody>'
+    template: '<tbody>\n        <tr v-for="item, index in listData">\n            <td>{{ item.number }}</td>\n            <td>{{ item.date }}</td>\n            <td>{{ item.sum }}</td>\n            <td><a href="#" class="delete" @click.prevent="deleteItem(item.id, index)">&nbsp;</a></td>\n            <td><router-link :to="{name: \'purchasesEdit\', params: { id: item.id }}" class="update">&nbsp;</router-link></td>\n            <td><router-link :to="{name: \'purchasesPrintout\', params: { id: item.id }}" class="button-printout">&nbsp;</router-link></td>\n        </tr>\n    </tbody>'
 });
 
 /***/ }),
-/* 89 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51123,15 +50822,15 @@ if (false) {
 }
 
 /***/ }),
-/* 90 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(91)
+var __vue_script__ = __webpack_require__(85)
 /* template */
-var __vue_template__ = __webpack_require__(92)
+var __vue_template__ = __webpack_require__(86)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51170,7 +50869,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 91 */
+/* 85 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51236,7 +50935,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 92 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51364,15 +51063,15 @@ if (false) {
 }
 
 /***/ }),
-/* 93 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(94)
+var __vue_script__ = __webpack_require__(88)
 /* template */
-var __vue_template__ = __webpack_require__(95)
+var __vue_template__ = __webpack_require__(89)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51411,7 +51110,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 94 */
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51476,7 +51175,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 95 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51604,18 +51303,82 @@ if (false) {
 }
 
 /***/ }),
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(100)
+var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(101)
+var __vue_template__ = __webpack_require__(91)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/purchases/Printout.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0cfed2d5", Component.options)
+  } else {
+    hotAPI.reload("data-v-0cfed2d5", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div")
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0cfed2d5", module.exports)
+  }
+}
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(93)
+/* template */
+var __vue_template__ = __webpack_require__(94)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51654,207 +51417,58 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 100 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({
+window.Vue = __webpack_require__(2);
+
+// форма поиска
+Vue.component('search-form-bills', {
     data: function data() {
         return {
-            listData: [],
-            pageNumber: 0,
-            pageSize: 50
+            clients: []
         };
     },
-    created: function created() {
+    beforeCreate: function beforeCreate() {
         var _this = this;
 
-        this.axios.get('/api/bills/list').then(function (response) {
-            _this.listData = response.data.data;
+        this.axios.get('/api/clients/list').then(function (response) {
+            _this.clients = response.data.data;
         });
     },
 
-    computed: {
-        pageCount: function pageCount() {
-            return Math.ceil(this.listData.length / this.pageSize);
-        },
-        paginatedData: function paginatedData() {
-            var start = this.pageNumber * this.pageSize,
-                end = start + this.pageSize;
-
-            return this.listData.slice(start, end);
-        }
+    template: '<div class="clear">\n        <div class="control">\n            <label>\u0434\u0430\u0442\u0430 \u0441:</label>\n            <input name="dateFrom" />\n        </div>\n        <div class="control">\n            <label>\u0434\u0430\u0442\u0430 \u043F\u043E:</label>\n            <input name="dateTo" />\n        </div>\n        <div class="control">\n            <label>\u043D\u043E\u043C\u0435\u0440 \u0434\u043E\u0433\u043E\u0432\u043E\u0440\u0430:</label>\n            <input name="contract_num" class="required" />\n        </div>\n        <div class="control">\n            <label>\u043A\u043B\u0438\u0435\u043D\u0442:</label>\n            <select name="client_id">\n                <option v-for="client in clients" v-bind:value="client.id">{{ client.name }}</option>\n            </select>\n        </div>\n    </div>'
+});
+// шапка таблицы
+Vue.component('grid-head-bills', {
+    template: '<tr>\n        <th>\u043D\u043E\u043C\u0435\u0440 \u0434\u043E\u0433\u043E\u0432\u043E\u0440\u0430</th>\n        <th>\u043A\u043B\u0438\u0435\u043D\u0442</th>\n        <th>\u0441\u0443\u043C\u043C\u0430</th>\n        <th>\u043E\u0441\u0442\u0430\u0442\u043E\u043A</th>\n        <th>\u0434\u0430\u0442\u0430</th>\n    </tr>'
+});
+// строки таблицы
+Vue.component('grid-body-bills', {
+    props: {
+        listData: Array
     },
-    methods: {
-        deleteItem: function deleteItem(id, index) {
-            var _this2 = this;
-
-            this.axios.delete('/api/bills/delete/' + id).then(function (response) {
-                _this2.listData.splice(index, 1);
-            });
-        },
-        nextPage: function nextPage() {
-            this.pageNumber++;
-        },
-        prevPage: function prevPage() {
-            this.pageNumber--;
-        }
-    }
+    template: '<tbody>\n    <tr v-for="item, index in listData">\n        <td>{{ item.contract_num }}</td>\n        <td>{{ item.client ? item.client.name : \'\' }}</td>\n        <td>{{ item.sum }}</td>\n        <td>{{ item.remainder }}</td>\n        <td>{{ item.date }}</td>\n        <td><router-link :to="{name: \'billsEdit\', params: { id: item.id }}" class="update">&nbsp;</router-link></td>\n        <td><a href="#" class="delete" @click.prevent="deleteItem(item.id, index)">&nbsp;</a></td>\n    </tr>\n    </tbody>'
 });
 
 /***/ }),
-/* 101 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "router-link",
-        { staticClass: "button primary top", attrs: { to: "/bills/create" } },
-        [_vm._v("Создать")]
-      ),
-      _vm._v(" "),
-      _c("h1", [_vm._v("Платежи")]),
-      _vm._v(" "),
-      _c("table", [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.paginatedData, function(item, index) {
-            return _c("tr", [
-              _c("td", [_vm._v(_vm._s(item.contract_num))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.client ? item.client.name : ""))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.sum))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.remainder))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.date))]),
-              _vm._v(" "),
-              _c(
-                "td",
-                [
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "update",
-                      attrs: {
-                        to: { name: "billEdit", params: { id: item.id } }
-                      }
-                    },
-                    [_vm._v(" ")]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("td", [
-                _c(
-                  "a",
-                  {
-                    staticClass: "delete",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.deleteItem(item.id, index)
-                      }
-                    }
-                  },
-                  [_vm._v(" ")]
-                )
-              ])
-            ])
-          }),
-          0
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "button",
-          { staticClass: "button nav", on: { click: _vm.prevPage } },
-          [_vm._v("<")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "button nav", on: { click: _vm.nextPage } },
-          [_vm._v(">")]
-        )
-      ])
-    ],
-    1
-  )
+  return _c("grid", {
+    attrs: { heading: "Платежи", entity: "bills", pageSize: "100" }
+  })
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("номер договора")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("клиент")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("сумма")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("остаток")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("дата")]),
-        _vm._v(" "),
-        _c("th", { attrs: { colspan: "2" } }, [_vm._v("операции")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -51865,15 +51479,15 @@ if (false) {
 }
 
 /***/ }),
-/* 102 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(103)
+var __vue_script__ = __webpack_require__(96)
 /* template */
-var __vue_template__ = __webpack_require__(104)
+var __vue_template__ = __webpack_require__(97)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51912,7 +51526,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 103 */
+/* 96 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51993,7 +51607,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 104 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -52213,15 +51827,15 @@ if (false) {
 }
 
 /***/ }),
-/* 105 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(106)
+var __vue_script__ = __webpack_require__(99)
 /* template */
-var __vue_template__ = __webpack_require__(107)
+var __vue_template__ = __webpack_require__(100)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52260,7 +51874,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 106 */
+/* 99 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52338,7 +51952,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 107 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -52554,6 +52168,975 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-6c431038", module.exports)
+  }
+}
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(102)
+/* template */
+var __vue_template__ = __webpack_require__(103)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/contracts/List.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-76593443", Component.options)
+  } else {
+    hotAPI.reload("data-v-76593443", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+//
+//
+//
+//
+
+window.Vue = __webpack_require__(2);
+
+// форма поиска
+Vue.component('search-form-contracts', {
+    data: function data() {
+        return {
+            clients: []
+        };
+    },
+    beforeCreate: function beforeCreate() {
+        var _this = this;
+
+        this.axios.get('/api/clients/list').then(function (response) {
+            _this.clients = response.data.data;
+        });
+    },
+
+    template: '<div class="clear">\n        <div class="control">\n            <label>\u0434\u0430\u0442\u0430 \u0441:</label>\n            <input name="dateFrom" type="text">\n        </div>\n        <div class="control">\n            <label>\u0434\u0430\u0442\u0430 \u043F\u043E:</label>\n            <input name="dateTo" />\n        </div>\n        <div class="control">\n            <label>\u043D\u043E\u043C\u0435\u0440:</label>\n            <input name="number" class="required" />\n        </div>\n        <div class="control">\n            <label>\u043A\u043B\u0438\u0435\u043D\u0442:</label>\n            <select name="client_id">\n                <option v-for="client in clients" v-bind:value="client.id">{{ client.name }}</option>\n            </select>\n        </div>\n    </div>'
+});
+// шапка таблицы
+Vue.component('grid-head-contracts', {
+    template: '<tr>\n        <th>\u043D\u043E\u043C\u0435\u0440</th>\n        <th>\u043A\u043B\u0438\u0435\u043D\u0442</th>\n        <th>\u0434\u0430\u0442\u0430</th>\n        <th>\u0441\u0440\u043E\u043A \u043F\u043E\u0441\u0442\u0430\u0432\u043A\u0438 \u043E\u0442</th>\n        <th>\u0441\u0440\u043E\u043A \u043F\u043E\u0441\u0442\u0430\u0432\u043A\u0438 \u0434\u043E</th>\n        <th>\u0441\u0443\u043C\u043C\u0430</th>\n        <th>\u043E\u043F\u043B\u0430\u0447\u0435\u043D\u043E</th>\n        <th>\u043E\u0441\u0442\u0430\u043B\u043E\u0441\u044C \u043E\u043F\u043B\u0430\u0442\u0438\u0442\u044C</th>\n        <th>\u0432\u044B\u0431\u0440\u0430\u043D\u043E</th>\n        <th>\u043E\u0441\u0442\u0430\u043B\u043E\u0441\u044C \u0432\u044B\u0431\u0440\u0430\u0442\u044C</th>\n    </tr>'
+});
+// строки таблицы
+Vue.component('grid-body-contracts', {
+    props: {
+        listData: Array
+    },
+    template: '<tbody>\n    <tr v-for="item, index in listData">\n        <td>{{ item.contract_num }}</td>\n        <td>{{ item.client ? item.client.name : \'\' }}</td>\n        <td>{{ item.date }}</td>\n        <td>{{ item.term_start }}</td>\n        <td>{{ item.term_end }}</td>\n        <td>{{ item.sum }}</td>\n        <td>{{ item.payed }}</td>\n        <td>{{ item.payedRemind }}</td>\n        <td>{{ item.executed }}</td>\n        <td>{{ item.execRemind }}</td>\n        <!--<td>{{ item.type }}</td>-->\n        <td><router-link :to="{name: \'contractsEdit\', params: { id: item.id }}" class="update">&nbsp;</router-link></td>\n        <td><a href="#" class="delete" @click.prevent="deleteItem(item.id, index)">&nbsp;</a></td>\n    </tr>\n    </tbody>'
+});
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("grid", {
+    attrs: { heading: "Контракты", entity: "contracts", pageSize: "50" }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-76593443", module.exports)
+  }
+}
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(105)
+/* template */
+var __vue_template__ = __webpack_require__(106)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/contracts/Create.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-80a6133e", Component.options)
+  } else {
+    hotAPI.reload("data-v-80a6133e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 105 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            bill: {
+                client_id: '',
+                contract_num: '',
+                sum: '',
+                remainder: '',
+                date: '',
+                contents: ''
+            },
+            clients: []
+        };
+    },
+    created: function created() {
+        var _this = this;
+
+        this.axios.get('/api/clients/list').then(function (response) {
+            _this.clients = response.data.data;
+        });
+    },
+
+    methods: {
+        create: function create() {
+            var _this2 = this;
+
+            this.axios.post('/api/bill/create', this.bill).then(function (response) {
+                _this2.$router.push({ name: 'billsList' });
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "router-link",
+        { staticClass: "button primary top", attrs: { to: "/bills/list" } },
+        [_vm._v("Список")]
+      ),
+      _vm._v(" "),
+      _c("h1", [_vm._v("Новый платеж")]),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.create($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "row" }, [
+            _c("label", [_vm._v("номер договора:")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bill.contract_num,
+                  expression: "bill.contract_num"
+                }
+              ],
+              domProps: { value: _vm.bill.contract_num },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.bill, "contract_num", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("label", [_vm._v("номер договора:")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.bill.client_id,
+                    expression: "bill.client_id"
+                  }
+                ],
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.bill,
+                      "client_id",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
+                }
+              },
+              _vm._l(_vm.clients, function(client) {
+                return _c("option", { domProps: { value: client.id } }, [
+                  _vm._v(_vm._s(client.name))
+                ])
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("label", [_vm._v("сумма:")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bill.sum,
+                  expression: "bill.sum"
+                }
+              ],
+              domProps: { value: _vm.bill.sum },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.bill, "sum", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("label", { staticClass: "control-label" }, [_vm._v("остаток:")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bill.remainder,
+                  expression: "bill.remainder"
+                }
+              ],
+              domProps: { value: _vm.bill.remainder },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.bill, "remainder", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("label", { staticClass: "control-label" }, [_vm._v("дата:")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bill.date,
+                  expression: "bill.date"
+                }
+              ],
+              domProps: { value: _vm.bill.date },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.bill, "date", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("label", { staticClass: "control-label" }, [
+              _vm._v("содержание:")
+            ]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bill.contents,
+                  expression: "bill.contents"
+                }
+              ],
+              attrs: { cols: "30", rows: "10" },
+              domProps: { value: _vm.bill.contents },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.bill, "contents", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _vm._m(0)
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("button", { staticClass: "button success" }, [_vm._v("Сохранить")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-80a6133e", module.exports)
+  }
+}
+
+/***/ }),
+/* 107 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(108)
+/* template */
+var __vue_template__ = __webpack_require__(109)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/contracts/Edit.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-f4bd48a2", Component.options)
+  } else {
+    hotAPI.reload("data-v-f4bd48a2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 108 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            bill: {},
+            clients: []
+        };
+    },
+    created: function created() {
+        var _this = this;
+
+        this.axios.get('/api/bills/edit/' + this.$route.params.id).then(function (response) {
+            _this.bill = response.data;
+        });
+        this.axios.get('/api/clients/list').then(function (response) {
+            _this.clients = response.data.data;
+        });
+    },
+
+    methods: {
+        update: function update() {
+            var _this2 = this;
+
+            var uri = '/api/bills/update/' + this.$route.params.id;
+            this.axios.post(uri, this.bill).then(function (response) {
+                _this2.$router.push({ name: 'billsList' });
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "router-link",
+        { staticClass: "button primary top", attrs: { to: "/bills/list" } },
+        [_vm._v("Список")]
+      ),
+      _vm._v(" "),
+      _c("h1", [_vm._v("Редактирование платежа")]),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.update($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "row" }, [
+            _c("label", [_vm._v("номер договора:")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bill.contract_num,
+                  expression: "bill.contract_num"
+                }
+              ],
+              domProps: { value: _vm.bill.contract_num },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.bill, "contract_num", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("label", [_vm._v("номер договора:")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.bill.client_id,
+                    expression: "bill.client_id"
+                  }
+                ],
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.bill,
+                      "client_id",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
+                }
+              },
+              _vm._l(_vm.clients, function(client) {
+                return _c("option", { domProps: { value: client.id } }, [
+                  _vm._v(_vm._s(client.name))
+                ])
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("label", [_vm._v("сумма:")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bill.sum,
+                  expression: "bill.sum"
+                }
+              ],
+              domProps: { value: _vm.bill.sum },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.bill, "sum", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("label", { staticClass: "control-label" }, [_vm._v("остаток:")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bill.remainder,
+                  expression: "bill.remainder"
+                }
+              ],
+              domProps: { value: _vm.bill.remainder },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.bill, "remainder", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("label", { staticClass: "control-label" }, [_vm._v("дата:")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bill.date,
+                  expression: "bill.date"
+                }
+              ],
+              domProps: { value: _vm.bill.date },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.bill, "date", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("label", { staticClass: "control-label" }, [
+              _vm._v("содержание:")
+            ]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bill.contents,
+                  expression: "bill.contents"
+                }
+              ],
+              attrs: { cols: "30", rows: "10" },
+              domProps: { value: _vm.bill.contents },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.bill, "contents", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _vm._m(0)
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("button", { staticClass: "button success" }, [_vm._v("Сохранить")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-f4bd48a2", module.exports)
+  }
+}
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__(111)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/contracts/Printout.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-625025b4", Component.options)
+  } else {
+    hotAPI.reload("data-v-625025b4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div")
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-625025b4", module.exports)
+  }
+}
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__(124)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Home.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6707e3d4", Component.options)
+  } else {
+    hotAPI.reload("data-v-6707e3d4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 123 */,
+/* 124 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "card card-default" }, [
+          _c("h3", [_vm._v("Бухгалтерия")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _vm._v("\n                Панель управления.\n            ")
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6707e3d4", module.exports)
   }
 }
 

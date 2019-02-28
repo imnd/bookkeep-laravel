@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Clients extends Model
+class Clients extends Model implements QueryConditions
 {
     public $timestamps = false;
     
@@ -22,5 +22,19 @@ class Clients extends Model
     public function region()
     {
         return $this->hasOne('App\Models\Regions', 'id', 'region_id');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getQueryConditions(array $params): array
+    {
+        $conditions = array();
+        foreach (['name', 'address'] as $field) {
+            if (!empty($params[$field])) {
+                $conditions[] = array($field, 'LIKE', '%' . addslashes($params[$field]). '%');
+            }
+        }
+        return $conditions;
     }
 }

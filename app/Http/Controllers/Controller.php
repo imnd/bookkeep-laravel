@@ -35,5 +35,4 @@ class Controller extends BaseController
         $modelName = $this->modelName;
         return Validator::make($request->all(), $modelName::getRules());
     }
-
 }

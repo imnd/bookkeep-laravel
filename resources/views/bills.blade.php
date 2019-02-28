@@ -3,7 +3,7 @@
 @section('content')
 
     <?php
-    $bodyClass = 'bills';
+    $bodyClass = 'contracts';
     $pageTitle = 'Платежи';
     ?>
     <bills-component></bills-component>

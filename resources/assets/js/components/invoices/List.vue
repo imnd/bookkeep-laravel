@@ -1,79 +1,76 @@
 <template>
-    <div>
-        <router-link to="/invoices/create" class="button primary top">Создать</router-link>
-
-        <h1>Фактуры</h1>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>номер</th>
-                    <th>номер договора</th>
-                    <th>клиент</th>
-                    <th>дата</th>
-                    <th>сумма</th>
-                    <th>оплачено</th>
-                    <th colspan=2>операции</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="item, index in paginatedData">
-                    <td>{{ item.number }}</td>
-                    <td>{{ item.contract_num }}</td>
-                    <td>{{ item.client ? item.client.name : '' }}</td>
-                    <td>{{ item.date }}</td>
-                    <td>{{ item.sum }}</td>
-                    <td>{{ item.payed }}</td>
-                    <td><router-link :to="{name: 'invoiceEdit', params: { id: item.id }}" class="update">&nbsp;</router-link></td>
-                    <td><a href="#" class="delete" @click.prevent="deleteItem(item.id, index)">&nbsp;</a></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div>
-            <button class="button nav" @click="prevPage"><</button>
-            <button class="button nav" @click="nextPage">></button>
-        </div>
-    </div>
+    <grid heading="Фактуры" entity="invoices" pageSize=50></grid>
 </template>
 
 <script>
-    export default {
+    window.Vue = require('vue');
+
+    // форма поиска
+    Vue.component('search-form-invoices', {
         data() {
             return {
-                listData: [],
-                pageNumber: 0,
-                pageSize: 50,
+                clients: [],
             }
         },
-        created() {
-            this.axios.get('/api/invoices/list').then(response => {
-                this.listData = response.data.data;
+        beforeCreate() {
+            this.axios.get(`/api/clients/list`).then(response => {
+                this.clients = response.data.data;
             });
         },
-        computed: {
-            pageCount() {
-                return Math.ceil(this.listData.length / this.pageSize);
-            },
-            paginatedData() {
-                const start = this.pageNumber * this.pageSize,
-                      end = start + this.pageSize;
-
-                return this.listData.slice(start, end);
-            }
+        template: `<div class="clear">
+            <div class="control">
+                <label>дата с:</label>
+                <input name="dateFrom" type="text">
+            </div>
+            <div class="control">
+                <label>дата по:</label>
+                <input name="dateTo" type="text">
+            </div>
+            <div class="control">
+                <label>номер:</label>
+                <input name="number" class="required" type="text">
+            </div>
+            <div class="control">
+                <label>номер договора:</label>
+                <input name="contract_num" class="required" type="text">
+            </div>
+            <div class="control">
+                <label>клиент:</label>
+                <select name="client_id">
+                    <option v-for="client in clients" v-bind:value="client.id">{{ client.name }}</option>
+                </select>
+            </div>
+        </div>`
+    });
+    // шапка таблицы
+    Vue.component('grid-head-invoices', {
+        template: `<tr>
+            <th>номер</th>
+            <th>номер договора</th>
+            <th>клиент</th>
+            <th>дата</th>
+            <th>сумма</th>
+            <th>оплачено</th>
+        </tr>`
+    });
+    // строки таблицы
+    Vue.component('grid-body-invoices', {
+        props: {
+            listData: Array,
         },
-        methods: {
-            deleteItem(id, index) {
-                this.axios.delete(`/api/invoices/delete/${id}`).then(response => {
-                    this.listData.splice(index, 1);
-                });
-            },
-            nextPage() {
-                this.pageNumber++;
-            },
-            prevPage() {
-                this.pageNumber--;
-            }
-        }
-    }
+        template: `<tbody>
+            <tr v-for="item, index in listData">
+                <td>{{ item.number }}</td>
+                <td>{{ item.contract_num }}</td>
+                <td>{{ item.client ? item.client.name : '' }}</td>
+                <td>{{ item.date }}</td>
+                <td>{{ item.sum }}</td>
+                <td>{{ item.payed }}</td>
+                <td><router-link :to="{name: 'invoicesEdit', params: { id: item.id }}" class="update">&nbsp;</router-link></td>
+                <td><a href="#" class="delete" @click.prevent="deleteItem(item.id, index)">&nbsp;</a></td>
+                <td><router-link :to="{name: 'invoicesPrintoutBill', params: { id: item.id }}" class="button-printout">&nbsp;</router-link></td>
+                <td><router-link :to="{name: 'invoicesPrintoutInvoice', params: { id: item.id }}" class="button-printout">&nbsp;</router-link></td>
+            </tr>
+        </tbody>`
+    });
 </script>

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class Invoices extends Model
+class Invoices extends Model implements QueryConditions
 {
     public $timestamps = false;
 
@@ -43,5 +43,26 @@ class Invoices extends Model
     public function rows()
     {
         return $this->hasMany('App\Models\InvoicesRows', 'invoice_id', 'id');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getQueryConditions(array $params): array
+    {
+        $conditions = array();
+        if (!empty($params['dateFrom'])) {
+            $conditions[] = array('date', '>=', addslashes($params['dateFrom']));
+        }
+        if (!empty($params['dateTo'])) {
+            $conditions[] = array('date', '<=', addslashes($params['dateTo']));
+        }
+        foreach (['number', 'contract_num', 'client_id'] as $field) {
+            if (isset($params[$field]) && $params[$field]!=='') {
+                $conditions[] = array($field, '=', addslashes($params[$field]));
+            }
+        }
+
+        return $conditions;
     }
 }

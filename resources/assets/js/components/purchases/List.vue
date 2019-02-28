@@ -5,29 +5,45 @@
 <script>
     window.Vue = require('vue');
 
-    Vue.component('grid-head', {
-        template: `<thead>
-        <tr>
+    // форма поиска
+    Vue.component('search-form-purchases', {
+        template: `<div class="clear">
+            <div class="control">
+                <label>дата с:</label>
+                <input name="dateFrom" />
+            </div>
+            <div class="control">
+                <label>дата по:</label>
+                <input name="dateTo" />
+            </div>
+            <div class="control">
+                <label>номер:</label>
+                <input name="number" class="required" />
+            </div>
+        </div>`
+    });
+    // шапка таблицы
+    Vue.component('grid-head-purchases', {
+        template: `<tr>
             <th>номер</th>
             <th>дата</th>
             <th>сумма</th>
-            <th colspan=2>операции</th>
-        </tr>
-    </thead>`
+        </tr>`
     });
-    Vue.component('grid-body', {
+    // строки таблицы
+    Vue.component('grid-body-purchases', {
         props: {
             listData: Array,
-            editUrl: String,
         },
         template: `<tbody>
-        <tr v-for="item, index in listData">
-            <td>{{ item.number }}</td>
-            <td>{{ item.date }}</td>
-            <td>{{ item.sum }}</td>
-            <td><router-link :to="{name: this.editUrl, params: { id: item.id }}" class="update">&nbsp;</router-link></td>
-            <td><a href="#" class="delete" @click.prevent="deleteItem(item.id, index)">&nbsp;</a></td>
-        </tr>
-    </tbody>`
+            <tr v-for="item, index in listData">
+                <td>{{ item.number }}</td>
+                <td>{{ item.date }}</td>
+                <td>{{ item.sum }}</td>
+                <td><a href="#" class="delete" @click.prevent="deleteItem(item.id, index)">&nbsp;</a></td>
+                <td><router-link :to="{name: 'purchasesEdit', params: { id: item.id }}" class="update">&nbsp;</router-link></td>
+                <td><router-link :to="{name: 'purchasesPrintout', params: { id: item.id }}" class="button-printout">&nbsp;</router-link></td>
+            </tr>
+        </tbody>`
     });
 </script>

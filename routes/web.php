@@ -9,9 +9,9 @@ Route::get('/', function() {
 //Route::group(['middleware' => 'auth'], function()
 //{
     // VUE JS
-    foreach (['articles', 'clients', 'invoices', 'contracts', 'purchases', 'bills'] as $modelName) {
-        Route::get("/$modelName/{any}", function () use ($modelName) {
-            return view($modelName);
+    foreach (['articles', 'clients', 'invoices', 'contracts', 'purchases', 'bills'] as $entity) {
+        Route::get("/$entity/{any}", function () use ($entity) {
+            return view($entity);
         })->where('any', '.*');
     }
 

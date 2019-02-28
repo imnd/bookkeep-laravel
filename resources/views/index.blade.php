@@ -2,6 +2,6 @@
 
 @section('content')
 
-<h3>Бухгалтерия</h3>
+    <home-component></home-component>
 
 @endsection

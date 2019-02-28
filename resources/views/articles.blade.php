@@ -5,7 +5,6 @@
     <?php
     $bodyClass = 'articles';
     $pageTitle = 'Товары';
-
     ?>
     <article-component></article-component>
 

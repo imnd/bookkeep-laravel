@@ -154,7 +154,7 @@ p.footer {
 #menu
 {
     margin: 0 10px 40px;
-    width: 97%;
+    width: 98%;
 }
 #container {
     padding: 10px;
@@ -163,11 +163,15 @@ p.footer {
     background: -moz-linear-gradient(bottom, #DEE7F0, #FFF);
     border-radius: 32px 0 0 0;
 }
-#menu {padding: 0;}
+#menu {
+    padding: 0;
+}
 
 body.clients_debtors #container,
 body.clients_debtors #menu
-{width: 960px;}
+{
+    width: 960px;
+}
 body.invoices_list #container {width: 990px;}
 body.error #container #container {
     width: 844px;
@@ -252,7 +256,9 @@ body.clients li.clients,
 body.regions li.clients,
 body.bills li.bills,
 body.settings li.settings
-{ background-color: #900; }
+{
+    background-color: #900;
+}
 
 /* top_menu */
 body.bills li.payment a,
@@ -266,8 +272,6 @@ body.invoices li.invoices a,
 
 body.purchases li.purchases a,
 
-body.contracts_and_agreements li.contracts a,
-body.contracts_and_agreements li.agreements a,
 body.contracts li.contracts a,
 body.agreements li.contracts a,
 
@@ -277,12 +281,8 @@ body.client li.clients a,
 body.clients li.clients a,
 body.regions li.clients a,
 
-body.settings.index li.settings a,
-body.settings.backup li.settings a,
-body.settings.requisites li.settings a,
+body.settings li.settings a,
 
-body.contracts_and_agreements.index li.contract a,
-body.contracts_and_agreements.index li.agreement a,
 body.contracts.create li.contract a,
 body.contracts.index li.contract a,
 body.agreements.index li.contract a,

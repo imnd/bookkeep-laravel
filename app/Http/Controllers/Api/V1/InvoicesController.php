@@ -2,6 +2,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+
 use App\Models\InvoicesRows;
 
 /**
@@ -16,10 +19,17 @@ class InvoicesController extends ApiController
      * @inheritdoc
      */
     protected $modelName = 'App\Models\Invoices';
-    /**
-     * @inheritdoc
-     */
-    protected $collectionName = 'App\Http\Resources\InvoiceCollection';
+
+    //public function list(Request $request)
+//    {
+//        $modelName = $this->modelName;
+//        /**
+//         * @var \Illuminate\Database\Eloquent\Builder $query
+//         */
+//        $query = $modelName::query();
+//        $conditions = $modelName::getQueryConditions($request->all());
+//        return new ResourceCollection($query->where($conditions)->get());
+//    }
 
     public function update($id, Request $request)
     {
