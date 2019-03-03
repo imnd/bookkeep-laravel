@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
+use App\Repositories\ArticleSubcatsRepositoryInterface;
+
 /**
- * Контроллер товаров
+ * Контроллер подкатегорий товаров
  * 
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
@@ -10,11 +12,13 @@ namespace App\Http\Controllers\Api\V1;
 class SubcatsController extends ApiController
 {
     /**
-     * @inheritdoc
+     * Создание нового экземпляра контроллера.
+     *
+     * @param ArticleSubcatsRepositoryInterface $repo
+     * @return void
      */
-    protected $modelName = 'App\Models\ArticleSubcats';
-    /**
-     * @inheritdoc
-     */
-    protected $collectionName = 'App\Http\Resources\ArticleSubcatCollection';
+    public function __construct(ArticleSubcatsRepositoryInterface $repo)
+    {
+        $this->repo = $repo;
+    }
 }

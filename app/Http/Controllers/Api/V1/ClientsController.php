@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
+use App\Repositories\ClientsRepositoryInterface;
+
 /**
  * Контроллер клиентов
  * 
@@ -10,11 +12,13 @@ namespace App\Http\Controllers\Api\V1;
 class ClientsController extends ApiController
 {
     /**
-     * @inheritdoc
+     * Создание нового экземпляра контроллера.
+     *
+     * @param ClientsRepositoryInterface $repo
+     * @return void
      */
-    protected $modelName = 'App\Models\Clients';
-    /**
-     * @inheritdoc
-     */
-    protected $collectionName = 'App\Http\Resources\ClientCollection';
+    public function __construct(ClientsRepositoryInterface $repo)
+    {
+        $this->repo = $repo;
+    }
 }

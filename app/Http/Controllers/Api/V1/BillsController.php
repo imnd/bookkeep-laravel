@@ -1,10 +1,10 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
+use App\Repositories\BillsRepositoryInterface;
 
 /**
- * Контроллер клиентов
+ * Контроллер счетов
  * 
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
@@ -12,11 +12,13 @@ use Illuminate\Http\Request;
 class BillsController extends ApiController
 {
     /**
-     * @inheritdoc
+     * Создание нового экземпляра контроллера.
+     *
+     * @param BillsRepositoryInterface $repo
+     * @return void
      */
-    protected $modelName = 'App\Models\Bills';
-    /**
-     * @inheritdoc
-     */
-    protected $collectionName = 'App\Http\Resources\BillCollection';
+    public function __construct(BillsRepositoryInterface $repo)
+    {
+        $this->repo = $repo;
+    }
 }

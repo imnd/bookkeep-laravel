@@ -1,12 +1,12 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request,
+    Illuminate\Http\Resources\Json\ResourceCollection,
+    App\Http\Controllers\Controller;
 
 /**
- * Контроллер товаров
+ * CRUD контроллер
  * 
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
@@ -14,19 +14,14 @@ use App\Http\Controllers\Controller;
 class ApiController extends Controller
 {
     /**
-     * Имя класса модели
+     * Экземпляр репозитория.
      */
-    protected $modelName;
+    protected $repo;
 
     public function list(Request $request)
     {
-        $modelName = $this->modelName;
-        /**
-         * @var \Illuminate\Database\Eloquent\Builder $query
-         */
-        $query = $modelName::query();
-        $conditions = $modelName::getQueryConditions($request->all());
-        return new ResourceCollection($query->where($conditions)->get());
+        $conditions = $this->repo->getSearchConditions($request->all());
+        return new ResourceCollection($this->repo->query()->where($conditions)->get());
     }
 
     public function create(Request $request)
@@ -44,22 +39,19 @@ class ApiController extends Controller
 
     public function edit($id)
     {
-        $modelName = $this->modelName;
-        return response()->json($modelName::find($id));
+        return response()->json($this->repo->find($id));
     }
 
     public function update($id, Request $request)
     {
-        $modelName = $this->modelName;
-        $modelName::find($id)->update($request->all());
+        $this->repo->find($id)->update($request->all());
 
         return response()->json('successfully updated');
     }
 
     public function delete($id)
     {
-        $modelName = $this->modelName;
-        $modelName::find($id)->delete();
+        $this->repo->find($id)->delete();
 
         return response()->json('successfully deleted');
     }

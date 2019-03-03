@@ -23,7 +23,7 @@ Route::group([
 ], function () {
     Route::get('/subcats/list', 'SubcatsController@list');
     Route::get('/regions/list', 'RegionsController@list');
-    Route::get('/invoicesRows/list/{invoiceId}', 'InvoicesRowsController@list');
+    //Route::get('/invoicesRows/list/{invoiceId}', 'InvoicesRowsController@list');
 
     foreach (['articles', 'clients', 'invoices', 'contracts', 'purchases', 'bills'] as $modelName) {
         $controllerName = ucfirst($modelName) . 'Controller';
@@ -32,6 +32,7 @@ Route::group([
         Route::post("/$modelName/update/{id}", "$controllerName@update");
         Route::delete("/$modelName/delete/{id}", "$controllerName@delete");
         Route::get("/$modelName/list", "$controllerName@list");
+        Route::get("/$modelName/rows/{id}", "$controllerName@rows");
     }
 });
 

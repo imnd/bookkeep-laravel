@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model,
+    Carbon\Carbon;
 
-class Bills extends Model implements QueryConditions
+class Bills extends Model
 {
     public $timestamps = false;
 
@@ -35,25 +35,5 @@ class Bills extends Model implements QueryConditions
     public function client()
     {
         return $this->belongsTo('App\Models\Clients', 'client_id');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function getQueryConditions(array $params): array
-    {
-        $conditions = array();
-        if (!empty($params['dateFrom'])) {
-            $conditions[] = array('date', '>=', addslashes($params['dateFrom']));
-        }
-        if (!empty($params['dateTo'])) {
-            $conditions[] = array('date', '<=', addslashes($params['dateTo']));
-        }
-        foreach (['contract_num', 'client_id'] as $field) {
-            if (isset($params[$field]) && $params[$field]!=='') {
-                $conditions[] = array($field, '=', addslashes($params[$field]));
-            }
-        }
-        return $conditions;
     }
 }

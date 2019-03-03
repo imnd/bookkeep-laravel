@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model,
+    App\Contracts\HasRows;
 
-class Contracts extends Model implements QueryConditions
+//use Carbon\Carbon;
+
+class Contracts extends Model implements HasRows
 {
     public $timestamps = false;
 
@@ -31,6 +33,8 @@ class Contracts extends Model implements QueryConditions
         return $this->dates;
     }
 
+    # relations
+
     /**
      * Get the client.
      */
@@ -40,22 +44,10 @@ class Contracts extends Model implements QueryConditions
     }
 
     /**
-     * @inheritdoc
+     * Get the invoice rows.
      */
-    public static function getQueryConditions(array $params): array
+    public function rows()
     {
-        $conditions = array();
-        if (!empty($params['dateFrom'])) {
-            $conditions[] = array('date', '>=', addslashes($params['dateFrom']));
-        }
-        if (!empty($params['dateTo'])) {
-            $conditions[] = array('date', '<=', addslashes($params['dateTo']));
-        }
-        foreach (['number', 'client_id'] as $field) {
-            if (isset($params[$field]) && $params[$field]!=='') {
-                $conditions[] = array($field, '=', addslashes($params[$field]));
-            }
-        }
-        return $conditions;
+        return $this->hasMany('App\Models\ContractsRows', 'contract_id', 'id');
     }
 }

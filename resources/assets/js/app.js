@@ -2,27 +2,19 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+
+import Datepicker from 'vuejs-datepicker';
+// import Datepicker from './components/Datepicker.vue';
+Vue.component('date-picker', Datepicker);
+
+// import Datetime from 'vue-datetime'
+// Vue.component('date-picker', Datetime);
+// import { Settings } from 'luxon'
+// Settings.default,*.js = 'ru'
+
 Vue.component('grid', {
-    props: {
-        heading: {
-            type: String,
-            required: true,
-        },
-        entity: {
-            type: String,
-            required: true,
-        },
-        pageSize: {
-            type: String,
-            required: false,
-            default: 50,
-            validator: function(value){
-                return value >= 0;
-            }
-        },
-    },
     template: `<div>
-        <router-link :to="'/api/' + entity + '/create'" class="button primary top">Создать</router-link>
+        <router-link :to="'/' + entity + '/create'" class="button primary top">Создать</router-link>
         
         <h1>{{ this.heading }}</h1>
         
@@ -45,6 +37,24 @@ Vue.component('grid', {
             <button class="button nav" @click="nextPage">></button>
         </div>
     </div>`,
+    props: {
+        heading: {
+            type: String,
+            required: true,
+        },
+        entity: {
+            type: String,
+            required: true,
+        },
+        pageSize: {
+            type: String,
+            required: false,
+            default: 50,
+            validator: function(value){
+                return value >= 0;
+            }
+        },
+    },
     data: function () {
         return {
             listData: [],

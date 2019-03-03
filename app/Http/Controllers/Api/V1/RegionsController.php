@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
+use App\Repositories\RegionsRepositoryInterface;
+
 /**
- * Контроллер товаров
+ * Контроллер районов города
  * 
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
@@ -10,11 +12,13 @@ namespace App\Http\Controllers\Api\V1;
 class RegionsController extends ApiController
 {
     /**
-     * @inheritdoc
+     * Создание нового экземпляра контроллера.
+     *
+     * @param RegionsRepositoryInterface $repo
+     * @return void
      */
-    protected $modelName = 'App\Models\Regions';
-    /**
-     * @inheritdoc
-     */
-    protected $collectionName = 'App\Http\Resources\RegionCollection';
+    public function __construct(RegionsRepositoryInterface $repo)
+    {
+        $this->repo = $repo;
+    }
 }

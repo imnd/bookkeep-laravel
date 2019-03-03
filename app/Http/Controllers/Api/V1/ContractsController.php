@@ -1,16 +1,24 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
+use App\Repositories\ContractsRepositoryInterface;
+
 /**
- * Контроллер товаров
+ * Контроллер контрактов
  * 
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
  */ 
-class ContractsController extends ApiController
+class ContractsController extends HasRowsController
 {
     /**
-     * @inheritdoc
+     * Создание нового экземпляра контроллера.
+     *
+     * @param ContractsRepositoryInterface $repo
+     * @return void
      */
-    protected $modelName = 'App\Models\Contracts';
+    public function __construct(ContractsRepositoryInterface $repo)
+    {
+        $this->repo = $repo;
+    }
 }

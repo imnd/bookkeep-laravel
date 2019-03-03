@@ -272,55 +272,41 @@ body.invoices li.invoices a,
 
 body.purchases li.purchases a,
 
-body.contracts li.contracts a,
 body.agreements li.contracts a,
-
 body.articles li.articles a,
-
+body.contracts li.contracts a,
 body.client li.clients a,
 body.clients li.clients a,
 body.regions li.clients a,
-
-body.settings li.settings a,
-
-body.contracts.create li.contract a,
-body.contracts.index li.contract a,
-body.agreements.index li.contract a,
-body.agreements.update li.contract a,
-body.contracts.update li.contract a
+body.settings li.settings a
 {
     color: #FFF;
     font-weight: bold;
 }
 
-body.articles.index li.index,
-body.articles.create li.create,
+body.articles li.index,
+body.articles li.create,
 
-body.bills.index li.index,
-body.bills.create li.create,
+body.bills li.index,
+body.bills li.create,
 
-body.client.index li.index,
-body.clients.index li.index,
-body.client.create li.create,
-body.clients.create li.create,
+body.client li.index,
+body.clients li.index,
+body.client li.create,
+body.clients li.create,
 
-body.settings.index li.index,
-body.settings.backup li.backup,
-body.settings.requisites li.requisites,
+body.contracts li.contract,
+body.contracts li.agreement,
+body.contracts li.create,
 
-body.contracts_and_agreements li.contract,
-body.contracts_and_agreements li.agreement,
-body.contracts.contract li.contract,
-body.contracts.agreement li.agreement,
-body.contracts.create li.create,
+body.purchases li.index,
 
-body.invoices.index li.index,
-body.invoices.create li.create,
+body.regions li.index,
+body.regions li.create,
 
-body.purchases.index li.index,
-
-body.regions.index li.index,
-body.regions.create li.create
+body.settings li.index,
+body.settings li.backup,
+body.settings li.requisites
 {
     background-color: #FF0000;
 }
@@ -332,24 +318,6 @@ table {
     background-color: #FFF;
     border-collapse: collapse;
 }
-/*table.client_list
-{
-    margin: 5px 0;
-    width: 100%;
-}
-table.invoices_list,
-table.clients_edit
-    {width: 100%}
-table.clients_new,
-table.clients_save
-    {width: 480px;}
-table.clients_new td input,
-table.clients_save td input,
-table.clients_edit td input
-    {width: 100%;}
-table.clients_save th,
-table.clients_save td
-    {width: 60px;}*/
 table.purchase td,
 table.purchase th
 {
@@ -365,13 +333,11 @@ tr.payed
     font-weight: bold;
     text-align: right;
 }
-tr.total td
-{
+tr.total td {
     padding-left: 4px;
     padding-right: 4px;
 }
-th
-{
+th {
     background-color: #777;
     color: #fff;
 }
@@ -388,25 +354,31 @@ th.DESC
     background-repeat: no-repeat;
     background-position: right 2px;
 }
-th.ASC
-    {background-image: url('../img/triangle_up.jpg');}
-th.DESC
-    {background-image: url('../img/triangle_down.jpg');}
-td.operations
-    {width: 0;}
+th.ASC {
+    background-image: url('../img/triangle_up.jpg');
+}
+th.DESC {
+    background-image: url('../img/triangle_down.jpg');
+}
+td.operations {
+    width: 0;
+}
 
-td input
-{
+td input {
     border: none;
     background-color: #fff
 }
 td.quantity input,
 td.price input
-    {width: 50px;}
-td.sum input
-    {width: 70px;}
-td.article input
-    {width: 430px;}
+{
+    width: 50px;
+}
+td.sum input {
+    width: 70px;
+}
+td.article input {
+    width: 430px;
+}
 td.client_name {
     width: 460px;
 }
@@ -426,35 +398,28 @@ td.contractitem
     visibility: hidden;
     display: none
 }
-td.hat
-{
+td.hat {
     font-weight: bold;
     text-align: center;
     background-color: #777777;
     color: #FFFFFF;
     font-size: 14px;
 }
-td.left
-    {text-align: left;}
+td.left {text-align: left;}
 
-td.phone
-    {width: 60px;}
-td.address
-    {width: 130px;}
-td.key
-    {width: 162px;}
-td.value
-    {width: 720px;}
-td.value input
-    {width: 670px;}
+td.phone {width: 60px;}
+td.address {width: 130px;}
+td.key {width: 162px;}
+td.value {width: 720px;}
+td.value input {width: 670px;}
 
     
 .contract th,
 .agreement th
-    {padding: 0;}
+{padding: 0;}
 .contract td,
 .agreement td
-    {padding: 1px 12px;}
+{padding: 1px 12px;}
 
 th#execRemind {
     width: 60px;
@@ -513,7 +478,7 @@ form.search-form select.required
 }
 body.client.index form.search-form input[type="text"],
 body.clients.index form.search-form input[type="text"]
- {
+{
     width: 200px;
 }
 .settings.requisites label {
@@ -635,53 +600,6 @@ select.required
     border: 1px dotted #500;
 }
 
-/* grid */
-
-.data-view-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-top: 1px solid #CCC;
-    border-bottom: 1px solid #CCC;
-    color: #4F4F4F;
-    font-size: 10pt !important;
-    font-family: Tahoma, Verdana, Arial, Georgia, Geneva, Helvetica, sans-serif !important;
-}
-    .data-view-table tr th {
-        font-weight: bold;
-    }
-    .data-view-table tr th.sortable-column {
-        cursor: pointer;
-        color: #0088cc;
-    }
-    .data-view-table tr:nth-child(even) {
-        background: #F7F8FA;
-    }
-    .data-view-table tr.odd {
-        background: #FFF;
-    }
-    .data-view-table th {
-        background: #EBEBEB;
-        color: #000;
-        text-align: center !important;
-    }
-    .data-view-table td,
-    .data-view-table th
-    {
-        border-right: 1px solid #CCC;
-        padding: 2px 4px;
-    }
-    /* определение классов для заголовков отсортированных столбцов */
-    .asc {
-        
-    }
-    .desc {
-        
-    }
-
-td.btn-column {
-    width: 12px;
-}
-
 .button-view,
 .button-delete,
 .button-deactivate,
@@ -726,3 +644,8 @@ td.btn-column {
     max-width: 430px !important;
 }
 
+/* FIX */
+.vdp-datepicker,
+.vdp-datepicker div {
+    display: inline;
+}

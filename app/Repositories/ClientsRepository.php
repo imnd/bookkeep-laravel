@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Repositories;
+
+use App\Models\Clients,
+    App\Contracts\QueryConditions;
+
+class ClientsRepository implements ClientsRepositoryInterface, QueryConditions
+{
+    /**
+     * @inheritdoc
+     */
+    public function query()
+    {
+        return Clients::query();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function selectAll()
+    {
+        return Clients::all();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function find($id)
+    {
+        return Clients::find($id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSearchConditions(array $params): array
+    {
+        $conditions = array();
+        foreach (['name', 'address'] as $field) {
+            if (!empty($params[$field])) {
+                $conditions[] = array($field, 'LIKE', '%' . addslashes($params[$field]). '%');
+            }
+        }
+        return $conditions;
+    }
+}

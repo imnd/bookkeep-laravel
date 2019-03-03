@@ -17,6 +17,8 @@ class InvoicesRows extends Model
         'price',
    	];
 
+    # relations
+
     /**
      * Get the article.
      */

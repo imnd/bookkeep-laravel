@@ -24,7 +24,7 @@
             </div>
             <div class="row">
                 <label class="control-label">Дата</label>
-                <input v-model="invoice.date" />
+                <date-picker :value="invoice.date" v-model="invoice.date"></date-picker>
             </div>
             <table class="invoice">
                 <thead>
@@ -97,8 +97,8 @@
             }
         },
         beforeCreate() {
-            this.axios.get(`/api/invoicesRows/list/${this.$route.params.id}`).then(response => {
-                this.invoiceRows = response.data.data;
+            this.axios.get(`/api/invoices/rows/${this.$route.params.id}`).then(response => {
+                this.invoiceRows = response.data;
             });
             this.axios.get('/api/articles/list').then(response => {
                 this.articles = response.data.data;
@@ -126,7 +126,7 @@
                 });
             },
             invoiceDelete() {
-                this.axios.delete(`/api/invoices/delete/` + this.invoice.id).then(response => {
+                this.axios.delete(`/api/invoices/delete/${this.invoice.id}`).then(response => {
                     this.$router.push({name: 'invoicesList'});
                 });
             },

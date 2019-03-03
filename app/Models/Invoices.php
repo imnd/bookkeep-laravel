@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model,
+    App\Contracts\HasRows;
+//  Carbon\Carbon;
 
-class Invoices extends Model implements QueryConditions
+class Invoices extends Model implements HasRows
 {
-    public $timestamps = false;
+    use \App\Traits\Date;
 
     protected $table = 'invoices';
 
@@ -18,16 +19,22 @@ class Invoices extends Model implements QueryConditions
         'date',
         'sum',
         'payed',
-   	];
+    ];
 
     protected $with = ['client'];
 
-    protected $dates = ['date'];
+    public $timestamps = false;
 
-    public function getDates()
-    {
-        return $this->dates;
-    }
+//    protected $dates = ['date'];
+//
+//    public function getDates()
+//    {
+//        return $this->dates;
+//    }
+
+    protected $dateFormat = 'Y-m-d';
+
+    # relations
 
     /**
      * Get the client.
@@ -46,23 +53,13 @@ class Invoices extends Model implements QueryConditions
     }
 
     /**
-     * @inheritdoc
+     * Получить имя клиента.
+     *
+     * @param  string $value
+     * @return string
      */
-    public static function getQueryConditions(array $params): array
+    public function getClientAttribute($value)
     {
-        $conditions = array();
-        if (!empty($params['dateFrom'])) {
-            $conditions[] = array('date', '>=', addslashes($params['dateFrom']));
-        }
-        if (!empty($params['dateTo'])) {
-            $conditions[] = array('date', '<=', addslashes($params['dateTo']));
-        }
-        foreach (['number', 'contract_num', 'client_id'] as $field) {
-            if (isset($params[$field]) && $params[$field]!=='') {
-                $conditions[] = array($field, '=', addslashes($params[$field]));
-            }
-        }
-
-        return $conditions;
+        return ucfirst($value);
     }
 }

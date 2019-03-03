@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model,
+    App\Contracts\HasRows;
 
-class Purchases extends Model implements QueryConditions
+class Purchases extends Model implements HasRows
 {
     protected $table = 'purchases';
 
@@ -14,22 +15,13 @@ class Purchases extends Model implements QueryConditions
         'sum'
    	];
 
-    /**
-     * @inheritdoc
-     */
-    public static function getQueryConditions(array $params): array
-    {
-        $conditions = array();
-        if (!empty($params['dateFrom'])) {
-            $conditions[] = array('date', '>=', addslashes($params['dateFrom']));
-        }
-        if (!empty($params['dateTo'])) {
-            $conditions[] = array('date', '<=', addslashes($params['dateTo']));
-        }
-        if (isset($params['number']) && $params['number']!=='') {
-            $conditions[] = array('number', '=', addslashes($params['number']));
-        }
+    # relations
 
-        return $conditions;
+    /**
+     * Get the purchase rows.
+     */
+    public function rows()
+    {
+        return $this->hasMany('App\Models\PurchasesRows', 'purchase_id', 'id');
     }
 }

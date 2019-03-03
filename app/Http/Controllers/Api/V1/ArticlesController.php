@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
+use App\Repositories\ArticlesRepositoryInterface;
+
 /**
  * Контроллер товаров
  * 
@@ -10,11 +12,13 @@ namespace App\Http\Controllers\Api\V1;
 class ArticlesController extends ApiController
 {
     /**
-     * @inheritdoc
+     * Создание нового экземпляра контроллера.
+     *
+     * @param ArticlesRepositoryInterface $repo
+     * @return void
      */
-    protected $modelName = 'App\Models\Articles';
-    /**
-     * @inheritdoc
-     */
-    protected $collectionName = 'App\Http\Resources\ArticleCollection';
+    public function __construct(ArticlesRepositoryInterface $repo)
+    {
+        $this->repo = $repo;
+    }
 }

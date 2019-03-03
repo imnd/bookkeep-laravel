@@ -20,11 +20,11 @@
         template: `<div class="clear">
             <div class="control">
                 <label>дата с:</label>
-                <input name="dateFrom" type="text">
+                <date-picker name="dateFrom"></date-picker>
             </div>
             <div class="control">
                 <label>дата по:</label>
-                <input name="dateTo" type="text">
+                <date-picker name="dateTo"></date-picker>
             </div>
             <div class="control">
                 <label>номер:</label>
