@@ -2,15 +2,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-
 import Datepicker from 'vuejs-datepicker';
-// import Datepicker from './components/Datepicker.vue';
 Vue.component('date-picker', Datepicker);
-
-// import Datetime from 'vue-datetime'
-// Vue.component('date-picker', Datetime);
-// import { Settings } from 'luxon'
-// Settings.default,*.js = 'ru'
 
 Vue.component('grid', {
     template: `<div>

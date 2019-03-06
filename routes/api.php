@@ -19,11 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group([
     'namespace' => 'Api\V1',
-    //'middleware' => 'auth',
+    'middleware' => 'auth',
 ], function () {
     Route::get('/subcats/list', 'SubcatsController@list');
     Route::get('/regions/list', 'RegionsController@list');
-    //Route::get('/invoicesRows/list/{invoiceId}', 'InvoicesRowsController@list');
 
     foreach (['articles', 'clients', 'invoices', 'contracts', 'purchases', 'bills'] as $modelName) {
         $controllerName = ucfirst($modelName) . 'Controller';

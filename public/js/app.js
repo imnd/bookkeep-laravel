@@ -1157,13 +1157,7 @@ __webpack_require__(14);
 window.Vue = __webpack_require__(2);
 
 
-// import Datepicker from './components/Datepicker.vue';
 Vue.component('date-picker', __WEBPACK_IMPORTED_MODULE_0_vuejs_datepicker__["a" /* default */]);
-
-// import Datetime from 'vue-datetime'
-// Vue.component('date-picker', Datetime);
-// import { Settings } from 'luxon'
-// Settings.default,*.js = 'ru'
 
 Vue.component('grid', {
     template: '<div>\n        <router-link :to="\'/\' + entity + \'/create\'" class="button primary top">\u0421\u043E\u0437\u0434\u0430\u0442\u044C</router-link>\n        \n        <h1>{{ this.heading }}</h1>\n        \n        <!--\u0444\u043E\u0440\u043C\u0430 \u043F\u043E\u0438\u0441\u043A\u0430-->\n        <form @submit.prevent="listUpdate" class="search-form" method="GET">\n            <component :is="\'search-form-\' + entity"></component>\n            <input type="submit" class="button" value="\u043F\u043E\u0438\u0441\u043A">\n            <div class="clear"></div>\n        </form>\n\n        <!--\u0441\u043F\u0438\u0441\u043E\u043A-->\n        <table>\n            <thead>\n                <component :is="\'grid-head-\' + entity"></component>\n            </thead>\n            <component :is="\'grid-body-\' + entity" :listData="paginatedData"></component>\n        </table>\n        <div>\n            <button class="button nav" @click="prevPage"><</button>\n            <button class="button nav" @click="nextPage">></button>\n        </div>\n    </div>',
@@ -49110,10 +49104,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
@@ -49125,14 +49115,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "container" } }, [
-    _c(
-      "div",
-      { staticClass: "wrapper" },
-      [_c("transition", { attrs: { name: "fade" } }, [_c("router-view")], 1)],
-      1
-    )
-  ])
+  return _c("transition", { attrs: { name: "fade" } }, [_c("router-view")], 1)
 }
 var staticRenderFns = []
 render._withStripped = true

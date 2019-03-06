@@ -6,8 +6,8 @@ Route::get('/', function() {
     return view('index');
 });
 
-//Route::group(['middleware' => 'auth'], function()
-//{
+Route::group(['middleware' => 'auth'], function()
+{
     // VUE JS
     foreach (['articles', 'clients', 'invoices', 'contracts', 'purchases', 'bills'] as $entity) {
         Route::get("/$entity/{any}", function () use ($entity) {
@@ -18,4 +18,4 @@ Route::get('/', function() {
     Route::get('settings', function() {
         return view('settings');
     });
-//});
+});

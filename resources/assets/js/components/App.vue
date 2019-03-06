@@ -1,11 +1,7 @@
 <template>
-    <div id="container">
-        <div class="wrapper">
-            <transition name="fade">
-                <router-view></router-view>
-            </transition>
-        </div>
-    </div>
+    <transition name="fade">
+        <router-view></router-view>
+    </transition>
 </template>
 
 <style>
