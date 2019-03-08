@@ -19,7 +19,7 @@
             <input name="password_confirm" placeholder="подтверждение пароля" type="password" />
         </div>
         <div class="error">
-            <?=$error ?? ''?>
+            {{ $error ?? '' }}
         </div>
         <input type="submit" value="зарегаться"/>
     </form>

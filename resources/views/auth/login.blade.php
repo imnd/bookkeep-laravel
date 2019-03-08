@@ -16,7 +16,7 @@
             <input name="remember" type="checkbox" checked="checked" value="1" />&nbsp;<label>запомнить</label>
         </div>
         <div class="error">
-            <?=$error ?? ''?>
+            {{ $error ?? '' }}
         </div>
         <input type="submit" value="войти"/>&nbsp;&nbsp;
         <a href="/register">регистрация</a>
