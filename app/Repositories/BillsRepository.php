@@ -34,6 +34,19 @@ class BillsRepository implements BillsRepositoryInterface, QueryConditions
     /**
      * @inheritdoc
      */
+    public function create(array $data)
+    {
+        $fields = (new Bills)->getFillable();
+        $fieldVals = array();
+        foreach ($fields as $field) {
+            $fieldVals[$field] = $data[$field];
+        }
+        (new Bills($fieldVals))->save();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getSearchConditions(array $params): array
     {
         $conditions = array();

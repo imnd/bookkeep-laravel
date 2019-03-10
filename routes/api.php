@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group([
     'namespace' => 'Api\V1',
-    'middleware' => 'auth',
+//    'middleware' => 'auth',
 ], function () {
     Route::get('/subcats/list', 'SubcatsController@list');
     Route::get('/regions/list', 'RegionsController@list');

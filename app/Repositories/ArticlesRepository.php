@@ -34,6 +34,19 @@ class ArticlesRepository implements ArticlesRepositoryInterface, QueryConditions
     /**
      * @inheritdoc
      */
+    public function create(array $data)
+    {
+        $fields = (new Articles)->getFillable();
+        $fieldVals = array();
+        foreach ($fields as $field) {
+            $fieldVals[$field] = $data[$field];
+        }
+        (new Articles($fieldVals))->save();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getSearchConditions(array $params): array
     {
         $conditions = array();

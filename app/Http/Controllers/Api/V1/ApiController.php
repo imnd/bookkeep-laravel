@@ -14,34 +14,39 @@ use Illuminate\Http\Request,
 class ApiController extends Controller
 {
     /**
-     * Экземпляр репозитория.
+     * Repository instance
      */
     protected $repo;
 
+    /**
+     * All of the models from the database by query conditions
+     */
     public function list(Request $request)
     {
         $conditions = $this->repo->getSearchConditions($request->all());
         return new ResourceCollection($this->repo->query()->where($conditions)->get());
     }
 
+    /**
+     * Create new model and save in DB.
+     */
     public function create(Request $request)
     {
-        $modelName = $this->modelName;
-        $fields = (new $modelName)->getFillable();
-        $fieldVals = array();
-        foreach ($fields as $field) {
-            $fieldVals[$field] = $request->get($field);
-        }
-        (new $modelName($fieldVals))->save();
-
+        $this->repo->create($request->all());
         return response()->json('success');
     }
 
+    /**
+     * Shows model edit form.
+     */
     public function edit($id)
     {
         return response()->json($this->repo->find($id));
     }
 
+    /**
+     * Updates model in DB.
+     */
     public function update($id, Request $request)
     {
         $this->repo->find($id)->update($request->all());
@@ -49,6 +54,9 @@ class ApiController extends Controller
         return response()->json('successfully updated');
     }
 
+    /**
+     * Deletes model from DB.
+     */
     public function delete($id)
     {
         $this->repo->find($id)->delete();

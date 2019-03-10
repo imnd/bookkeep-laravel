@@ -29,4 +29,17 @@ class SettingsRepository implements SettingsRepositoryInterface
     {
         return Settings::find($id);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function create(array $data)
+    {
+        $fields = (new Settings)->getFillable();
+        $fieldVals = array();
+        foreach ($fields as $field) {
+            $fieldVals[$field] = $data[$field];
+        }
+        (new Settings($fieldVals))->save();
+    }
 }

@@ -34,6 +34,19 @@ class PurchasesRepository implements PurchasesRepositoryInterface, QueryConditio
     /**
      * @inheritdoc
      */
+    public function create(array $data)
+    {
+        $fields = (new Purchases)->getFillable();
+        $fieldVals = array();
+        foreach ($fields as $field) {
+            $fieldVals[$field] = $data[$field];
+        }
+        (new Purchases($fieldVals))->save();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getSearchConditions(array $params): array
     {
         $conditions = array();

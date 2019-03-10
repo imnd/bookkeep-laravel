@@ -34,6 +34,19 @@ class InvoicesRepository implements InvoicesRepositoryInterface, QueryConditions
     /**
      * @inheritdoc
      */
+    public function create(array $data)
+    {
+        $fields = (new Invoices)->getFillable();
+        $fieldVals = array();
+        foreach ($fields as $field) {
+            $fieldVals[$field] = $data[$field];
+        }
+        (new Invoices($fieldVals))->save();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getSearchConditions(array $params): array
     {
         $conditions = array();

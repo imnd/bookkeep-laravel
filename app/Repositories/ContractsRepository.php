@@ -34,6 +34,19 @@ class ContractsRepository implements ContractsRepositoryInterface, QueryConditio
     /**
      * @inheritdoc
      */
+    public function create(array $data)
+    {
+        $fields = (new Contracts)->getFillable();
+        $fieldVals = array();
+        foreach ($fields as $field) {
+            $fieldVals[$field] = $data[$field];
+        }
+        (new Contracts($fieldVals))->save();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getSearchConditions(array $params): array
     {
         $conditions = array();

@@ -29,4 +29,17 @@ class InvoicesRowsRepository implements InvoicesRowsRepositoryInterface
     {
         return InvoicesRows::find($id);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function create(array $data)
+    {
+        $fields = (new InvoicesRows)->getFillable();
+        $fieldVals = array();
+        foreach ($fields as $field) {
+            $fieldVals[$field] = $data[$field];
+        }
+        (new InvoicesRows($fieldVals))->save();
+    }
 }

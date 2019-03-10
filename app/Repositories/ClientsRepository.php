@@ -34,6 +34,19 @@ class ClientsRepository implements ClientsRepositoryInterface, QueryConditions
     /**
      * @inheritdoc
      */
+    public function create(array $data)
+    {
+        $fields = (new Clients)->getFillable();
+        $fieldVals = array();
+        foreach ($fields as $field) {
+            $fieldVals[$field] = $data[$field];
+        }
+        (new Clients($fieldVals))->save();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getSearchConditions(array $params): array
     {
         $conditions = array();
