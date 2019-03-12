@@ -32,6 +32,7 @@ class AppRepositoryProvider extends ServiceProvider
             'Purchases',
             'Regions',
             'Settings',
+            'Users',
         ] as $modelName) {
             $this->app->bind('App\Repositories\\' . $modelName . 'RepositoryInterface', 'App\Repositories\\' . $modelName . 'Repository');
         }

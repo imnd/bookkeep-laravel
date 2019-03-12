@@ -19,6 +19,11 @@ interface RepositoryInterface
     public function find($id);
 
     /**
+     * Execute the query as a "select" statement.
+     */
+    public function get(array $conditions, array $orderBy = array());
+
+    /**
      * Begin querying the model.
      */
     public function query();

@@ -1,23 +1,28 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/css/styles.css" />
-        <meta name="csrf-token" value="{{ csrf_token() }}" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+        <!-- Fonts and icons -->
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+        <!-- CSS Files -->
+        <link href="/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
+        <!-- CSS Just for demo purpose, don't include it in your project -->
+        <link href="/css/baseline.css" rel="stylesheet" />
+        <link href="/css/styles.css" rel="stylesheet" />
+
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+        <script>
+            window.Laravel = {!! json_encode([
+                'csrfToken' => csrf_token(),
+                'apiToken' => $user->api_token ?? null,
+            ]) !!};
+        </script>
+
         <title>{{ $pageTitle ?? 'Бухгалтерия' }}</title>
     </head>
     <body class="{{ $bodyClass ?? '' }}">
-        <ul class="main top_menu" id="menu">
-            <li class="invoices left"><a href="/invoices/list">фактуры</a></li>
-            <li class="contracts"><a href="/contracts/list">договоры и контракты</a></li>
-            <li class="purchases"><a href="/purchases/list">закупки</a></li>
-            <li class="articles"><a href="/articles/list">товары</a></li>
-            <li class="clients"><a href="/clients/list">клиенты</a></li>
-            <li class="bills"><a href="/bills/list">платежи</a></li>
-            <li class="settings"><a href="/settings">администрирование</a></li>
-            <li class="index/logout right"><a href="/index/logout">выйти</a></li>
-        </ul>
-        <div class="clear"></div>
-        <div id="container">
-            <div class="wrapper">
+        <div class="wrapper">
+            

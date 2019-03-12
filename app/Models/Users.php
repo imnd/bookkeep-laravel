@@ -9,6 +9,11 @@ class Users extends Model
     protected $table = 'users';
 
     protected $fillable = [
-        'username', 'email', 'password_hash', 'confirmed', 'confirm_code',
+        'username', 'email', 'password', 'confirmed', 'confirm_code', 'api_token',
    	];
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
 }

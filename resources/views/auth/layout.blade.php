@@ -1,9 +1,9 @@
 @include('header')
 
-<div class="card card-default">
-
-	@yield('content')
-
+<div class="col-md-6 center-block">
+    <div class="card">
+        @yield('content')
+    </div>
 </div>
 
 @include('footer')

@@ -33,7 +33,9 @@ class ApiController extends Controller
     public function create(Request $request)
     {
         $this->repo->create($request->all());
-        return response()->json('success');
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     /**
@@ -51,7 +53,9 @@ class ApiController extends Controller
     {
         $this->repo->find($id)->update($request->all());
 
-        return response()->json('successfully updated');
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     /**
@@ -61,6 +65,8 @@ class ApiController extends Controller
     {
         $this->repo->find($id)->delete();
 
-        return response()->json('successfully deleted');
+        return response()->json([
+            'success' => true,
+        ]);
     }
 }
