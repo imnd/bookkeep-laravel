@@ -25,6 +25,18 @@ class InvoicesRowsRepository implements InvoicesRowsRepositoryInterface
     /**
      * @inheritdoc
      */
+    public function get(array $conditions = array(), array $orderBy = array())
+    {
+        $query = InvoicesRows::where($conditions);
+        if (!empty($orderBy[0]) && !empty($orderBy[1])) {
+            $query = $query->orderBy($orderBy[0], $orderBy[1]);
+        }
+        return $query->get();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function find($id)
     {
         return InvoicesRows::find($id);

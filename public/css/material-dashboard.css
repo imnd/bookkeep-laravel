@@ -14504,6 +14504,8 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   width: 260px;
   z-index: 4;
   padding-bottom: 30px;
+  padding-left: 12px;
+  margin-top: 0;
 }
 
 .sidebar .sidebar-wrapper .dropdown .dropdown-backdrop {
@@ -14572,7 +14574,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 
 .sidebar .nav {
-  margin-top: 20px;
+  margin-top: 64px;
   display: block;
 }
 
@@ -14589,7 +14591,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 
 .sidebar .nav li:first-child>a {
-  margin: 0 15px;
+  margin: 10px 10px 0;
 }
 
 .sidebar .nav li:hover>a,
@@ -14640,7 +14642,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .sidebar .nav i {
   font-size: 24px;
   float: left;
-  margin-right: 15px;
+  margin-right: 10px;
   line-height: 30px;
   width: 30px;
   text-align: center;
@@ -14649,14 +14651,13 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 
 .sidebar .nav li a,
 .sidebar .nav li .dropdown-menu a {
-  margin: 10px 15px 0;
+  margin: 10px 10px 0;
   border-radius: 3px;
   color: #3C4858;
-  padding-left: 10px;
-  padding-right: 10px;
   text-transform: capitalize;
   font-size: 13px;
-  padding: 10px 15px;
+  padding: 6px 8px;
+  width: 220px;
 }
 
 .sidebar .sidebar-background {
@@ -14883,7 +14884,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 
 .main-panel>.content {
-  margin-top: 70px;
+  margin-top: 0;
   padding: 30px 15px;
   min-height: calc(100vh - 123px);
 }

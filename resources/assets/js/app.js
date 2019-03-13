@@ -2,38 +2,63 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import VueAxios from 'vue-axios';
+import axios from 'axios';
+Vue.use(VueAxios, axios);
+axios.defaults.headers.common = {
+    'X-CSRF-TOKEN': Laravel.csrfToken,
+    'X-Requested-With': 'XMLHttpRequest',
+    'Authorization': 'Bearer ' + Laravel.apiToken,
+};
+
 import Datepicker from 'vuejs-datepicker';
 Vue.component('date-picker', Datepicker);
 
 Vue.component('grid', {
     template: `<div>
-        <router-link :to="'/' + entity + '/create'" class="button primary top">Создать</router-link>
-        
-        <h1>{{ this.heading }}</h1>
-        
-        <!--форма поиска-->
-        <form @submit.prevent="listUpdate" class="search-form" method="GET">
-            <component :is="'search-form-' + entity"></component>
-            <input type="submit" class="button" value="поиск">
-            <div class="clear"></div>
-        </form>
-
-        <!--список-->
-        <table>
-            <thead>
-                <component :is="'grid-head-' + entity"></component>
-            </thead>
-            <component :is="'grid-body-' + entity" :listData="paginatedData"></component>
-        </table>
-        <div>
-            <button class="button nav" @click="prevPage"><</button>
-            <button class="button nav" @click="nextPage">></button>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">{{ this.heading }}</h4>
+                    <router-link data-color="azure" :to="'/' + entity + '/create'" class="btn btn-primary btn-round pull-right">Создать</router-link>
+                    <div class="clearfix"></div>
+                    <p v-if="this.subheading" class="card-category">{{ this.subheading }}</p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <!--форма поиска-->
+                        <form @submit.prevent="listUpdate" class="search-form">
+                            <component :is="'search-form-' + entity"></component>
+                            <div class="pagination">
+                                <span> страница {{ pageNumber + 1 }}. всего: {{ pageCount }} страниц</span>
+                            </div>
+                            <input type="submit" class="btn btn-primary pull-right" value="Поиск">
+                        </form>
+                        <!--список-->
+                        <table @click.prevent="deleteItem" class="table">
+                            <thead @click.prevent="listSort" class="text-primary">
+                                <component :is="'grid-head-' + entity"></component>
+                            </thead>
+                            <component :is="'grid-body-' + entity" :listData="paginatedData"></component>
+                        </table>
+                        <div class="pagination">
+                            <button class="btn" @click="prevPage"><</button>&nbsp;
+                            <button class="btn" @click="nextPage">></button>
+                            <span> страница {{ pageNumber + 1 }}. всего: {{ pageCount }} страниц</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>`,
     props: {
         heading: {
             type: String,
             required: true,
+        },
+        subheading: {
+            type: String,
+            required: false,
         },
         entity: {
             type: String,
@@ -53,19 +78,22 @@ Vue.component('grid', {
             listData: [],
             paginatedData: [],
             pageNumber: 0,
+            orders: {},
+            listUrl: {},
         }
     },
     created() {
-        this.axios.get(`/api/${this.entity}/list`).then(response => {
+        this.listUrl = `/api/${this.entity}/list`;
+        this.axios.get(this.listUrl).then(response => {
             this.listData = response.data.data;
             this.setPaginatedData();
         });
     },
-    /*computed: {
+    computed: {
         pageCount() {
             return Math.ceil(this.listData.length / this.pageSize);
         },
-    },*/
+    },
     methods: {
         listUpdate(event) {
             let params = {};
@@ -75,21 +103,43 @@ Vue.component('grid', {
                     params[key] = value;
                 }
             });
-            this.axios.get(`/api/${this.entity}/list`, {
+            this.axios.get(this.listUrl, {
                 params: params
             }).then(response => {
                 this.listData = response.data.data;
                 this.setPaginatedData();
             });
         },
-        deleteItem(id, index) {
+        listSort(event) {
+            let field = event.target.getAttribute('data-sort');
+            if (this.orders[field]===undefined || this.orders[field]==='desc') {
+                this.orders[field] = 'asc';
+            } else {
+                this.orders[field] = 'desc';
+            }
+            this.axios.get(this.listUrl, {
+                params: {
+                    order: this.orders[field],
+                    field: field
+                }
+            }).then(response => {
+                this.listData = response.data.data;
+                this.setPaginatedData();
+            });
+        },
+        deleteItem(event) {
+            let id = event.target.getAttribute('data-item-id');
+            if (isNaN(parseFloat(id)) || !isFinite(id)) {
+                return;
+            }
+            let index = event.target.getAttribute('data-item-index');
             this.axios.delete(`/api/${this.entity}/delete/${id}`).then(response => {
-                this.listData.splice(index, 1);
+                this.paginatedData.splice(index, 1);
             });
         },
         setPaginatedData() {
             const start = this.pageNumber * this.pageSize,
-                  end = start + parseInt(this.pageSize);
+                end = start + parseInt(this.pageSize);
 
             this.paginatedData = this.listData.slice(start, end);
         },
@@ -103,13 +153,6 @@ Vue.component('grid', {
         },
     }
 });
-
-import VueRouter from 'vue-router';
-Vue.use(VueRouter);
-
-import VueAxios from 'vue-axios';
-import axios from 'axios';
-Vue.use(VueAxios, axios);
 
 import App from './components/App.vue';
 
@@ -142,6 +185,9 @@ import ContractsList from './components/contracts/List.vue';
 import ContractCreate from './components/contracts/Create.vue';
 import ContractEdit from './components/contracts/Edit.vue';
 import ContractPrintout from './components/contracts/Printout.vue';
+
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
 
 const router = new VueRouter({
     mode: 'history',

@@ -1,6 +1,30 @@
 @include('header')
 <div class="sidebar" data-color="azure" data-background-color="white">
     <ul class="sidebar-wrapper ps-container ps-theme-default">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+            <div class="container-fluid">
+                <div class="navbar-wrapper">
+                    <a class="navbar-brand" href="#">{{ $user->username }}</a>
+                </div>
+                <div class="collapse navbar-collapse justify-content-end">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">person</i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+                                @if (isset($user) && $user->isAdmin())
+                                    <a class="dropdown-item" href="/settings">Администрирование</a>
+                                    <div class="dropdown-divider"></div>
+                                @endif
+                                <a class="dropdown-item" href="/index/logout">Выйти</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
         <ul class="nav">
             <li class="nav-item active">
                 <a class="nav-link" href="/invoices/list">
@@ -42,30 +66,6 @@
     </ul>
 </div>
 <div class="main-panel">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
-        <div class="container-fluid">
-            <div class="navbar-wrapper">
-                <a class="navbar-brand" href="#">{{ $user->username }}</a>
-            </div>
-            <div class="collapse navbar-collapse justify-content-end">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="material-icons">person</i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                            @if (isset($user) && $user->isAdmin())
-                                <a class="dropdown-item" href="/settings">Администрирование</a>
-                                <div class="dropdown-divider"></div>
-                            @endif
-                            <a class="dropdown-item" href="/index/logout">Выйти</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
     <!-- End Navbar -->
 
     <div class="content">

@@ -24,7 +24,8 @@ class ApiController extends Controller
     public function list(Request $request)
     {
         $conditions = $this->repo->getSearchConditions($request->all());
-        return new ResourceCollection($this->repo->query()->where($conditions)->get());
+
+        return new ResourceCollection($this->repo->get($conditions, [$request->get('field'), $request->get('order')]));
     }
 
     /**

@@ -26,6 +26,18 @@ class ClientsRepository implements ClientsRepositoryInterface, QueryConditions
     /**
      * @inheritdoc
      */
+    public function get(array $conditions = array(), array $orderBy = array())
+    {
+        $query = Clients::where($conditions);
+        if (!empty($orderBy[0]) && !empty($orderBy[1])) {
+            $query = $query->orderBy($orderBy[0], $orderBy[1]);
+        }
+        return $query->get();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function find($id)
     {
         return Clients::find($id);

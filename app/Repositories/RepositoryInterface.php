@@ -11,17 +11,17 @@ interface RepositoryInterface
     public function selectAll();
 
     /**
+     * Execute the query as a "select" statement.
+     */
+    public function get(array $conditions, array $orderBy = array());
+
+    /**
      * Find a model by its primary key.
      * 
      * @param mixed $id
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|static[]|static|null
      */
     public function find($id);
-
-    /**
-     * Execute the query as a "select" statement.
-     */
-    public function get(array $conditions, array $orderBy = array());
 
     /**
      * Begin querying the model.

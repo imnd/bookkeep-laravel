@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group([
     'namespace' => 'Api\V1',
-    'middleware' => 'auth',
+    'middleware' => 'auth:api',
 ], function () {
     foreach (['articles', 'clients', 'invoices', 'contracts', 'purchases', 'bills'] as $modelName) {
         $controllerName = ucfirst($modelName) . 'Controller';

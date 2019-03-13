@@ -26,6 +26,18 @@ class ContractsRepository implements ContractsRepositoryInterface, QueryConditio
     /**
      * @inheritdoc
      */
+    public function get(array $conditions = array(), array $orderBy = array())
+    {
+        $query = Contracts::where($conditions);
+        if (!empty($orderBy[0]) && !empty($orderBy[1])) {
+            $query = $query->orderBy($orderBy[0], $orderBy[1]);
+        }
+        return $query->get();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function find($id)
     {
         return Contracts::find($id);
