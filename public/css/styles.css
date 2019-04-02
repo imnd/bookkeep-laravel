@@ -108,14 +108,60 @@
 .form-control {
     float: left;
     width: auto;
-    margin-top: -6px;
+    border-radius: .25rem;
+    margin-top: -2px;
+    padding-bottom: 0;
+    padding-top: 0;
 }
+.search-form .form-control {
+    margin-top: -6px;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
 .vdp-datepicker {
     float: left;
 }
 
+form .row {
+    margin-bottom: 24px;
+}
+label {
+    display: block;
+    float: left;
+    margin-right: 12px;
+    padding-top: 8px;
+}
+.form-control input {
+    border: none;
+}
+form .material-icons {
+    cursor: pointer;
+}
+form table td {
+    padding: 2px 8px;
+}
+form table input,form table select {
+    border-radius: .25rem;
+    border: 1px solid #ced4da;
+}
 .card-title {
     float: left;
+    margin-right: 12px;
+}
+.form-title {
+    float: left;
+    padding-top: 9px;
+    margin-right: 24px;
+    font-weight: bold;
+}
+.card-category {
+    padding-top: 2px;
+}
+.nav-tabs-title {
+    float: left;
+    padding-top: 10px;
+    font-size: 16px;
 }
 .card-header.card-header-primary a {
     background-color: #00bcd4;
@@ -132,5 +178,11 @@
 }
 .search-form .pagination {
     float: left;
+}
+.red {
+    color: red;
+}
+.green {
+    color: green;
 }
 

@@ -22,9 +22,11 @@ trait Date
      * @param  string $value
      * @return void
      */
-    /*public function setDateAttribute($value)
+    public function setDateAttribute($value)
     {
-        $date = date_create_from_format($value, 'd.m.Y');
+        if (!$date = date_create_from_format($value, 'd.m.Y'))
+            return;
+
         $this->attributes['date'] = date_format($date, $this->dateFormat);
-    }*/
+    }
 }

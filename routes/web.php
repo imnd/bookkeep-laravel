@@ -1,6 +1,7 @@
 <?php
 
 Auth::routes();
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::group(['middleware' => 'auth'], function() {
     Route::view('/', 'pages.index');

@@ -7,10 +7,10 @@ use Illuminate\Http\Request,
 
 /**
  * CRUD контроллер
- * 
+ *
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
- */ 
+ */
 class ApiController extends Controller
 {
     /**
@@ -33,7 +33,18 @@ class ApiController extends Controller
      */
     public function create(Request $request)
     {
-        $this->repo->create($request->all());
+        $rules = $this->repo->create()->getRules();
+        $this->validate($request, $rules);
+
+        $validation = Validator::make($request->all(), $this->repo->create()->getRules());
+
+        if ($validation->fails()) {
+            $errors = $validation->errors();
+            return $errors->toJson();
+        }
+
+        $data = $request->validate($this->repo->create()->getRules());
+        $this->repo->create($data);
         return response()->json([
             'success' => true,
         ]);
@@ -44,7 +55,7 @@ class ApiController extends Controller
      */
     public function edit($id)
     {
-        return response()->json($this->repo->find($id));
+        return response()->json($this->_findModel($id));
     }
 
     /**
@@ -52,8 +63,9 @@ class ApiController extends Controller
      */
     public function update($id, Request $request)
     {
-        $this->repo->find($id)->update($request->all());
-
+        $model = $this->_findModel($id);
+        $data = $request->validate($model->getRules());
+        $model->update($data);
         return response()->json([
             'success' => true,
         ]);
@@ -64,10 +76,21 @@ class ApiController extends Controller
      */
     public function delete($id)
     {
-        $this->repo->find($id)->delete();
-
+        $this->_findModel($id)->delete();
         return response()->json([
             'success' => true,
         ]);
+    }
+
+    /**
+     * @param integer $id
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    protected function _findModel($id)
+    {
+        if (!$model = $this->repo->find($id)) {
+            throw new HttpException('Нет такой модели.');
+        }
+        return $model;
     }
 }

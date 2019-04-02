@@ -3,7 +3,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider,
     Illuminate\Support\Facades\View,
-    App\Repositories\UsersRepositoryInterface;
+    App\Contracts\UsersRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {

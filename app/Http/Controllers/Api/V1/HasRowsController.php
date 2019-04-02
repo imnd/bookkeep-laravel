@@ -13,34 +13,51 @@ use Illuminate\Http\Request,
 class HasRowsController extends ApiController
 {
     /**
-     * Позиции модели
+     * Create new model and save in DB.
      */
-    public function rows($id)
+    public function create(Request $request)
     {
-        if (!$item = $this->repo->find($id)) {
-            throw new HttpException('Нет такой модели');
+        $rules = $this->repo->create()->getRules();
+        $this->validate($request, $rules);
+
+        $validation = Validator::make($request->all(), $this->repo->create()->getRules());
+
+        if ($validation->fails()) {
+            $errors = $validation->errors();
+            return $errors->toJson();
         }
-        return $item
-            ->rows()
-            ->get()
-            ->all();
+
+        $data = $request->validate($this->repo->create()->getRules());
+        $this->repo->create($data);
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
+    /**
+     * Shows model edit form.
+     */
+    public function edit($id)
+    {
+        $model = $this->_findModel($id);
+        return response()->json([
+            'item' => $model,
+            'rows' => $model->rows()->get()->all()
+        ]);
     }
 
     public function update($id, Request $request)
     {
         // главная модель
-        if (!$item = $this->repo->find($id)) {
-            throw new HttpException('Нет такой модели');
-        }
+        $model = $this->_findModel($id);
         $postData = $request->post();
-        $item->update($postData['invoice']);
-
-        // позиции главой модели
+        $model->update($postData['model']);
+        // позиции модели
         // чистим
-        $item->rows()->delete();
+        $model->rows()->delete();
         // пересоздаем новые
         foreach ($postData['rows'] as $rowData) {
-            $item->rows()->create($rowData);
+            $model->rows()->create($rowData);
         }
         return response()->json('successfully updated.');
     }

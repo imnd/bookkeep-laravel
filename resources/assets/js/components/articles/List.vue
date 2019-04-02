@@ -11,25 +11,25 @@
             <div class="row">
                 <div class="control">
                     <label>цена от:</label>
-                    <input name="priceFrom" type="text">
+                    <input class="form-control" name="priceFrom" type="text">
                 </div>
                 <div class="control">
                     <label>цена до:</label>
-                    <input name="priceTo" type="text">
+                    <input class="form-control" name="priceTo" type="text">
                 </div>
                 <div class="control">
                     <label>название:</label>
-                    <input name="name" />
+                    <input class="form-control" name="name" />
                 </div>
                 <div class="control">
                     <label>ед.изм.:</label>
-                    <select name="unit">
+                    <select class="form-control" name="unit">
                         <option v-for="unit in ['кг', 'шт']" v-bind:value="unit">{{ unit }}</option>
                     </select>
                 </div>
                 <div class="control">
                     <label>активный:</label>
-                    <select name="active">
+                    <select class="form-control" name="active">
                         <option v-for="active, key in ['нет', 'да']" v-bind:value="key">{{ active }}</option>
                     </select>
                 </div>
@@ -37,7 +37,7 @@
             <div class="row">
                 <div class="control">
                     <label>подкатегория:</label>
-                    <select name="subcat_id">
+                    <select class="form-control" name="subcat_id">
                         <option v-for="subcat in subcats" v-bind:value="subcat.id">{{ subcat.name }}</option>
                     </select>
                 </div>

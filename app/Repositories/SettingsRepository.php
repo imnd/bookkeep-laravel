@@ -2,7 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Models\Settings;
+use App\Models\Settings,
+    App\Contracts\SettingsRepositoryInterface;
 
 class SettingsRepository implements SettingsRepositoryInterface
 {

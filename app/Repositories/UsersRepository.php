@@ -4,7 +4,8 @@ namespace App\Repositories;
 
 use App\Models\Users,
     App\Contracts\QueryConditions,
-    Illuminate\Support\Facades\Auth;
+    Illuminate\Support\Facades\Auth,
+    App\Contracts\UsersRepositoryInterface;
 
 class UsersRepository implements UsersRepositoryInterface, QueryConditions
 {

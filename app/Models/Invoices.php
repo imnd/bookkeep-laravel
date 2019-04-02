@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model,
-    App\Contracts\HasRows;
-//  Carbon\Carbon;
+    App\Contracts\HasRows/*,
+    Carbon\Carbon*/;
 
 class Invoices extends Model implements HasRows
 {
-    use \App\Traits\Date;
+    use \App\Traits\Date,
+        \App\Traits\Client;
 
     protected $table = 'invoices';
 
@@ -25,24 +26,16 @@ class Invoices extends Model implements HasRows
 
     public $timestamps = false;
 
-//    protected $dates = ['date'];
-//
-//    public function getDates()
-//    {
-//        return $this->dates;
-//    }
+    protected $dates = ['date'];
+
+    public function getDates()
+    {
+        return $this->dates;
+    }
 
     protected $dateFormat = 'Y-m-d';
 
     # relations
-
-    /**
-     * Get the client.
-     */
-    public function client()
-    {
-        return $this->belongsTo('App\Models\Clients', 'client_id');
-    }
 
     /**
      * Get the invoice rows.
@@ -50,16 +43,5 @@ class Invoices extends Model implements HasRows
     public function rows()
     {
         return $this->hasMany('App\Models\InvoicesRows', 'invoice_id', 'id');
-    }
-
-    /**
-     * Получить имя клиента.
-     *
-     * @param  string $value
-     * @return string
-     */
-    public function getClientAttribute($value)
-    {
-        return ucfirst($value);
     }
 }

@@ -6,18 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class ContractsRows extends Model
 {
-    protected $table = 'contracts_rows';
+    use \App\Traits\Article;
+
+    protected $table = 'contract_rows';
+
+    public $timestamps = false;
 
     protected $fillable = [
         'contract_id',
         'article_id',
+        'quantity',
+        'price',
    	];
-
-    /**
-     * Get the article.
-     */
-    public function article()
-    {
-        return $this->hasOne('App\Models\Articles', 'article_id');
-    }
 }

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Bills,
+    App\Contracts\BillsRepositoryInterface,
     App\Contracts\QueryConditions;
 
 class BillsRepository implements BillsRepositoryInterface, QueryConditions
@@ -13,6 +14,18 @@ class BillsRepository implements BillsRepositoryInterface, QueryConditions
     public function query()
     {
         return Bills::query();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function get(array $conditions = array(), array $orderBy = array())
+    {
+        $query = Bills::where($conditions);
+        if (!empty($orderBy[0]) && !empty($orderBy[1])) {
+            $query = $query->orderBy($orderBy[0], $orderBy[1]);
+        }
+        return $query->get();
     }
 
     /**

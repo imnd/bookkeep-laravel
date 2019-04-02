@@ -3,7 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Regions,
-    App\Contracts\QueryConditions;
+    App\Contracts\QueryConditions,
+    App\Contracts\RegionsRepositoryInterface;
 
 class RegionsRepository implements RegionsRepositoryInterface, QueryConditions
 {

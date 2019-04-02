@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model,
 
 class Bills extends Model
 {
+    use \App\Traits\Client;
+
     public $timestamps = false;
 
     protected $table = 'bills';
@@ -30,10 +32,17 @@ class Bills extends Model
     }
 
     /**
-     * Get the client.
+     * validation rules
+     * 
+     * @return array
      */
-    public function client()
+    public static function getRules()
     {
-        return $this->belongsTo('App\Models\Clients', 'client_id');
+        return [
+            'client_id,contract_num' => 'required|numeric',
+            'sum,remainder' => 'numeric',
+            'date' => 'date',
+            'contents' => 'string',
+        ];
     }
 }

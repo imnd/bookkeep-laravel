@@ -3,7 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Clients,
-    App\Contracts\QueryConditions;
+    App\Contracts\QueryConditions,
+    App\Contracts\ClientsRepositoryInterface;
 
 class ClientsRepository implements ClientsRepositoryInterface, QueryConditions
 {

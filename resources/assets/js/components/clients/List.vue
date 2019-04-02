@@ -7,14 +7,14 @@
 
     // форма поиска
     Vue.component('search-form-clients', {
-        template: `<div class="row">
+        template: `<div class="row col-md-8">
             <div class="control">
                 <label>название:</label>
-                <input name="name" />
+                <input class="form-control" name="name" />
             </div>
             <div class="control">
                 <label>адрес:</label>
-                <input name="address" />
+                <input class="form-control" name="address" />
             </div>
         </div>`
     });
@@ -44,7 +44,7 @@
             <tr v-for="item, index in listData">
                 <td>{{ item.name }}</td>
                 <td>{{ item.address }}</td>
-                <td>{{ item.region ? item.region.name : '' }}</td>
+                <td>{{ item.region.name }}</td>
                 <td>{{ item.telephone }}</td>
                 <td>{{ item.fax }}</td>
                 <td>{{ item.contact_fio }}</td>

@@ -34,7 +34,7 @@ class AppRepositoryProvider extends ServiceProvider
             'Settings',
             'Users',
         ] as $modelName) {
-            $this->app->bind('App\Repositories\\' . $modelName . 'RepositoryInterface', 'App\Repositories\\' . $modelName . 'Repository');
+            $this->app->bind('App\Contracts\\' . $modelName . 'RepositoryInterface', 'App\Repositories\\' . $modelName . 'Repository');
         }
     }
 }

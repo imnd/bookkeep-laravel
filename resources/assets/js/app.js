@@ -200,114 +200,183 @@ const router = new VueRouter({
         {
             name: 'articlesList',
             path: '/articles/list',
-            component: ArticlesList
+            component: ArticlesList,
+            meta: {
+                title: 'Список товаров'
+            }
         },
         {
             name: 'articlesCreate',
             path: '/articles/create',
-            component: ArticleCreate
+            component: ArticleCreate,
+            meta: {
+                title: 'Новый товар'
+            }
         },
         {
             name: 'articlesEdit',
             path: '/articles/edit/:id',
-            component: ArticleEdit
-        },
-        {
-            name: 'clientsCreate',
-            path: '/clients/create',
-            component: ClientCreate
-        },
-        {
-            name: 'clientsList',
-            path: '/clients/list',
-            component: ClientsList
-        },
-        {
-            name: 'clientEdit',
-            path: '/clients/edit/:id',
-            component: ClientEdit
-        },
-        {
-            name: 'invoicesList',
-            path: '/invoices/list',
-            component: InvoicesList
-        },
-        {
-            name: 'invoicesCreate',
-            path: '/invoices/create',
-            component: InvoiceCreate
-        },
-        {
-            name: 'invoicesEdit',
-            path: '/invoices/edit/:id',
-            component: InvoiceEdit
-        },
-        {
-            name: 'invoicesPrintoutBill',
-            path: '/invoices/printout/bill/:id',
-            component: InvoicePrintoutBill
-        },
-        {
-            name: 'invoicesPrintoutInvoice',
-            path: '/invoices/printout/invoice/:id',
-            component: InvoicePrintoutInvoice
-        },
-        {
-            name: 'purchasesList',
-            path: '/purchases/list',
-            component: PurchasesList
-        },
-        {
-            name: 'purchasesCreate',
-            path: '/purchases/create',
-            component: PurchaseCreate
-        },
-        {
-            name: 'purchasesEdit',
-            path: '/purchases/edit/:id',
-            component: PurchaseEdit
-        },
-        {
-            name: 'purchasesPrintout',
-            path: '/purchases/printout/:id',
-            component: PurchasePrintout
+            component: ArticleEdit,
+            meta: {
+                title: 'Редактирование товара'
+            }
         },
         {
             name: 'billsList',
             path: '/bills/list',
-            component: BillsList
+            component: BillsList,
+            meta: {
+                title: ''
+            }
         },
         {
             name: 'billsCreate',
             path: '/bills/create',
-            component: BillCreate
+            component: BillCreate,
+            meta: {
+                title: ''
+            }
         },
         {
             name: 'billsEdit',
             path: '/bills/edit/:id',
-            component: BillEdit
+            component: BillEdit,
+            meta: {
+                title: ''
+            }
+        },
+        {
+            name: 'clientsCreate',
+            path: '/clients/create',
+            component: ClientCreate,
+            meta: {
+                title: 'Новый клиент'
+            }
+        },
+        {
+            name: 'clientsList',
+            path: '/clients/list',
+            component: ClientsList,
+            meta: {
+                title: 'Список клиентов'
+            }
+        },
+        {
+            name: 'clientEdit',
+            path: '/clients/edit/:id',
+            component: ClientEdit,
+            meta: {
+                title: 'Редактирование клиента'
+            }
         },
         {
             name: 'contractsList',
             path: '/contracts/list',
-            component: ContractsList
+            component: ContractsList,
+            meta: {
+                title: 'Список контрактов'
+            }
         },
         {
             name: 'contractsCreate',
             path: '/contracts/create',
-            component: ContractCreate
+            component: ContractCreate,
+            meta: {
+                title: 'Новый контракт'
+            }
         },
         {
             name: 'contractsEdit',
             path: '/contracts/edit/:id',
-            component: ContractEdit
+            component: ContractEdit,
+            meta: {
+                title: 'Редактирование контракта'
+            }
         },
         {
             name: 'contractsPrintout',
             path: '/contracts/printout/:id',
-            component: ContractPrintout
+            component: ContractPrintout,
+            meta: {
+                title: 'Печать контракта'
+            }
+        },
+        {
+            name: 'invoicesList',
+            path: '/invoices/list',
+            component: InvoicesList,
+            meta: {
+                title: 'Список фактур'
+            }
+        },
+        {
+            name: 'invoicesCreate',
+            path: '/invoices/create',
+            component: InvoiceCreate,
+            meta: {
+                title: 'Новая фактура'
+            }
+        },
+        {
+            name: 'invoicesEdit',
+            path: '/invoices/edit/:id',
+            component: InvoiceEdit,
+            meta: {
+                title: 'Редактирование фактуры'
+            }
+        },
+        {
+            name: 'invoicesPrintoutBill',
+            path: '/invoices/printout/bill/:id',
+            component: InvoicePrintoutBill,
+            meta: {
+                title: 'Печать счета'
+            }
+        },
+        {
+            name: 'invoicesPrintoutInvoice',
+            path: '/invoices/printout/invoice/:id',
+            component: InvoicePrintoutInvoice,
+            meta: {
+                title: 'Печать фактуры'
+            }
+        },
+        {
+            name: 'purchasesList',
+            path: '/purchases/list',
+            component: PurchasesList,
+            meta: {
+                title: 'Список закупок'
+            }
+        },
+        {
+            name: 'purchasesCreate',
+            path: '/purchases/create',
+            component: PurchaseCreate,
+            meta: {
+                title: 'Новая закупка'
+            }
+        },
+        {
+            name: 'purchasesEdit',
+            path: '/purchases/edit/:id',
+            component: PurchaseEdit,
+            meta: {
+                title: 'Редактирование закупки'
+            }
+        },
+        {
+            name: 'purchasesPrintout',
+            path: '/purchases/printout/:id',
+            component: PurchasePrintout,
+            meta: {
+                title: 'Печать закупки'
+            }
         },
     ]
 });
-
+router.beforeEach((to, from, next) => {
+    document.title = to.meta.title;
+    next()
+});
 const app = new Vue(Vue.util.extend({router}, App)).$mount('#app');

@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class InvoicesRows extends Model
+class InvoicesRows extends RowModel
 {
+    use \App\Traits\Article,
+        \App\Traits\Invoice;
+
     public $timestamps = false;
 
-    protected $table = 'invoices_rows';
+    protected $table = 'invoice_rows';
 
     protected $fillable = [
         'invoice_id',
@@ -16,22 +19,4 @@ class InvoicesRows extends Model
         'quantity',
         'price',
    	];
-
-    # relations
-
-    /**
-     * Get the article.
-     */
-    public function article()
-    {
-        return $this->hasOne('App\Models\Articles', 'article_id');
-    }
-
-    /**
-     * Get the invoice.
-     */
-    public function invoice()
-    {
-        return $this->hasOne('App\Models\Invoices', 'invoice_id');
-    }
 }

@@ -1,4 +1,5 @@
 @include('header')
+
 <div class="sidebar" data-color="azure" data-background-color="white">
     <ul class="sidebar-wrapper ps-container ps-theme-default">
         <!-- Navbar -->
@@ -18,7 +19,7 @@
                                     <a class="dropdown-item" href="/settings">Администрирование</a>
                                     <div class="dropdown-divider"></div>
                                 @endif
-                                <a class="dropdown-item" href="/index/logout">Выйти</a>
+                                <a class="dropdown-item" href="/logout">Выйти</a>
                             </div>
                         </li>
                     </ul>
@@ -65,14 +66,13 @@
         </ul>
     </ul>
 </div>
+
 <div class="main-panel">
     <!-- End Navbar -->
-
     <div class="content">
         <div id="app"></div>
         <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
     </div>
-
 </div>
 
 @include('footer')

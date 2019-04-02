@@ -21,21 +21,21 @@
             <div class="row">
                 <div class="control">
                     <label>дата с:</label>
-                    <input name="dateFrom" type="text">
+                    <input class="form-control" name="dateFrom" type="text">
                 </div>
                 <div class="control">
                     <label>дата по:</label>
-                    <input name="dateTo" />
+                    <input class="form-control" name="dateTo" />
                 </div>
                 <div class="control">
                     <label>номер:</label>
-                    <input name="number" class="required" />
+                    <input class="form-control required" name="number" />
                 </div>
             </div>
             <div class="row">
                 <div class="control">
                     <label>клиент:</label>
-                    <select name="client_id">
+                    <select class="form-control" name="client_id">
                         <option v-for="client in clients" v-bind:value="client.id">{{ client.name }}</option>
                     </select>
                 </div>
@@ -65,7 +65,7 @@
         template: `<tbody>
         <tr v-for="item, index in listData">
             <td>{{ item.contract_num }}</td>
-            <td>{{ item.client ? item.client.name : '' }}</td>
+            <td>{{ item.client.name }}</td>
             <td>{{ item.date }}</td>
             <td>{{ item.term_start }}</td>
             <td>{{ item.term_end }}</td>

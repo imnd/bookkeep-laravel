@@ -1,9 +1,8 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use App\Repositories\InvoicesRowsRepositoryInterface;
-
-use Illuminate\Http\Resources\Json\ResourceCollection,
+use App\Contracts\InvoicesRowsRepositoryInterface,
+    Illuminate\Http\Resources\Json\ResourceCollection,
     App\Models\InvoicesRows;
 
 /**

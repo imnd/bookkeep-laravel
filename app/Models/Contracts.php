@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model,
     App\Contracts\HasRows;
 
-//use Carbon\Carbon;
-
 class Contracts extends Model implements HasRows
 {
+    use \App\Traits\Client;
+
     public $timestamps = false;
 
     protected $table = 'contracts';
@@ -33,15 +33,22 @@ class Contracts extends Model implements HasRows
         return $this->dates;
     }
 
-    # relations
-
     /**
-     * Get the client.
+     * validation rules
+     * 
+     * @return array
      */
-    public function client()
+    public function getRules()
     {
-        return $this->belongsTo('App\Models\Clients', 'client_id');
+        return [
+            'client_id,contract_num' => 'required|numeric',
+            'sum,payed' => 'numeric',
+            'date,term_start,term_end' => 'date',
+            'type' => 'string|max:6',
+        ];
     }
+
+    # relations
 
     /**
      * Get the invoice rows.

@@ -2,7 +2,6 @@
 
 @section('content')
 
-    
     <div class="card-header card-header-primary">
         <h4 class="card-title">Авторизация</h4>
         <p class="card-category">Заполните форму</p>

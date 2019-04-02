@@ -1,5 +1,5 @@
 <?php
-namespace App\Repositories;
+namespace App\Contracts;
 
 interface BillsRepositoryInterface extends RepositoryInterface
 {

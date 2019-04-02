@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use App\Repositories\BillsRepositoryInterface;
+use App\Contracts\BillsRepositoryInterface;
 
 /**
  * Контроллер счетов

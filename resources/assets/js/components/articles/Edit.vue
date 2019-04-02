@@ -1,63 +1,54 @@
 <template>
-    <div>
-        <router-link to="/articles/list" class="button primary top">Список</router-link>
-
-        <h1>Редактирование товара</h1>
-
-        <form @submit.prevent="updateArticle">
-            <div class="row">
-                <label>Подкатегория:</label>
-                <select v-model="article.subcat_id">
-                    <option v-for="subcat in subcats" v-bind:value="subcat.id">{{ subcat.name }}</option>
-                </select>
+    <div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="form-title">Редактирование товара</h4>
+            <div class="nav-tabs-navigation">
+                <div class="nav-tabs-wrapper">
+                    <ul class="nav nav-tabs" data-tabs="tabs">
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/articles/list">
+                                <i class="material-icons">view_list</i> Список
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="#" v-on:click="articleDelete()">
+                                <i class="material-icons">delete</i> Удалить
+                            </router-link>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="row">
-                <label class="control-label">Название:</label>
-                <input v-model="article.name">
-            </div>
-            <div class="row">
-                <label class="control-label">Ед. изм.:</label>
-                <input v-model="article.unit">
-            </div>
-            <div class="row">
-                <label class="control-label">Цена:</label>
-                <input v-model="article.price">
-            </div>
-            <div class="row">
-                <label class="control-label">Активный:</label>
-                <input v-model="article.active">
-            </div>
-            <div class="row">
-                <button class="button success">Сохранить</button>
-            </div>
-        </form>
+        </div>
+        <div class="card-body">
+            <form @submit.prevent="update">
+                <form-body :model="model"></form-body>
+            </form>
+        </div>
     </div>
 </template>
 
 <script>
+    import FormBody from './Form.vue';
     export default {
         data() {
             return {
-                article: {},
-                subcats: []
+                model: {},
             }
         },
         created() {
             let uri = `/api/articles/edit/${this.$route.params.id}`;
             this.axios.get(uri).then(response => {
-                this.article = response.data;
-            });
-            this.axios.get(`/api/subcats/list`).then(response => {
-                this.subcats = response.data.data;
+                this.model = response.data;
             });
         },
         methods: {
-            updateArticle() {
+            update() {
                 let uri = `/api/articles/update/${this.$route.params.id}`;
                 this.axios.post(uri, this.article).then(response => {
                     this.$router.push({name: 'articlesList'});
                 });
             }
-        }
+        },
+        components: { FormBody },
     }
 </script>

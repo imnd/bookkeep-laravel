@@ -11,25 +11,25 @@
             <div class="row">
                 <div class="control">
                     <label>дата с:</label>
-                    <date-picker name="dateFrom"></date-picker>
+                    <date-picker class="form-control" name="dateFrom"></date-picker>
                 </div>
                 <div class="control">
                     <label>дата по:</label>
-                    <date-picker name="dateTo"></date-picker>
+                    <date-picker class="form-control" name="dateTo"></date-picker>
                 </div>
                 <div class="control">
                     <label>номер:</label>
-                    <input name="number" class="required" type="text">
+                    <input name="number" class="form-control required" type="text">
                 </div>
                 <div class="control">
                     <label>номер договора:</label>
-                    <input name="contract_num" class="required" type="text">
+                    <input name="contract_num" class="form-control required" type="text">
                 </div>
             </div>
             <div class="row">
                 <div class="control">
                     <label>клиент:</label>
-                    <select name="client_id">
+                    <select class="form-control" name="client_id">
                         <option v-for="client in clients" v-bind:value="client.id">{{ client.name }}</option>
                     </select>
                 </div>
@@ -66,11 +66,11 @@
             <tr v-for="item, index in listData">
                 <td class="text-primary">{{ item.number }}</td>
                 <td>{{ item.contract_num }}</td>
-                <td>{{ item.client ? item.client.name : '' }}</td>
+                <td>{{ item.client.name }}</td>
                 <td>{{ item.date }}</td>
                 <td>{{ item.sum }}</td>
                 <td>{{ item.payed }}</td>
-                <td><router-link :to="{name: 'invoicesEdit', params: { id: item.id }}" >&nbsp;</router-link></td>
+                <td><router-link :to="{name: 'invoicesEdit', params: { id: item.id }}" ><i class="material-icons">edit</i></router-link></td>
                 <td><a href="#"><i :data-item-id="item.id" :data-item-index="index" class="material-icons">delete</i></a></td>
                 <td><router-link :to="{name: 'invoicesPrintoutBill', params: { id: item.id }}" class="button-printout">&nbsp;</router-link></td>
                 <td><router-link :to="{name: 'invoicesPrintoutInvoice', params: { id: item.id }}" class="button-printout">&nbsp;</router-link></td>

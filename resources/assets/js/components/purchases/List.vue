@@ -10,15 +10,15 @@
         template: `<div class="row">
             <div class="control">
                 <label>дата с:</label>
-                <input name="dateFrom" />
+                <input class="form-control" name="dateFrom" />
             </div>
             <div class="control">
                 <label>дата по:</label>
-                <input name="dateTo" />
+                <input class="form-control" name="dateTo" />
             </div>
             <div class="control">
                 <label>номер:</label>
-                <input name="number" class="required" />
+                <input name="number" class="form-control required" />
             </div>
         </div>`
     });
@@ -41,7 +41,7 @@
                 <td>{{ item.date }}</td>
                 <td>{{ item.sum }}</td>
                 <td><a href="#"><i :data-item-id="item.id" :data-item-index="index" class="material-icons">delete</i></a></td>
-                <td><router-link :to="{name: 'purchasesEdit', params: { id: item.id }}" >&nbsp;</router-link></td>
+                <td><router-link :to="{name: 'purchasesEdit', params: { id: item.id }}" ><i class="material-icons">edit</i></router-link></td>
                 <td><router-link :to="{name: 'purchasesPrintout', params: { id: item.id }}" class="button-printout">&nbsp;</router-link></td>
             </tr>
         </tbody>`

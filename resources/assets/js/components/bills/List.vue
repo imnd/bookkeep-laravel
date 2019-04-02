@@ -7,25 +7,29 @@
 
     // форма поиска
     Vue.component('search-form-bills', {
-        template: `<div class="row">
+        template: `<div>
+        <div class="row">
             <div class="control">
                 <label>дата с:</label>
-                <input name="dateFrom" />
+                <input class="form-control" name="dateFrom" />
             </div>
             <div class="control">
                 <label>дата по:</label>
-                <input name="dateTo" />
+                <input class="form-control" name="dateTo" />
             </div>
             <div class="control">
                 <label>номер договора:</label>
-                <input name="contract_num" class="required" />
+                <input class="form-control required" name="contract_num" />
             </div>
+        </div>
+        <div class="row">
             <div class="control">
                 <label>клиент:</label>
-                <select name="client_id">
+                <select class="form-control" name="client_id">
                     <option v-for="client in clients" v-bind:value="client.id">{{ client.name }}</option>
                 </select>
             </div>
+        </div>
         </div>`,
         data() {
             return {
@@ -56,11 +60,11 @@
         template: `<tbody>
         <tr v-for="item, index in listData">
             <td>{{ item.contract_num }}</td>
-            <td>{{ item.client ? item.client.name : '' }}</td>
+            <td>{{ item.client.name }}</td>
             <td>{{ item.sum }}</td>
             <td>{{ item.remainder }}</td>
             <td>{{ item.date }}</td>
-            <td><router-link :to="{name: 'billsEdit', params: { id: item.id }}" >&nbsp;</router-link></td>
+            <td><router-link :to="{name: 'billsEdit', params: { id: item.id }}" ><i class="material-icons">edit</i></router-link></td>
             <td><a href="#"><i :data-item-id="item.id" :data-item-index="index" class="material-icons">delete</i></a></td>
         </tr>
         </tbody>`

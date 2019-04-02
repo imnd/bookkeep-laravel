@@ -3,7 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Invoices,
-    App\Contracts\QueryConditions;
+    App\Contracts\QueryConditions,
+    App\Contracts\InvoicesRepositoryInterface;
 
 class InvoicesRepository implements InvoicesRepositoryInterface, QueryConditions
 {

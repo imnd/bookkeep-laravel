@@ -21,6 +21,24 @@ class Clients extends Model
      */
     public function region()
     {
-        return $this->hasOne('App\Models\Regions', 'id', 'region_id');
+        return $this->hasOne('App\Models\Regions', 'id', 'region_id')->withDefault();
+    }
+
+    /**
+     * validation rules
+     * 
+     * @return array
+     */
+    public static function getRules()
+    {
+        return [
+            'name,address' => 'required|max:255',
+            'region_id' => 'required|numeric',
+            'sort' => 'numeric|max:3',
+            'active' => 'numeric|min:0',
+            'telephone,fax,account' => 'min:10|max:10',
+            'INN,KPP,BIK' => 'min:10|max:10',
+            'contact_fio,contact_post' => 'string|max:255',
+        ];
     }
 }

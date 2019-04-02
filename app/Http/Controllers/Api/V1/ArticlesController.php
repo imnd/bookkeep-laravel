@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use App\Repositories\ArticlesRepositoryInterface;
+use App\Contracts\ArticlesRepositoryInterface;
 
 /**
  * Контроллер товаров

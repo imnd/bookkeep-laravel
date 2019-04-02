@@ -25,8 +25,8 @@ class Articles extends Model
             'subcat_id' => 'required|numeric',
             'name' => 'required|max:255',
             'price' => 'required|max:255',
-            'unit' => 'required|max:3',
-            'active' => 'min:0|numeric',
+            'unit' => 'required|max:2',
+            'active' => 'numeric|min:1',
         ];
     }
 
@@ -35,16 +35,16 @@ class Articles extends Model
      */
     public static function getUnits(): array
     {
-        return array('кг', 'шт');
+        return ['кг', 'шт'];
     }
 
     /**
      * @return array
      */
-    /*public function getActiveReadable()
+    public function getActiveReadable()
     {
         return ['нет', 'да'][$this->active];
-    }*/
+    }
 
     /**
      * Get the subcategory.

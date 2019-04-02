@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use App\Repositories\PurchasesRepositoryInterface;
+use App\Contracts\PurchasesRepositoryInterface;
 
 /**
  * Контроллер закупок

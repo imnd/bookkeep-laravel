@@ -1,7 +1,8 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\ArticleSubcats;
+use App\Models\ArticleSubcats,
+    App\Contracts\ArticleSubcatsRepositoryInterface;
 
 class ArticleSubcatsRepository implements ArticleSubcatsRepositoryInterface
 {
