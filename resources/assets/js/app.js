@@ -226,7 +226,7 @@ const router = new VueRouter({
             path: '/bills/list',
             component: BillsList,
             meta: {
-                title: ''
+                title: 'Список платежей'
             }
         },
         {
@@ -234,7 +234,7 @@ const router = new VueRouter({
             path: '/bills/create',
             component: BillCreate,
             meta: {
-                title: ''
+                title: 'Новый платеж'
             }
         },
         {
@@ -242,7 +242,7 @@ const router = new VueRouter({
             path: '/bills/edit/:id',
             component: BillEdit,
             meta: {
-                title: ''
+                title: 'Редактирование платежа'
             }
         },
         {
