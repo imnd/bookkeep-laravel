@@ -32,19 +32,21 @@
     export default {
         data() {
             return {
-                purchase: {},
+                model: {},
+                rows: [],
             }
         },
         created() {
             let uri = `/api/purchases/edit/${this.$route.params.id}`;
             this.axios.get(uri).then(response => {
-                this.purchase = response.data;
+                this.model = response.data.item;
+                this.rows = response.data.rows;
             });
         },
         methods: {
             update() {
                 let uri = `/api/purchases/update/${this.$route.params.id}`;
-                this.axios.post(uri, this.purchase).then(response => {
+                this.axios.post(uri, this.model).then(response => {
                     this.$router.push({name: 'purchasesList'});
                 });
             }

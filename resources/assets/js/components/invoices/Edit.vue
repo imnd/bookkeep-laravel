@@ -17,12 +17,12 @@
                         </li>
                         <li class="nav-item">
                             <router-link class="nav-link" v-bind:to="{name: 'modelsPrintoutBill', params: { id: this.$route.params.id }}">
-                                <i class="material-icons">print</i> Распечатать фактуру
+                                <i class="material-icons">print</i> Печать фактуры
                             </router-link>
                         </li>
                         <li class="nav-item">
                             <router-link class="nav-link" v-bind:to="{name: 'modelsPrintoutInvoice', params: { id: this.$route.params.id }}">
-                                <i class="material-icons">print</i> Распечатать накладную
+                                <i class="material-icons">print</i> Печать накладной
                             </router-link>
                         </li>
                     </ul>

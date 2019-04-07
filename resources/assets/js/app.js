@@ -240,5 +240,6 @@ router.beforeEach((to, from, next) => {
     next()
 });
 
+
 import App from './components/App.vue';
 const app = new Vue(Vue.util.extend({router}, App)).$mount('#app');

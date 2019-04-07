@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class InvoicesRows extends RowModel
+class InvoicesRows extends Model
 {
     use \App\Traits\Article,
         \App\Traits\Invoice;

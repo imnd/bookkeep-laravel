@@ -14,9 +14,9 @@
                 <date-picker class="form-control" :value="model.date" v-model="model.date"></date-picker>
             </div>
         </div>
-        <div class="row col-md-8">
+        <div class="row col-md-12">
             <label>Клиент</label>
-            <select v-model="model.client_id">
+            <select class="form-control" v-model="model.client_id">
                 <option v-for="client in clients" v-bind:value="client.id">{{ client.name }}</option>
             </select>
         </div>
@@ -59,10 +59,8 @@
             </tbody>
         </table>
 
-        <div class="row">
-            <div class="col-md-4">
-                <button class="btn btn-primary btn-round">Сохранить</button>
-            </div>
+        <div class="row col-md-4">
+            <button class="btn btn-primary btn-round">Сохранить</button>
         </div>
     </div>
 </template>
