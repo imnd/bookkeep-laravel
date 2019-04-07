@@ -20,8 +20,8 @@ class PurchasesRows extends Model
     /**
      * Get the article.
      */
-    /*public function article()
+    public function articleSubcat()
     {
         return $this->hasOne('App\Models\ArticleSubcats', 'article_subcategory_id');
-    }*/
+    }
 }

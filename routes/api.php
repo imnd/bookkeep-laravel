@@ -33,9 +33,7 @@ Route::group([
         $controllerName = ucfirst($modelName) . 'Controller';
         Route::get("/$modelName/rows/{id}", "$controllerName@rows");
     }
-    foreach (['subcats', 'regions'] as $modelName) {
-        $controllerName = ucfirst($modelName) . 'Controller';
-        Route::get("/$modelName/list", "$controllerName@list");
-    }
+    Route::get("/regions/list", "RegionsController@list");
+    Route::get("/article-subcats/list", "ArticleSubcatsController@list");
 });
 

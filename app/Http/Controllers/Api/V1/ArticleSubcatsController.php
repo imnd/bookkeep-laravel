@@ -9,7 +9,7 @@ use App\Contracts\ArticleSubcatsRepositoryInterface;
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
  */ 
-class SubcatsController extends ApiController
+class ArticleSubcatsController extends ApiController
 {
     /**
      * Создание нового экземпляра контроллера.
