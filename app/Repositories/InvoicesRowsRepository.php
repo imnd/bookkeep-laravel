@@ -5,12 +5,12 @@ namespace App\Repositories;
 use App\Models\InvoicesRows,
     App\Contracts\InvoicesRowsRepositoryInterface;
 
-class InvoicesRowsRepository implements InvoicesRowsRepositoryInterface
+class InvoicesRowsRepository implements InvoicesRowsRepositoryInterface, Validated
 {
     /**
      * @inheritdoc
      */
-    public function getRules()
+    public function getRules(): array
     {
         return InvoicesRows::getRules();
     }

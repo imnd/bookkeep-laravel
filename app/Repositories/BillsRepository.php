@@ -6,7 +6,7 @@ use App\Models\Bills,
     App\Contracts\BillsRepositoryInterface,
     App\Contracts\QueryConditions;
 
-class BillsRepository implements BillsRepositoryInterface, QueryConditions
+class BillsRepository implements BillsRepositoryInterface, QueryConditions, Validated
 {
     /**
      * @inheritdoc

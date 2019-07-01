@@ -3,16 +3,17 @@
 namespace App\Repositories;
 
 use App\Models\Users,
-    App\Contracts\QueryConditions,
     Illuminate\Support\Facades\Auth,
+    App\Contracts\Validated,
+    App\Contracts\QueryConditions,
     App\Contracts\UsersRepositoryInterface;
 
-class UsersRepository implements UsersRepositoryInterface, QueryConditions
+class UsersRepository implements UsersRepositoryInterface, QueryConditions, Validated
 {
     /**
      * @inheritdoc
      */
-    public function getRules()
+    public function getRules(): array
     {
         return Users::getRules();
     }

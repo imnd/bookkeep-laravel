@@ -6,7 +6,7 @@ use App\Models\Regions,
     App\Contracts\QueryConditions,
     App\Contracts\RegionsRepositoryInterface;
 
-class RegionsRepository implements RegionsRepositoryInterface, QueryConditions
+class RegionsRepository implements RegionsRepositoryInterface, QueryConditions, Validated
 {
     /**
      * @inheritdoc

@@ -6,7 +6,7 @@ use App\Models\Contracts,
     App\Contracts\QueryConditions,
     App\Contracts\ContractsRepositoryInterface;
 
-class ContractsRepository implements ContractsRepositoryInterface, QueryConditions
+class ContractsRepository implements ContractsRepositoryInterface, QueryConditions, Validated
 {
     /**
      * @inheritdoc

@@ -6,7 +6,7 @@ use App\Models\Purchases,
     App\Contracts\QueryConditions,
     App\Contracts\PurchasesRepositoryInterface;
 
-class PurchasesRepository implements PurchasesRepositoryInterface, QueryConditions
+class PurchasesRepository implements PurchasesRepositoryInterface, QueryConditions, Validated
 {
     /**
      * @inheritdoc

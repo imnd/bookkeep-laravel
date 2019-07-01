@@ -3,14 +3,15 @@
 namespace App\Repositories;
 
 use App\Models\Settings,
+    App\Contracts\Validated,
     App\Contracts\SettingsRepositoryInterface;
 
-class SettingsRepository implements SettingsRepositoryInterface
+class SettingsRepository implements SettingsRepositoryInterface, Validated
 {
     /**
      * @inheritdoc
      */
-    public function getRules()
+    public function getRules(): array
     {
         return Settings::getRules();
     }

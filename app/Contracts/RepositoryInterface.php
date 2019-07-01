@@ -4,13 +4,6 @@ namespace App\Contracts;
 interface RepositoryInterface
 {
     /**
-     * Get model validation rules.
-     *
-     * @return array
-     */
-    public function getRules();
-
-    /**
      * Get all of the models from the database.
      * 
      * @return \Illuminate\Database\Eloquent\Collection|static[]

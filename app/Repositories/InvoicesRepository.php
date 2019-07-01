@@ -6,7 +6,7 @@ use App\Models\Invoices,
     App\Contracts\QueryConditions,
     App\Contracts\InvoicesRepositoryInterface;
 
-class InvoicesRepository implements InvoicesRepositoryInterface, QueryConditions
+class InvoicesRepository implements InvoicesRepositoryInterface, QueryConditions, Validated
 {
     /**
      * @inheritdoc
