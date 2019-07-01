@@ -11,9 +11,6 @@ axios.defaults.headers.common = {
     'Authorization': 'Bearer ' + Laravel.apiToken,
 };
 
-import Datepicker from 'vuejs-datepicker';
-Vue.component('date-picker', Datepicker);
-
 import Grid from './components/Grid.vue';
 Vue.component('grid', Grid);
 
@@ -239,7 +236,6 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title;
     next()
 });
-
 
 import App from './components/App.vue';
 const app = new Vue(Vue.util.extend({router}, App)).$mount('#app');

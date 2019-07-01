@@ -11,6 +11,14 @@ class InvoicesRepository implements InvoicesRepositoryInterface, QueryConditions
     /**
      * @inheritdoc
      */
+    public function getRules()
+    {
+        return Invoices::getRules();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function query()
     {
         return Invoices::query();

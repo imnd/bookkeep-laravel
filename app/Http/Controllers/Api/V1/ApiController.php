@@ -24,7 +24,6 @@ class ApiController extends Controller
     public function list(Request $request)
     {
         $conditions = $this->repo->getSearchConditions($request->all());
-
         return new ResourceCollection($this->repo->get($conditions, [$request->get('field'), $request->get('order')]));
     }
 
@@ -33,17 +32,16 @@ class ApiController extends Controller
      */
     public function create(Request $request)
     {
-        $rules = $this->repo->create()->getRules();
+        $rules = $this->repo->getRules();
         $this->validate($request, $rules);
 
-        $validation = Validator::make($request->all(), $this->repo->create()->getRules());
-
+        $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
             $errors = $validation->errors();
             return $errors->toJson();
         }
 
-        $data = $request->validate($this->repo->create()->getRules());
+        $data = $request->validate($rules);
         $this->repo->create($data);
         return response()->json([
             'success' => true,

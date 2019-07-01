@@ -181,6 +181,7 @@ class CreateTables extends Migration
             $table->char('password_hash', 255);
             $table->tinyInteger('confirmed');
             $table->char('confirm_code', 128);
+            $table->char('api_token', 60);
         });
     }
 

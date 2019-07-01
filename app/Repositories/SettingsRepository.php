@@ -10,6 +10,14 @@ class SettingsRepository implements SettingsRepositoryInterface
     /**
      * @inheritdoc
      */
+    public function getRules()
+    {
+        return Settings::getRules();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function query()
     {
         return Settings::query();

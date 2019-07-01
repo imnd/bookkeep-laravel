@@ -11,6 +11,14 @@ class BillsRepository implements BillsRepositoryInterface, QueryConditions
     /**
      * @inheritdoc
      */
+    public function getRules()
+    {
+        return Bills::getRules();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function query()
     {
         return Bills::query();

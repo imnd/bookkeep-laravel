@@ -12,6 +12,14 @@ class UsersRepository implements UsersRepositoryInterface, QueryConditions
     /**
      * @inheritdoc
      */
+    public function getRules()
+    {
+        return Users::getRules();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function query()
     {
         return Users::query();

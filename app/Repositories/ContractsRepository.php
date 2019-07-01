@@ -6,8 +6,16 @@ use App\Models\Contracts,
     App\Contracts\QueryConditions,
     App\Contracts\ContractsRepositoryInterface;
 
-class ContractsRepository implements , QueryConditions
+class ContractsRepository implements ContractsRepositoryInterface, QueryConditions
 {
+    /**
+     * @inheritdoc
+     */
+    public function getRules()
+    {
+        return Contracts::getRules();
+    }
+
     /**
      * @inheritdoc
      */

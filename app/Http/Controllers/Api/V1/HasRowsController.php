@@ -17,18 +17,17 @@ class HasRowsController extends ApiController
      */
     public function create(Request $request)
     {
-        $rules = $this->repo->create()->getRules();
-        $this->validate($request, $rules);
-
-        $validation = Validator::make($request->all(), $this->repo->create()->getRules());
-
+        $rules = $this->repo->getRules();
+        $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
             $errors = $validation->errors();
             return $errors->toJson();
         }
-
-        $data = $request->validate($this->repo->create()->getRules());
-        $this->repo->create($data);
+        $data = $request->validate($rules);
+        $model = $this->repo->create($data);
+        foreach ($data['rows'] as $rowData) {
+            $model->rows()->create($rowData);
+        }
         return response()->json([
             'success' => true,
         ]);
@@ -49,16 +48,19 @@ class HasRowsController extends ApiController
     public function update($id, Request $request)
     {
         // главная модель
+        $rules = $this->repo->getRules();
+        $data = $request->validate($rules);
         $model = $this->_findModel($id);
-        $postData = $request->post();
-        $model->update($postData['model']);
+        $model->update($data['model']);
         // позиции модели
         // чистим
         $model->rows()->delete();
         // пересоздаем новые
-        foreach ($postData['rows'] as $rowData) {
+        foreach ($data['rows'] as $rowData) {
             $model->rows()->create($rowData);
         }
-        return response()->json('successfully updated.');
+        return response()->json([
+            'success' => true,
+        ]);
     }
 }

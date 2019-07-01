@@ -8,7 +8,7 @@ use App\Contracts\ArticleSubcatsRepositoryInterface;
  * 
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
- */ 
+ */
 class ArticleSubcatsController extends ApiController
 {
     /**

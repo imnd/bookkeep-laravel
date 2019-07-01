@@ -64,7 +64,6 @@
             </tr>
             </tbody>
         </table>
-
         <div class="row">
             <div class="col-md-4">
                 <button class="btn btn-primary btn-round">Сохранить</button>

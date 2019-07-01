@@ -6,6 +6,7 @@
     window.Vue = require('vue');
 
     // форма поиска
+    import Datepicker from 'vuejs-datepicker';
     Vue.component('search-form-invoices', {
         template: `<div>
             <div class="row">
@@ -35,6 +36,7 @@
                 </div>
             </div>
         </div>`,
+        components: {'date-picker': Datepicker},
         data() {
             return {
                 clients: [],

@@ -71,8 +71,20 @@
                 <td>{{ item.unit }}</td>
                 <td>{{ item.price }}</td>
                 <td>{{ ['нет', 'да'][item.active] }}</td>
-                <td><router-link :to="{name: 'articlesEdit', params: { id: item.id }}"><i class="material-icons">edit</i></router-link></td>
-                <td><a href="#"><i :data-item-id="item.id" :data-item-index="index" class="material-icons">delete</i></a></td>
+                <td>
+                    <router-link :to="{name: 'articlesEdit', params: { id: item.id }}">
+                        <i class="material-icons">edit</i>
+                    </router-link>
+                </td>
+                <td>
+                    <a href="#">
+                        <i
+                            :data-item-id="item.id"
+                            :data-item-index="index"
+                            class="material-icons"
+                        >delete</i>
+                    </a>
+                </td>
             </tr>
         </tbody>`,
         props: {

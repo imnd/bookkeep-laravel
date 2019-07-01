@@ -10,6 +10,14 @@ class InvoicesRowsRepository implements InvoicesRowsRepositoryInterface
     /**
      * @inheritdoc
      */
+    public function getRules()
+    {
+        return InvoicesRows::getRules();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function query()
     {
         return InvoicesRows::query();

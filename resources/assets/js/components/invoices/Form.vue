@@ -65,12 +65,14 @@
     </div>
 </template>
 <script>
+    import Datepicker from 'vuejs-datepicker';
     let row = {
         'article_id' : '',
         'quantity' : '',
         'price' : '',
     };
     export default {
+        components: {'date-picker': Datepicker},
         data: function () {
             return {
                 clients: [],

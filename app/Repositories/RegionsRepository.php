@@ -11,6 +11,14 @@ class RegionsRepository implements RegionsRepositoryInterface, QueryConditions
     /**
      * @inheritdoc
      */
+    public function getRules()
+    {
+        return Regions::getRules();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function query()
     {
         return Regions::query();

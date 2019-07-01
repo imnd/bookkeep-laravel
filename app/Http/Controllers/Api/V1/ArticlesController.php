@@ -12,8 +12,6 @@ use App\Contracts\ArticlesRepositoryInterface;
 class ArticlesController extends ApiController
 {
     /**
-     * Создание нового экземпляра контроллера.
-     *
      * @param ArticlesRepositoryInterface $repo
      * @return void
      */

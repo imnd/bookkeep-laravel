@@ -11,6 +11,14 @@ class PurchasesRepository implements PurchasesRepositoryInterface, QueryConditio
     /**
      * @inheritdoc
      */
+    public function getRules()
+    {
+        return Purchases::getRules();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function query()
     {
         return Purchases::query();

@@ -11,6 +11,14 @@ class ArticlesRepository implements ArticlesRepositoryInterface, QueryConditions
     /**
      * @inheritdoc
      */
+    public function getRules()
+    {
+        return Articles::getRules();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function query()
     {
         return Articles::query();

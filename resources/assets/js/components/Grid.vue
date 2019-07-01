@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-header card-header-primary">
                     <h4 class="card-title">{{ this.heading }}</h4>
-                    <router-link data-color="azure" :to="'/' + entity + '/create'" class="btn btn-primary btn-round pull-right">Создать</router-link>
+                    <router-link data-color="azure" :to="`/${entity}/create`" class="btn btn-primary btn-round pull-right">Создать</router-link>
                     <div class="clearfix"></div>
                     <p v-if="this.subheading" class="card-category">{{ this.subheading }}</p>
                 </div>
@@ -12,7 +12,7 @@
                     <div class="table-responsive">
                         <!--форма поиска-->
                         <form @submit.prevent="listUpdate" class="search-form">
-                            <component :is="'search-form-' + entity"></component>
+                            <component :is="`search-form-${entity}`"/>
                             <div class="pagination">
                                 <span> страница {{ pageNumber + 1 }}. всего: {{ pageCount }} страниц</span>
                             </div>
@@ -21,9 +21,9 @@
                         <!--список-->
                         <table @click.prevent="deleteItem" class="table">
                             <thead @click.prevent="listSort" class="text-primary">
-                            <component :is="'grid-head-' + entity"></component>
+                                <component :is="'grid-head-' + entity"/>
                             </thead>
-                            <component :is="'grid-body-' + entity" :listData="paginatedData"></component>
+                            <component :is="'grid-body-' + entity" :listData="paginatedData"/>
                         </table>
                         <div class="pagination">
                             <button class="btn" @click="prevPage"><</button>&nbsp;
@@ -67,7 +67,7 @@
                 paginatedData: [],
                 pageNumber: 0,
                 orders: {},
-                listUrl: {},
+                listUrl: '',
             }
         },
         created() {

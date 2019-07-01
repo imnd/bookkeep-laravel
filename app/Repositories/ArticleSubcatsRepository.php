@@ -9,6 +9,14 @@ class ArticleSubcatsRepository implements ArticleSubcatsRepositoryInterface
     /**
      * @inheritdoc
      */
+    public function getRules()
+    {
+        return ArticleSubcats::getRules();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function query()
     {
         return ArticleSubcats::query();

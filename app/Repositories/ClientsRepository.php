@@ -11,6 +11,14 @@ class ClientsRepository implements ClientsRepositoryInterface, QueryConditions
     /**
      * @inheritdoc
      */
+    public function getRules()
+    {
+        return Clients::getRules();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function query()
     {
         return Clients::query();
