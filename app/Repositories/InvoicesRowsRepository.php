@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\InvoicesRows,
+    App\Contracts\Validated,
     App\Contracts\InvoicesRowsRepositoryInterface;
 
 class InvoicesRowsRepository implements InvoicesRowsRepositoryInterface, Validated
@@ -56,11 +57,6 @@ class InvoicesRowsRepository implements InvoicesRowsRepositoryInterface, Validat
      */
     public function create(array $data)
     {
-        $fields = (new InvoicesRows)->getFillable();
-        $fieldVals = array();
-        foreach ($fields as $field) {
-            $fieldVals[$field] = $data[$field];
-        }
-        (new InvoicesRows($fieldVals))->save();
+        (new InvoicesRows)->fill($data)->save();
     }
 }

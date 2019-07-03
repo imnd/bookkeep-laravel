@@ -12,8 +12,6 @@ use App\Contracts\PurchasesRepositoryInterface;
 class PurchasesController extends HasRowsController
 {
     /**
-     * Создание нового экземпляра контроллера.
-     *
      * @param PurchasesRepositoryInterface $repo
      * @return void
      */

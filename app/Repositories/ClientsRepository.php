@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Clients,
+    App\Contracts\Validated,
     App\Contracts\QueryConditions,
     App\Contracts\ClientsRepositoryInterface;
 
@@ -11,7 +12,7 @@ class ClientsRepository implements ClientsRepositoryInterface, QueryConditions, 
     /**
      * @inheritdoc
      */
-    public function getRules()
+    public function getRules(): array
     {
         return Clients::getRules();
     }
@@ -57,12 +58,7 @@ class ClientsRepository implements ClientsRepositoryInterface, QueryConditions, 
      */
     public function create(array $data)
     {
-        $fields = (new Clients)->getFillable();
-        $fieldVals = array();
-        foreach ($fields as $field) {
-            $fieldVals[$field] = $data[$field];
-        }
-        (new Clients($fieldVals))->save();
+        (new Clients)->fill($data)->save();
     }
 
     /**

@@ -55,12 +55,7 @@ class ArticleSubcatsRepository implements ArticleSubcatsRepositoryInterface
      */
     public function create(array $data)
     {
-        $fields = (new ArticleSubcats)->getFillable();
-        $fieldVals = array();
-        foreach ($fields as $field) {
-            $fieldVals[$field] = $data[$field];
-        }
-        (new ArticleSubcats($fieldVals))->save();
+        (new ArticleSubcats)->fill($data)->save();
     }
 
     /**

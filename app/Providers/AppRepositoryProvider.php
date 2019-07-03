@@ -23,8 +23,9 @@ class AppRepositoryProvider extends ServiceProvider
     public function register()
     {
         foreach ([
-            'Articles', 
-            'ArticleSubcats', 
+            'Articles',
+            'ArticleCats',
+            'ArticleSubcats',
             'Bills',
             'Clients',
             'Contracts',

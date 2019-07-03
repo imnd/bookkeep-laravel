@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model,
-    App\Contracts\HasRows/*,
-    Carbon\Carbon*/;
+    App\Contracts\HasRows,
+    App\Traits\Date,
+    App\Traits\Client
+    /*Carbon\Carbon*/
+;
 
 class Invoices extends Model implements HasRows
 {
-    use \App\Traits\Date,
-        \App\Traits\Client;
+    use Date, Client;
+
+    public $timestamps = false;
 
     protected $table = 'invoices';
 
@@ -17,16 +21,14 @@ class Invoices extends Model implements HasRows
         'client_id',
         'contract_num',
         'number',
-        'date',
         'sum',
         'payed',
+        'date',
     ];
 
     protected $with = ['client'];
 
-    public $timestamps = false;
-
-    protected $dates = ['date'];
+    //protected $dates = ['date'];
 
     public function getDates()
     {
@@ -35,6 +37,24 @@ class Invoices extends Model implements HasRows
 
     protected $dateFormat = 'Y-m-d';
 
+    /**
+     * validation rules
+     * 
+     * @return array
+     */
+    public static function getRules()
+    {
+        return [
+            'client_id' => 'required|numeric',
+            'contract_num' => 'required|numeric',
+            'number' => 'required|numeric',
+            'sum' => 'numeric',
+            'payed' => 'numeric',
+            'date' => 'required|date',
+            'rows' => 'array',
+        ];
+    }
+
     # relations
 
     /**
@@ -42,6 +62,6 @@ class Invoices extends Model implements HasRows
      */
     public function rows()
     {
-        return $this->hasMany('App\Models\InvoicesRows', 'invoice_id', 'id');
+        return $this->hasMany(InvoicesRows::class, 'invoice_id', 'id');
     }
 }

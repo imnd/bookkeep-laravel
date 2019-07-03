@@ -57,11 +57,6 @@ class SettingsRepository implements SettingsRepositoryInterface, Validated
      */
     public function create(array $data)
     {
-        $fields = (new Settings)->getFillable();
-        $fieldVals = array();
-        foreach ($fields as $field) {
-            $fieldVals[$field] = $data[$field];
-        }
-        (new Settings($fieldVals))->save();
+        (new Settings)->fill($data)->save();
     }
 }

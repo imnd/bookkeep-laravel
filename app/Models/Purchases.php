@@ -7,13 +7,30 @@ use Illuminate\Database\Eloquent\Model,
 
 class Purchases extends Model implements HasRows
 {
+    public $timestamps = false;
+
     protected $table = 'purchases';
 
     protected $fillable = [
         'number',
+        'sum',
         'date',
-        'sum'
    	];
+
+    /**
+     * validation rules
+     * 
+     * @return array
+     */
+    public static function getRules()
+    {
+        return [
+            'number' => 'required|numeric',
+            'sum' => 'numeric',
+            'date' => 'required|date',
+            'rows' => 'array',
+        ];
+    }
 
     # relations
 
@@ -22,6 +39,6 @@ class Purchases extends Model implements HasRows
      */
     public function rows()
     {
-        return $this->hasMany('App\Models\PurchasesRows', 'purchase_id', 'id');
+        return $this->hasMany(PurchasesRows::class, 'purchase_id', 'id');
     }
 }

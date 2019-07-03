@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Invoices,
+    App\Contracts\Validated,
     App\Contracts\QueryConditions,
     App\Contracts\InvoicesRepositoryInterface;
 
@@ -11,7 +12,7 @@ class InvoicesRepository implements InvoicesRepositoryInterface, QueryConditions
     /**
      * @inheritdoc
      */
-    public function getRules()
+    public function getRules(): array
     {
         return Invoices::getRules();
     }
@@ -57,12 +58,9 @@ class InvoicesRepository implements InvoicesRepositoryInterface, QueryConditions
      */
     public function create(array $data)
     {
-        $fields = (new Invoices)->getFillable();
-        $fieldVals = array();
-        foreach ($fields as $field) {
-            $fieldVals[$field] = $data[$field];
-        }
-        (new Invoices($fieldVals))->save();
+        $model = new Invoices;
+        $model->fill($data)->save();
+        return $model;
     }
 
     /**

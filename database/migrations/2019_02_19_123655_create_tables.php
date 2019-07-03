@@ -178,10 +178,12 @@ class CreateTables extends Migration
             $table->increments('id');
             $table->string('username', 255);
             $table->char('email', 128);
-            $table->char('password_hash', 255);
+            $table->char('password', 255);
             $table->tinyInteger('confirmed');
             $table->char('confirm_code', 128);
+            $table->char('remember_token', 128);
             $table->char('api_token', 60);
+            $table->timestamps();
         });
     }
 
@@ -192,6 +194,21 @@ class CreateTables extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('articles');
+        Schema::dropIfExists('article_cats');
+        Schema::dropIfExists('article_subcats');
+        Schema::dropIfExists('bills');
+        Schema::dropIfExists('clients');
+        Schema::dropIfExists('clients_articles_prises');
+        Schema::dropIfExists('contracts');
+        Schema::dropIfExists('contracts_rows');
+        Schema::dropIfExists('invoices');
+        Schema::dropIfExists('invoices_bills');
+        Schema::dropIfExists('invoices_rows');
+        Schema::dropIfExists('purchases');
+        Schema::dropIfExists('purchases_rows');
+        Schema::dropIfExists('regions');
+        Schema::dropIfExists('settings');
+        Schema::dropIfExists('users');
     }
 }

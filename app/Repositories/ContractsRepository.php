@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Contracts,
+    App\Contracts\Validated,
     App\Contracts\QueryConditions,
     App\Contracts\ContractsRepositoryInterface;
 
@@ -11,7 +12,7 @@ class ContractsRepository implements ContractsRepositoryInterface, QueryConditio
     /**
      * @inheritdoc
      */
-    public function getRules()
+    public function getRules(): array
     {
         return Contracts::getRules();
     }
@@ -57,12 +58,9 @@ class ContractsRepository implements ContractsRepositoryInterface, QueryConditio
      */
     public function create(array $data)
     {
-        $fields = (new Contracts)->getFillable();
-        $fieldVals = array();
-        foreach ($fields as $field) {
-            $fieldVals[$field] = $data[$field];
-        }
-        (new Contracts($fieldVals))->save();
+        $model = new Contracts;
+        $model->fill($data)->save();
+        return $model;
     }
 
     /**

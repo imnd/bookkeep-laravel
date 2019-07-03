@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Regions,
+    App\Contracts\Validated,
     App\Contracts\QueryConditions,
     App\Contracts\RegionsRepositoryInterface;
 
@@ -11,7 +12,7 @@ class RegionsRepository implements RegionsRepositoryInterface, QueryConditions, 
     /**
      * @inheritdoc
      */
-    public function getRules()
+    public function getRules(): array
     {
         return Regions::getRules();
     }
@@ -57,12 +58,7 @@ class RegionsRepository implements RegionsRepositoryInterface, QueryConditions, 
      */
     public function create(array $data)
     {
-        $fields = (new Regions)->getFillable();
-        $fieldVals = array();
-        foreach ($fields as $field) {
-            $fieldVals[$field] = $data[$field];
-        }
-        (new Regions($fieldVals))->save();
+        (new Regions)->fill($data)->save();
     }
 
     /**

@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class PurchasesRows extends Model
 {
-    protected $table = 'purchase_rows';
-
     public $timestamps = false;
 
     protected $fillable = [

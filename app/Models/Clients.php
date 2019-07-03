@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Rules\PhoneNumber;
 
 class Clients extends Model
 {
@@ -17,14 +18,6 @@ class Clients extends Model
     protected $with = ['region'];
 
     /**
-     * Get the client region.
-     */
-    public function region()
-    {
-        return $this->hasOne('App\Models\Regions', 'id', 'region_id')->withDefault();
-    }
-
-    /**
      * validation rules
      * 
      * @return array
@@ -32,13 +25,28 @@ class Clients extends Model
     public static function getRules()
     {
         return [
-            'name,address' => 'required|max:255',
+            'name' => 'required|max:255',
+            'address' => 'required|max:255',
+            'bank' => 'required|max:255',
             'region_id' => 'required|numeric',
-            'sort' => 'numeric|max:3',
+            'sort' => 'numeric',
             'active' => 'numeric|min:0',
-            'telephone,fax,account' => 'min:10|max:10',
-            'INN,KPP,BIK' => 'min:10|max:10',
-            'contact_fio,contact_post' => 'string|max:255',
+            'telephone' => 'numeric|digits:10',
+            'fax' => 'numeric|digits:10',
+            'account' => 'numeric|digits:10',
+            'INN' => 'numeric|digits:10',
+            'KPP' => 'numeric|digits:10',
+            'BIK' => 'numeric|digits:10',
+            'contact_fio' => 'string|max:255',
+            'contact_post' => 'string|max:255',
         ];
+    }
+
+    /**
+     * Get the client region.
+     */
+    public function region()
+    {
+        return $this->hasOne('App\Models\Regions', 'id', 'region_id')->withDefault();
     }
 }

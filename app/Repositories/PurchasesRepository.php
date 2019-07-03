@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Purchases,
+    App\Contracts\Validated,
     App\Contracts\QueryConditions,
     App\Contracts\PurchasesRepositoryInterface;
 
@@ -11,7 +12,7 @@ class PurchasesRepository implements PurchasesRepositoryInterface, QueryConditio
     /**
      * @inheritdoc
      */
-    public function getRules()
+    public function getRules(): array
     {
         return Purchases::getRules();
     }
@@ -57,12 +58,9 @@ class PurchasesRepository implements PurchasesRepositoryInterface, QueryConditio
      */
     public function create(array $data)
     {
-        $fields = (new Purchases)->getFillable();
-        $fieldVals = array();
-        foreach ($fields as $field) {
-            $fieldVals[$field] = $data[$field];
-        }
-        (new Purchases($fieldVals))->save();
+        $model = new Purchases;
+        $model->fill($data)->save();
+        return $model;
     }
 
     /**

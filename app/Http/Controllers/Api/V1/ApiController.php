@@ -3,7 +3,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request,
     Illuminate\Http\Resources\Json\ResourceCollection,
-    App\Http\Controllers\Controller;
+    Validator,
+    App\Http\Controllers\Controller
+;
 
 /**
  * CRUD контроллер
@@ -30,22 +32,21 @@ class ApiController extends Controller
     /**
      * Create new model and save in DB.
      */
-    public function create(Request $request)
+    public function store(Request $request)
     {
+        if (!request()->wantsJson()) {
+            return null;
+        }
         $rules = $this->repo->getRules();
-        $this->validate($request, $rules);
-
         $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
-            $errors = $validation->errors();
-            return $errors->toJson();
+            return response()->json($validation->errors(), 400);
         }
-
         $data = $request->validate($rules);
         $this->repo->create($data);
         return response()->json([
             'success' => true,
-        ]);
+        ], 201);
     }
 
     /**

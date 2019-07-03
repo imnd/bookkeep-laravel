@@ -57,12 +57,7 @@ class ArticlesRepository implements ArticlesRepositoryInterface, QueryConditions
      */
     public function create(array $data)
     {
-        $fields = (new Articles)->getFillable();
-        $fieldVals = array();
-        foreach ($fields as $field) {
-            $fieldVals[$field] = $data[$field];
-        }
-        (new Articles($fieldVals))->save();
+        (new Articles)->fill($data)->save();
     }
 
     /**

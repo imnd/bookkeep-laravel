@@ -9,7 +9,7 @@ trait Date
      * @param  string $value
      * @return string
      */
-    public function getDateAttribute($value)
+    public function getDateReadableAttribute($value)
     {
         $date = date_create($value);
         $date = date_format($date, 'd.m.Y');
@@ -22,11 +22,14 @@ trait Date
      * @param  string $value
      * @return void
      */
-    public function setDateAttribute($value)
+    public function setDateReadableAttribute($value)
     {
-        if (!$date = date_create_from_format($value, 'd.m.Y'))
+        if (
+                !$date = date_create_from_format($value, 'd.m.Y')
+            and !$date = date_create_from_format($value, 'Y-m-d')
+        ) {
             return;
-
+        }
         $this->attributes['date'] = date_format($date, $this->dateFormat);
     }
 }

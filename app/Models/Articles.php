@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Articles extends Model
 {
+    const ACTIVE = 1;
+    const INACTIVE = 0;
+
     public $timestamps = false;
 
     protected $table = 'articles';
@@ -16,10 +19,10 @@ class Articles extends Model
 
     /**
      * validation rules
-     * 
+     *
      * @return array
      */
-    public static function getRules()
+    public static function getRules(): array
     {
         return [
             'subcat_id' => 'required|numeric',

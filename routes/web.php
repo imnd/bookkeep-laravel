@@ -7,7 +7,7 @@ Route::group([
     'middleware' => 'auth'
 ], function() {
     Route::view('/', 'pages.index');
-    foreach (['articles', 'clients', 'invoices', 'contracts', 'purchases', 'bills'] as $entity) {
+    foreach (['articles', 'bills', 'clients', 'contracts', 'invoices', 'purchases'] as $entity) {
         Route::get("/$entity/{any}", function() use ($entity) {
             return view("pages.$entity");
         })->where('any', '.*');

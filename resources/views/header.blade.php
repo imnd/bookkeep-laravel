@@ -21,8 +21,7 @@
             ]) !!};
         </script>
 
-        <title>{{ $pageTitle ?? 'Бухгалтерия' }}</title>
+        <title>{{ 'Бухгалтерия' }}</title>
     </head>
-    <body class="{{ $bodyClass ?? '' }}">
+    <body>
         <div class="wrapper">
-            

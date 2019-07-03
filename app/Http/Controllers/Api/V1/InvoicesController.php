@@ -12,8 +12,6 @@ use App\Contracts\InvoicesRepositoryInterface;
 class InvoicesController extends HasRowsController
 {
     /**
-     * Создание нового экземпляра контроллера.
-     *
      * @param InvoicesRepositoryInterface $repo
      * @return void
      */

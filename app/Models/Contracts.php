@@ -3,19 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model,
-    App\Contracts\HasRows;
+    App\Contracts\HasRows,
+    App\Traits\Client
+;
 
 class Contracts extends Model implements HasRows
 {
-    use \App\Traits\Client;
+    use Client;
 
     public $timestamps = false;
 
     protected $table = 'contracts';
 
     protected $fillable = [
-        'contract_num',
         'client_id',
+        'contract_num',
         'sum',
         'payed',
         'date',
@@ -26,7 +28,7 @@ class Contracts extends Model implements HasRows
 
     protected $with = ['client'];
 
-    protected $dates = ['date', 'term_start', 'term_end'];
+    //protected $dates = ['date', 'term_start', 'term_end'];
 
     public function getDates()
     {
@@ -38,13 +40,18 @@ class Contracts extends Model implements HasRows
      * 
      * @return array
      */
-    public function getRules()
+    public static function getRules()
     {
         return [
-            'client_id,contract_num' => 'required|numeric',
-            'sum,payed' => 'numeric',
-            'date,term_start,term_end' => 'date',
-            'type' => 'string|max:6',
+            'client_id' => 'required|numeric',
+            'contract_num' => 'required|numeric',
+            'sum' => 'numeric',
+            'payed' => 'numeric',
+            'date' => 'required|date',
+            'term_start' => 'date',
+            'term_end' => 'date',
+            'type' => 'in:contract,agreement',
+            'rows' => 'array',
         ];
     }
 
@@ -55,6 +62,6 @@ class Contracts extends Model implements HasRows
      */
     public function rows()
     {
-        return $this->hasMany('App\Models\ContractsRows', 'contract_id', 'id');
+        return $this->hasMany(ContractsRows::class, 'contract_id', 'id');
     }
 }

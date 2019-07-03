@@ -24,12 +24,12 @@ class Bills extends Model
 
     protected $with = ['client'];
 
-    protected $dates = ['date'];
+    //protected $dates = ['date'];
 
-    public function getDates()
-    {
-        return $this->dates;
-    }
+    //public function getDates()
+    //{
+       // return $this->dates;
+    //}
 
     /**
      * validation rules
@@ -39,8 +39,10 @@ class Bills extends Model
     public static function getRules()
     {
         return [
-            'client_id,contract_num' => 'required|numeric',
-            'sum,remainder' => 'numeric',
+            'client_id' => 'required|numeric',
+            'contract_num' => 'required|numeric',
+            'sum' => 'numeric',
+            'remainder' => 'numeric',
             'date' => 'date',
             'contents' => 'string',
         ];

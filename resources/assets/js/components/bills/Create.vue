@@ -39,7 +39,7 @@
         },
         methods: {
             create() {
-                this.axios.post('/api/model/create', this.model).then(response => {
+                this.axios.post('/api/model/store', this.model).then(response => {
                     this.$router.push({name: 'billsList'});
                 });
             }

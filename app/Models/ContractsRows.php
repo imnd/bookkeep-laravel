@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model,
+    App\Traits\Article;
 
 class ContractsRows extends Model
 {
-    use \App\Traits\Article;
-
-    protected $table = 'contract_rows';
+    use Article;
 
     public $timestamps = false;
 

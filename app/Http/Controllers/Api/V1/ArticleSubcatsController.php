@@ -12,8 +12,6 @@ use App\Contracts\ArticleSubcatsRepositoryInterface;
 class ArticleSubcatsController extends ApiController
 {
     /**
-     * Создание нового экземпляра контроллера.
-     *
      * @param ArticleSubcatsRepositoryInterface $repo
      * @return void
      */

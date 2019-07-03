@@ -3,15 +3,16 @@
 namespace App\Repositories;
 
 use App\Models\Bills,
-    App\Contracts\BillsRepositoryInterface,
-    App\Contracts\QueryConditions;
+    App\Contracts\Validated,
+    App\Contracts\QueryConditions,
+    App\Contracts\BillsRepositoryInterface;
 
 class BillsRepository implements BillsRepositoryInterface, QueryConditions, Validated
 {
     /**
      * @inheritdoc
      */
-    public function getRules()
+    public function getRules(): array
     {
         return Bills::getRules();
     }
@@ -57,12 +58,7 @@ class BillsRepository implements BillsRepositoryInterface, QueryConditions, Vali
      */
     public function create(array $data)
     {
-        $fields = (new Bills)->getFillable();
-        $fieldVals = array();
-        foreach ($fields as $field) {
-            $fieldVals[$field] = $data[$field];
-        }
-        (new Bills($fieldVals))->save();
+        (new Bills)->fill($data)->save();
     }
 
     /**

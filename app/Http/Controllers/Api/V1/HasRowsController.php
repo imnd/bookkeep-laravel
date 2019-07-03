@@ -2,7 +2,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request,
-    Illuminate\Http\Exception;
+    Illuminate\Http\Exception,
+    Validator;
 
 /**
  * Контроллер табличных моделей (фактур и т.д.)
@@ -15,22 +16,21 @@ class HasRowsController extends ApiController
     /**
      * Create new model and save in DB.
      */
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $rules = $this->repo->getRules();
         $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
-            $errors = $validation->errors();
-            return $errors->toJson();
+            return response()->json($validation->errors(), 400);
         }
         $data = $request->validate($rules);
         $model = $this->repo->create($data);
-        foreach ($data['rows'] as $rowData) {
-            $model->rows()->create($rowData);
+        foreach ($data['rows'] as $row) {
+            $model->rows()->create($row);
         }
         return response()->json([
             'success' => true,
-        ]);
+        ], 201);
     }
 
     /**

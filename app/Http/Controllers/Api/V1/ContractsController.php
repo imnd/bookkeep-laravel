@@ -12,8 +12,6 @@ use App\Contracts\ContractsRepositoryInterface;
 class ContractsController extends HasRowsController
 {
     /**
-     * Создание нового экземпляра контроллера.
-     *
      * @param ContractsRepositoryInterface $repo
      * @return void
      */

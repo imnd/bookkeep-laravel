@@ -12,8 +12,6 @@ use App\Contracts\RegionsRepositoryInterface;
 class RegionsController extends ApiController
 {
     /**
-     * Создание нового экземпляра контроллера.
-     *
      * @param RegionsRepositoryInterface $repo
      * @return void
      */

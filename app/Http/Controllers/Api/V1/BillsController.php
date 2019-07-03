@@ -12,8 +12,6 @@ use App\Contracts\BillsRepositoryInterface;
 class BillsController extends ApiController
 {
     /**
-     * Создание нового экземпляра контроллера.
-     *
      * @param BillsRepositoryInterface $repo
      * @return void
      */

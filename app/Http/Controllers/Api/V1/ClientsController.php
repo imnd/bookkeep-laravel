@@ -12,8 +12,6 @@ use App\Contracts\ClientsRepositoryInterface;
 class ClientsController extends ApiController
 {
     /**
-     * Создание нового экземпляра контроллера.
-     *
      * @param ClientsRepositoryInterface $repo
      * @return void
      */

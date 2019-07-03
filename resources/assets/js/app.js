@@ -233,7 +233,9 @@ const router = new VueRouter({
     ]
 });
 router.beforeEach((to, from, next) => {
-    document.title = to.meta.title;
+    if (to.meta.title!==undefined) {
+        document.title = to.meta.title;
+    }
     next()
 });
 

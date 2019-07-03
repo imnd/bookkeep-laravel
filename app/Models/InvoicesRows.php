@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model,
+    App\Traits\Article,
+    App\Traits\Invoice
+;
 
 class InvoicesRows extends Model
 {
-    use \App\Traits\Article,
-        \App\Traits\Invoice;
+    use Article, Invoice;
 
     public $timestamps = false;
-
-    protected $table = 'invoice_rows';
 
     protected $fillable = [
         'invoice_id',

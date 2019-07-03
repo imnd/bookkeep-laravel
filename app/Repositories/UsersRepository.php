@@ -59,12 +59,7 @@ class UsersRepository implements UsersRepositoryInterface, QueryConditions, Vali
      */
     public function create(array $data)
     {
-        $fields = (new Users)->getFillable();
-        $fieldVals = array();
-        foreach ($fields as $field) {
-            $fieldVals[$field] = $data[$field];
-        }
-        (new Users($fieldVals))->save();
+        (new Users)->fill($data)->save();
     }
 
     /**

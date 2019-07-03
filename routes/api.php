@@ -22,19 +22,19 @@ Route::group([
     'namespace' => 'Api\V1',
     'middleware' => 'auth:api',
 ], function () {
-    foreach (['articles', 'clients', 'invoices', 'contracts', 'purchases', 'bills'] as $modelName) {
-        $controllerName = ucfirst($modelName) . 'Controller';
-        Route::post("/$modelName/create", "$controllerName@create");
-        Route::get("/$modelName/edit/{id}", "$controllerName@edit");
-        Route::post("/$modelName/update/{id}", "$controllerName@update");
-        Route::delete("/$modelName/delete/{id}", "$controllerName@delete");
-        Route::get("/$modelName/list", "$controllerName@list");
+    foreach (['articles', 'articleCats', 'articleSubcats', 'bills', 'clients', 'contracts', 'invoices', 'purchases', 'regions', 'settings'] as $entityName) {
+        $pathPrefix = "api.$entityName";
+        $controllerName = ucfirst($entityName) . 'Controller';
+        Route::post("/$entityName/store", "$controllerName@store")->name("$pathPrefix.store");
+        Route::get("/$entityName/edit/{id}", "$controllerName@edit")->name("$pathPrefix.edit");
+        Route::post("/$entityName/update/{id}", "$controllerName@update")->name("$pathPrefix.update");
+        Route::delete("/$entityName/delete/{id}", "$controllerName@delete")->name("$pathPrefix.delete");
+        Route::get("/$entityName/list", "$controllerName@list")->name("$pathPrefix.list");
     }
-    foreach (['invoices', 'contracts', 'purchases'] as $modelName) {
-        $controllerName = ucfirst($modelName) . 'Controller';
-        Route::get("/$modelName/rows/{id}", "$controllerName@rows");
+    foreach (['invoices', 'contracts', 'purchases'] as $entityName) {
+        $controllerName = ucfirst($entityName) . 'Controller';
+        Route::get("/$entityName/rows/{id}", "$controllerName@rows")->name("api.$entityName.rows");
     }
     Route::get("/regions/list", "RegionsController@list");
     Route::get("/article-subcats/list", "ArticleSubcatsController@list");
 });
-
