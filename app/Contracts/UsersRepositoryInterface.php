@@ -6,7 +6,7 @@ interface UsersRepositoryInterface extends RepositoryInterface
     /**
      * Get current authenticated user model
      * 
-     * @return User
+     * @return \App\Models\Users
      */
     public function findCurrent();
 }

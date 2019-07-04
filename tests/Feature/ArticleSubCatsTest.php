@@ -3,45 +3,79 @@
 namespace Tests\Feature;
 
 use Tests\TestCase,
-    Illuminate\Foundation\Testing\WithFaker,
     App\Models\ArticleSubcats;
 
 class ArticleSubcatsTest extends TestCase
 {
+    protected $modelName = 'ArticleSubcats';
+
+    /**
+     * Авторизированные пользователи могут видеть подкатегории товаров
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_see_article_subcats()
+    {
+        $this->listAuth();
+    }
+
+    /**
+     * Авторизированные пользователи могут видеть подкатегории товаров
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_see_article_subcats()
+    {
+        $this->listUnauth();
+    }
+
     /**
      * Авторизированные пользователи могут создавать подкатегории товаров
      * @test
      * @return void
      */
-    public function authenticated_users_can_create_article_cat()
+    public function authenticated_users_can_create_article_subcat()
     {
-        $this->assertEquals(0, ArticleSubcats::count());
-        $data = [
-            'cat_id' => 1,
-            'name' => 'Title',
-        ];
-        $this
-            ->actingAs($this->user, 'api')
-            ->postJson(route('api.articleSubcats.store'), $data)
-            ->assertStatus(201);
-
-        $this->assertEquals(1, ArticleSubcats::count());
-
-        $model = ArticleSubcats::first();
-        foreach (array_keys($data) as $key) {
-            $this->assertEquals($data[$key], $model->$key);
-        }
+        $this->createAuth();
     }
 
     /**
      * Неавторизированные пользователи не могут создавать подкатегории товаров
      * @test
      */
-    public function unauthenticated_users_cant_create_article_cat()
+    public function unauthenticated_users_cant_create_article_subcat()
     {
-        $this->withExceptionHandling();
+        $this->createUnauth();
+    }
 
-        $this->postJson(route('api.articleSubcats.store'))
-            ->assertStatus(401);
+    /**
+     * Авторизированные пользователи могут видеть подкатегории товаров
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_update_article_subcat()
+    {
+        $this->updateAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут видеть подкатегории товаров
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_update_article_subcat()
+    {
+        $this->updateUnauth();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getData(): array
+    {
+        return [
+            'cat_id' => $this->faker->numberBetween(0, 10),
+            'name' => $this->faker->text,
+        ];
     }
 }

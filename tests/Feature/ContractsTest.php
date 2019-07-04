@@ -3,21 +3,77 @@
 namespace Tests\Feature;
 
 use Tests\TestCase,
-    Illuminate\Foundation\Testing\WithFaker,
-    App\Models\Contracts
-;
+    App\Models\Contracts;
 
 class ContractsTest extends TestCase
 {
+    protected $modelName = 'Contracts';
+
     /**
-     * Авторизированные пользователи могут создавать товары
+     * Авторизированные пользователи могут видеть договоры
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_see_contracts()
+    {
+        $this->listAuth();
+    }
+
+    /**
+     * Авторизированные пользователи могут видеть договоры
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_see_contracts()
+    {
+        $this->listUnauth();
+    }
+
+    /**
+     * Авторизированные пользователи могут создавать договоры
      * @test
      * @return void
      */
     public function authenticated_users_can_create_contract()
     {
-        $this->assertEquals(0, Contracts::count());
-        $data = [
+        $this->createAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут создавать договоры
+     * @test
+     */
+    public function unauthenticated_users_cant_create_contract()
+    {
+        $this->createUnauth();
+    }
+
+    /**
+     * Авторизированные пользователи могут видеть договоры
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_update_contract()
+    {
+        $this->updateAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут видеть договоры
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_update_contract()
+    {
+        $this->updateUnauth();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getData(): array
+    {
+        return [
             'client_id' => $this->faker->numberBetween(0, 10),
             'contract_num' => $this->faker->numberBetween(0, 10),
             'sum' => $this->faker->numberBetween(0, 999),
@@ -53,31 +109,5 @@ class ContractsTest extends TestCase
                 ],
             ],
         ];
-        $this
-            ->actingAs($this->user, 'api')
-            ->postJson(route('api.contracts.store'), $data)
-            ->assertStatus(201);
-
-        $this->assertEquals(1, Contracts::count());
-
-        $model = Contracts::first();
-
-        $fields = array_keys($data);
-        unset($fields[count($data) - 1]);
-        foreach ($fields as $key) {
-            $this->assertEquals($data[$key], $model->$key);
-        }
-    }
-
-    /**
-     * Неавторизированные пользователи не могут создавать товары
-     * @test
-     */
-    public function unauthenticated_users_cant_create_contract()
-    {
-        $this->withExceptionHandling();
-
-        $this->postJson(route('api.contracts.store'))
-            ->assertStatus(401);
     }
 }

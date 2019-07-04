@@ -3,47 +3,79 @@
 namespace Tests\Feature;
 
 use Tests\TestCase,
-    Illuminate\Foundation\Testing\WithFaker,
-    App\Models\Regions
-;
+    App\Models\Regions;
 
 class RegionsTest extends TestCase
 {
+    protected $modelName = 'Regions';
+
     /**
-     * Авторизированные пользователи могут создавать товары
+     * Авторизированные пользователи могут видеть районы
      * @test
      * @return void
      */
-    public function authenticated_users_can_create_contract()
+    public function authenticated_users_can_see_regions()
     {
-        $this->assertEquals(0, Regions::count());
-        $data = [
-            'name' => $this->faker->text,
-            'description' => $this->faker->text,
-        ];
-        $this
-            ->actingAs($this->user, 'api')
-            ->postJson(route('api.regions.store'), $data)
-            ->assertStatus(201);
-
-        $this->assertEquals(1, Regions::count());
-
-        $model = Regions::first();
-
-        foreach (array_keys($data) as $key) {
-            $this->assertEquals($data[$key], $model->$key);
-        }
+        $this->listAuth();
     }
 
     /**
-     * Неавторизированные пользователи не могут создавать товары
+     * Авторизированные пользователи могут видеть районы
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_see_regions()
+    {
+        $this->listUnauth();
+    }
+
+    /**
+     * Авторизированные пользователи могут создавать районы
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_create_region()
+    {
+        $this->createAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут создавать районы
      * @test
      */
-    public function unauthenticated_users_cant_create_contract()
+    public function unauthenticated_users_cant_create_region()
     {
-        $this->withExceptionHandling();
+        $this->createUnauth();
+    }
 
-        $this->postJson(route('api.regions.store'))
-            ->assertStatus(401);
+    /**
+     * Авторизированные пользователи могут видеть районы
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_update_region()
+    {
+        $this->updateAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут видеть районы
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_update_region()
+    {
+        $this->updateUnauth();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getData(): array
+    {
+        return [
+            'name' => $this->faker->text,
+            'description' => $this->faker->text,
+        ];
     }
 }

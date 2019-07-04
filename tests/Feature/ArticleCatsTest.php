@@ -3,11 +3,32 @@
 namespace Tests\Feature;
 
 use Tests\TestCase,
-    Illuminate\Foundation\Testing\WithFaker,
     App\Models\ArticleCats;
 
 class ArticleCatsTest extends TestCase
 {
+    protected $modelName = 'ArticleCats';
+
+    /**
+     * Авторизированные пользователи могут видеть категории товаров
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_see_article_cats()
+    {
+        $this->listAuth();
+    }
+
+    /**
+     * Авторизированные пользователи могут видеть категории товаров
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_see_article_cats()
+    {
+        $this->listUnauth();
+    }
+
     /**
      * Авторизированные пользователи могут создавать категории товаров
      * @test
@@ -15,21 +36,7 @@ class ArticleCatsTest extends TestCase
      */
     public function authenticated_users_can_create_article_cat()
     {
-        $this->assertEquals(0, ArticleCats::count());
-        $data = [
-            'name' => $this->faker->text,
-            'description' => $this->faker->text,
-        ];
-        $this
-            ->actingAs($this->user, 'api')
-            ->postJson(route('api.articleCats.store'), $data)
-            ->assertStatus(201);
-
-        $this->assertEquals(1, ArticleCats::count());
-
-        $model = ArticleCats::first();
-        $this->assertEquals($data['name'], $model->name);
-        $this->assertEquals($data['description'], $model->description);
+        $this->createAuth();
     }
 
     /**
@@ -38,9 +45,37 @@ class ArticleCatsTest extends TestCase
      */
     public function unauthenticated_users_cant_create_article_cat()
     {
-        $this->withExceptionHandling();
+        $this->createUnauth();
+    }
 
-        $this->postJson(route('api.articleCats.store'))
-            ->assertStatus(401);
+    /**
+     * Авторизированные пользователи могут видеть категории товаров
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_update_article_cat()
+    {
+        $this->updateAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут видеть категории товаров
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_update_article_cat()
+    {
+        $this->updateUnauth();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getData(): array
+    {
+        return [
+            'name' => $this->faker->text,
+            'description' => $this->faker->text,
+        ];
     }
 }

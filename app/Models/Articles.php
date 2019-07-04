@@ -28,7 +28,7 @@ class Articles extends Model
             'subcat_id' => 'required|numeric',
             'name' => 'required|max:255',
             'price' => 'required|max:255',
-            'unit' => 'required|max:2',
+            'unit' => 'required|in:' . implode(',', self::getUnits()),
             'active' => 'numeric|min:1',
         ];
     }

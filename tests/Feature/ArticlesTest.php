@@ -3,12 +3,52 @@
 namespace Tests\Feature;
 
 use Tests\TestCase,
-    Illuminate\Foundation\Testing\WithFaker,
-    App\Models\Articles
-;
+    App\Models\Articles;
 
 class ArticlesTest extends TestCase
 {
+    protected $modelName = 'Articles';
+
+    /**
+     * Авторизированные пользователи могут видеть товары
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_see_articles()
+    {
+        $this->listAuth();
+    }
+
+    /**
+     * Авторизированные пользователи могут видеть товары
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_see_articles()
+    {
+        $this->listUnauth();
+    }
+
+    /**
+     * Авторизированные пользователи могут видеть товары
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_update_article()
+    {
+        $this->updateAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут видеть товары
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_update_article()
+    {
+        $this->updateUnauth();
+    }
+
     /**
      * Авторизированные пользователи могут создавать товары
      * @test
@@ -16,26 +56,7 @@ class ArticlesTest extends TestCase
      */
     public function authenticated_users_can_create_article()
     {
-        $this->assertEquals(0, Articles::count());
-        $data = [
-            'subcat_id' => $this->faker->numberBetween(0, 10),
-            'name' => $this->faker->text,
-            'unit' => Articles::getUnits()[0],
-            'price' => $this->faker->numberBetween(100, 1000),
-            'active' => $this->faker->numberBetween(0, 1),
-        ];
-        $this
-            ->actingAs($this->user, 'api')
-            ->postJson(route('api.articles.store'), $data)
-            ->assertStatus(201);
-
-        $this->assertEquals(1, Articles::count());
-
-        $model = Articles::first();
-
-        foreach (array_keys($data) as $key) {
-            $this->assertEquals($data[$key], $model->$key);
-        }
+        $this->createAuth();
     }
 
     /**
@@ -44,9 +65,21 @@ class ArticlesTest extends TestCase
      */
     public function unauthenticated_users_cant_create_article()
     {
-        $this->withExceptionHandling();
+        $this->createUnauth();
+    }
 
-        $this->postJson(route('api.articles.store'))
-            ->assertStatus(401);
+    /**
+     * @inheritdoc
+     */
+    protected function getData(): array
+    {
+        $modelName = $this->getModelName();
+        return [
+            'subcat_id' => $this->faker->numberBetween(0, 10),
+            'name' => $this->faker->text,
+            'unit' => $modelName::getUnits()[0],
+            'price' => $this->faker->numberBetween(100, 1000),
+            'active' => $this->faker->numberBetween(0, 1),
+        ];
     }
 }

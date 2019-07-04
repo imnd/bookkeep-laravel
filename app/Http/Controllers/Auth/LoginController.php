@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller,
     Illuminate\Http\Request,
+    Validator,
     Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -56,7 +57,7 @@ class LoginController extends Controller
     {
         return Validator::make($data, [
             'username' => 'required|string|max:255',
-//            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }

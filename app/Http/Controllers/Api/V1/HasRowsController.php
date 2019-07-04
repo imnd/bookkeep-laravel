@@ -2,7 +2,6 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request,
-    Illuminate\Http\Exception,
     Validator;
 
 /**
@@ -15,9 +14,14 @@ class HasRowsController extends ApiController
 {
     /**
      * Create new model and save in DB.
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
+        if (!request()->wantsJson()) {
+            return response()->json(['success' => false], 400);
+        }
         $rules = $this->repo->getRules();
         $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
@@ -28,13 +32,13 @@ class HasRowsController extends ApiController
         foreach ($data['rows'] as $row) {
             $model->rows()->create($row);
         }
-        return response()->json([
-            'success' => true,
-        ], 201);
+        return response()->json(['success' => true], 201);
     }
 
     /**
      * Shows model edit form.
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit($id)
     {
@@ -47,20 +51,25 @@ class HasRowsController extends ApiController
 
     public function update($id, Request $request)
     {
-        // главная модель
+        if (!request()->wantsJson()) {
+            return response()->json(['success' => false], 400);
+        }
         $rules = $this->repo->getRules();
+        $validation = Validator::make($request->all(), $rules);
+        if ($validation->fails()) {
+            return response()->json($validation->errors(), 400);
+        }
         $data = $request->validate($rules);
+        // главная модель
         $model = $this->_findModel($id);
-        $model->update($data['model']);
+        $model->update($data);
         // позиции модели
         // чистим
         $model->rows()->delete();
         // пересоздаем новые
-        foreach ($data['rows'] as $rowData) {
-            $model->rows()->create($rowData);
+        foreach ($data['rows'] as $row) {
+            $model->rows()->create($row);
         }
-        return response()->json([
-            'success' => true,
-        ]);
+        return response()->json(['success' => true]);
     }
 }

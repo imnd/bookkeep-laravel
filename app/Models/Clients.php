@@ -30,7 +30,7 @@ class Clients extends Model
             'bank' => 'required|max:255',
             'region_id' => 'required|numeric',
             'sort' => 'numeric',
-            'active' => 'numeric|min:0',
+            'active' => 'numeric|min:0|max:1',
             'telephone' => 'numeric|digits:10',
             'fax' => 'numeric|digits:10',
             'account' => 'numeric|digits:10',

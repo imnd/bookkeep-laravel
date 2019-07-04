@@ -3,48 +3,80 @@
 namespace Tests\Feature;
 
 use Tests\TestCase,
-    Illuminate\Foundation\Testing\WithFaker,
-    App\Models\Settings
-;
+    App\Models\Settings;
 
 class SettingsTest extends TestCase
 {
+    protected $modelName = 'Settings';
+
     /**
-     * Авторизированные пользователи могут создавать товары
+     * Авторизированные пользователи могут видеть настройки
      * @test
      * @return void
      */
-    public function authenticated_users_can_create_contract()
+    public function authenticated_users_can_see_settings()
     {
-        $this->assertEquals(0, Settings::count());
-        $data = [
+        $this->listAuth();
+    }
+
+    /**
+     * Авторизированные пользователи могут видеть настройки
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_see_settings()
+    {
+        $this->listUnauth();
+    }
+
+    /**
+     * Авторизированные пользователи могут создавать настройки
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_create_settings()
+    {
+        $this->createAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут создавать настройки
+     * @test
+     */
+    public function unauthenticated_users_cant_create_settings()
+    {
+        $this->createUnauth();
+    }
+
+    /**
+     * Авторизированные пользователи могут видеть настройки
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_update_settings()
+    {
+        $this->updateAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут видеть настройки
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_update_settings()
+    {
+        $this->updateUnauth();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getData(): array
+    {
+        return [
             'name' => $this->faker->text,
             'key' => $this->faker->text,
             'value' => $this->faker->text,
         ];
-        $this
-            ->actingAs($this->user, 'api')
-            ->postJson(route('api.settings.store'), $data)
-            ->assertStatus(201);
-
-        $this->assertEquals(1, Settings::count());
-
-        $model = Settings::first();
-
-        foreach (array_keys($data) as $key) {
-            $this->assertEquals($data[$key], $model->$key);
-        }
-    }
-
-    /**
-     * Неавторизированные пользователи не могут создавать товары
-     * @test
-     */
-    public function unauthenticated_users_cant_create_contract()
-    {
-        $this->withExceptionHandling();
-
-        $this->postJson(route('api.settings.store'))
-            ->assertStatus(401);
     }
 }

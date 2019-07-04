@@ -24,12 +24,12 @@ class Bills extends Model
 
     protected $with = ['client'];
 
-    //protected $dates = ['date'];
+    /*protected $dates = ['date'];
 
-    //public function getDates()
-    //{
-       // return $this->dates;
-    //}
+    public function getDates()
+    {
+        return $this->dates;
+    }*/
 
     /**
      * validation rules

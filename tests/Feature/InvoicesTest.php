@@ -3,21 +3,77 @@
 namespace Tests\Feature;
 
 use Tests\TestCase,
-    Illuminate\Foundation\Testing\WithFaker,
-    App\Models\Invoices
-;
+    App\Models\Invoices;
 
 class InvoicesTest extends TestCase
 {
+    protected $modelName = 'Invoices';
+
     /**
-     * Авторизированные пользователи могут создавать товары
+     * Авторизированные пользователи могут видеть фактуры
      * @test
      * @return void
      */
-    public function authenticated_users_can_create_contract()
+    public function authenticated_users_can_see_invoices()
     {
-        $this->assertEquals(0, Invoices::count());
-        $data = [
+        $this->listAuth();
+    }
+
+    /**
+     * Авторизированные пользователи могут видеть фактуры
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_see_invoices()
+    {
+        $this->listUnauth();
+    }
+
+    /**
+     * Авторизированные пользователи могут создавать фактуры
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_create_invoice()
+    {
+        $this->createAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут создавать фактуры
+     * @test
+     */
+    public function unauthenticated_users_cant_create_invoice()
+    {
+        $this->createUnauth();
+    }
+
+    /**
+     * Авторизированные пользователи могут видеть фактуры
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_update_invoice()
+    {
+        $this->updateAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут видеть фактуры
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_update_invoice()
+    {
+        $this->updateUnauth();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getData(): array
+    {
+        return [
             'client_id' => $this->faker->numberBetween(0, 10),
             'contract_num' => $this->faker->numberBetween(0, 10),
             'number' => $this->faker->numberBetween(0, 10),
@@ -45,31 +101,5 @@ class InvoicesTest extends TestCase
                 ],
             ],
         ];
-        $this
-            ->actingAs($this->user, 'api')
-            ->postJson(route('api.invoices.store'), $data)
-            ->assertStatus(201);
-
-        $this->assertEquals(1, Invoices::count());
-
-        $model = Invoices::first();
-
-        $fields = array_keys($data);
-        unset($fields[count($data) - 1]);
-        foreach ($fields as $key) {
-            $this->assertEquals($data[$key], $model->$key);
-        }
-    }
-
-    /**
-     * Неавторизированные пользователи не могут создавать товары
-     * @test
-     */
-    public function unauthenticated_users_cant_create_contract()
-    {
-        $this->withExceptionHandling();
-
-        $this->postJson(route('api.invoices.store'))
-            ->assertStatus(401);
     }
 }

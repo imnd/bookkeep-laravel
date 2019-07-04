@@ -4,9 +4,10 @@ namespace App\Repositories;
 
 use App\Models\Settings,
     App\Contracts\Validated,
+    App\Contracts\QueryConditions,
     App\Contracts\SettingsRepositoryInterface;
 
-class SettingsRepository implements SettingsRepositoryInterface, Validated
+class SettingsRepository implements SettingsRepositoryInterface, QueryConditions, Validated
 {
     /**
      * @inheritdoc
@@ -58,5 +59,14 @@ class SettingsRepository implements SettingsRepositoryInterface, Validated
     public function create(array $data)
     {
         (new Settings)->fill($data)->save();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSearchConditions(array $params): array
+    {
+        $conditions = array();
+        return $conditions;
     }
 }

@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model,
     App\Contracts\HasRows;
 
+/**
+ * Закупки
+ */
 class Purchases extends Model implements HasRows
 {
     public $timestamps = false;

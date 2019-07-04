@@ -3,21 +3,77 @@
 namespace Tests\Feature;
 
 use Tests\TestCase,
-    Illuminate\Foundation\Testing\WithFaker,
-    App\Models\Bills
-;
+    App\Models\Bills;
 
 class BillsTest extends TestCase
 {
+    protected $modelName = 'Bills';
+
     /**
-     * Авторизированные пользователи могут создавать товары
+     * Авторизированные пользователи могут видеть счета
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_see_bills()
+    {
+        $this->listAuth();
+    }
+
+    /**
+     * Авторизированные пользователи могут видеть счета
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_see_bills()
+    {
+        $this->listUnauth();
+    }
+
+    /**
+     * Авторизированные пользователи могут создавать счета
      * @test
      * @return void
      */
     public function authenticated_users_can_create_bill()
     {
-        $this->assertEquals(0, Bills::count());
-        $data = [
+        $this->createAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут создавать счета
+     * @test
+     */
+    public function unauthenticated_users_cant_create_bill()
+    {
+        $this->createUnauth();
+    }
+
+    /**
+     * Авторизированные пользователи могут видеть счета
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_update_bill()
+    {
+        $this->updateAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут видеть счета
+     * @test
+     * @return void
+     */
+    public function unauthenticated_users_cant_update_bill()
+    {
+        $this->updateUnauth();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getData(): array
+    {
+        return [
             'client_id' => $this->faker->numberBetween(0, 10),
             'contract_num' => $this->faker->numberBetween(0, 10),
             'sum' => $this->faker->numberBetween(0, 100),
@@ -25,28 +81,5 @@ class BillsTest extends TestCase
             'date' => $this->faker->date,
             'contents' => 'payment',
         ];
-        $this
-            ->actingAs($this->user, 'api')
-            ->postJson(route('api.bills.store'), $data)
-            ->assertStatus(201);
-
-        $this->assertEquals(1, Bills::count());
-
-        $model = Bills::first();
-        foreach (array_keys($data) as $key) {
-            $this->assertEquals($data[$key], $model->$key);
-        }
-    }
-
-    /**
-     * Неавторизированные пользователи не могут создавать товары
-     * @test
-     */
-    public function unauthenticated_users_cant_create_bill()
-    {
-        $this->withExceptionHandling();
-
-        $this->postJson(route('api.bills.store'))
-            ->assertStatus(401);
     }
 }

@@ -12,6 +12,9 @@ interface RepositoryInterface
 
     /**
      * Execute the query as a "select" statement.
+     * @param array $conditions
+     * @param array $orderBy
+     * @return
      */
     public function get(array $conditions, array $orderBy = array());
 
