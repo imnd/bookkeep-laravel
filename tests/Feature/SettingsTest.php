@@ -74,7 +74,7 @@ class SettingsTest extends TestCase
     protected function getData(): array
     {
         return [
-            'name' => $this->faker->text,
+            'name' => $this->faker->name,
             'key' => $this->faker->text,
             'value' => $this->faker->text,
         ];

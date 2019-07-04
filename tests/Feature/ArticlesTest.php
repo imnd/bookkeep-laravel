@@ -30,6 +30,25 @@ class ArticlesTest extends TestCase
     }
 
     /**
+     * Авторизированные пользователи могут создавать товары
+     * @test
+     * @return void
+     */
+    public function authenticated_users_can_create_article()
+    {
+        $this->createAuth();
+    }
+
+    /**
+     * Неавторизированные пользователи не могут создавать товары
+     * @test
+     */
+    public function unauthenticated_users_cant_create_article()
+    {
+        $this->createUnauth();
+    }
+
+    /**
      * Авторизированные пользователи могут видеть товары
      * @test
      * @return void
@@ -50,25 +69,6 @@ class ArticlesTest extends TestCase
     }
 
     /**
-     * Авторизированные пользователи могут создавать товары
-     * @test
-     * @return void
-     */
-    public function authenticated_users_can_create_article()
-    {
-        $this->createAuth();
-    }
-
-    /**
-     * Неавторизированные пользователи не могут создавать товары
-     * @test
-     */
-    public function unauthenticated_users_cant_create_article()
-    {
-        $this->createUnauth();
-    }
-
-    /**
      * @inheritdoc
      */
     protected function getData(): array
@@ -76,7 +76,7 @@ class ArticlesTest extends TestCase
         $modelName = $this->getModelName();
         return [
             'subcat_id' => $this->faker->numberBetween(0, 10),
-            'name' => $this->faker->text,
+            'name' => $this->faker->name,
             'unit' => $modelName::getUnits()[0],
             'price' => $this->faker->numberBetween(100, 1000),
             'active' => $this->faker->numberBetween(0, 1),

@@ -32,16 +32,16 @@ abstract class TestCase extends BaseTestCase
         for ($i=0; $i<$num; $i++) {
             factory($this->getModelName())->create();
         }
-        $route = $this->getRoute('list');
+        $route = route($this->getRoute('list'));
         $content = $this
             ->actingAs($this->user, 'api')
-            ->get(route($route))
+            ->get($route)
             ->decodeResponseJson();
 
         $this->assertCount($num, $content['data']);
         $this
             ->actingAs($this->user, 'api')
-            ->get(route($route))
+            ->get($route)
             ->assertStatus(200);
     }
 
