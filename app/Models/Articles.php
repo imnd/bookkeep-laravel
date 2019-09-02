@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model,
+    App\Contracts\QueryConditions;
 
-class Articles extends Model
+class Articles extends Model implements QueryConditions
 {
     const ACTIVE = 1;
     const INACTIVE = 0;
@@ -18,9 +19,17 @@ class Articles extends Model
     /**
      * @return array
      */
-    public static function getUnits(): array
+    public static function getUnits()
     {
         return ['кг', 'шт'];
+    }
+
+    /**
+     * @return string
+     */
+    public static function getUnitsList()
+    {
+        return implode(',', self::getUnits());
     }
 
     /**
@@ -37,5 +46,28 @@ class Articles extends Model
     public function subcategory()
     {
         return $this->belongsTo(ArticleSubcats::class, 'subcat_id');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getSearchConditions(array $params): array
+    {
+        $conditions = array();
+        if (!empty($params['priceFrom'])) {
+            $conditions[] = array('price', '>=', addslashes($params['priceFrom']));
+        }
+        if (!empty($params['priceTo'])) {
+            $conditions[] = array('price', '<=', addslashes($params['priceTo']));
+        }
+        if (!empty($params['name'])) {
+            $conditions[] = array('name', 'LIKE', '%' . addslashes($params['name']). '%');
+        }
+        foreach (['subcat_id', 'unit', 'active'] as $field) {
+            if (isset($params[$field]) && $params[$field]!=='') {
+                $conditions[] = array($field, '=', addslashes($params[$field]));
+            }
+        }
+        return $conditions;
     }
 }

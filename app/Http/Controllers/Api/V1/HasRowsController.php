@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request,
+    Illuminate\Database\Eloquent\Model,
     Validator;
 
 /**
@@ -17,18 +18,12 @@ class HasRowsController extends ApiController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    protected function makeStore(Request $request)
     {
-        if (!request()->wantsJson()) {
-            return response()->json(['success' => false], 400);
-        }
-        $rules = $this->repo->getRules();
-        $validation = Validator::make($request->all(), $rules);
-        if ($validation->fails()) {
-            return response()->json($validation->errors(), 400);
-        }
-        $data = $request->validate($rules);
-        $model = $this->repo->create($data);
+        $modelName = $this->modelName;
+        $model = $modelName::create(
+            $request->validated()
+        );
         foreach ($data['rows'] as $row) {
             $model->rows()->create($row);
         }
@@ -37,38 +32,33 @@ class HasRowsController extends ApiController
 
     /**
      * Shows model edit form.
-     * @param $id
+     * 
+     * @param Model $model
+     * 
      * @return \Illuminate\Http\JsonResponse
      */
-    public function edit($id)
+    protected function makeShow(Model $model)
     {
-        try {
-            $model = $this->_findModel($id);
-        } catch (\HttpException $e) {
-        }
         return response()->json([
             'item' => $model,
             'rows' => $model->rows()->get()->all()
         ]);
     }
 
-    public function update($id, Request $request)
+    /**
+     * Updates model in DB.
+     * 
+     * @param Model $model
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function makeUpdate(Model $model, Request $request)
     {
-        if (!request()->wantsJson()) {
-            return response()->json(['success' => false], 400);
-        }
-        $rules = $this->repo->getRules();
-        $validation = Validator::make($request->all(), $rules);
-        if ($validation->fails()) {
-            return response()->json($validation->errors(), 400);
-        }
-        $data = $request->validate($rules);
-        // главная модель
-        try {
-            $model = $this->_findModel($id);
-        } catch (\HttpException $e) {
-        }
-        $model->update($data);
+        $model
+            ->fill($request->validated())
+            ->save();
+
         // позиции модели
         // чистим
         $model->rows()->delete();
@@ -76,6 +66,7 @@ class HasRowsController extends ApiController
         foreach ($data['rows'] as $row) {
             $model->rows()->create($row);
         }
-        return response()->json(['success' => true]);
+        $resourceClassName = $this->resourceClassName;
+        return $resourceClassName::make($model);
     }
 }

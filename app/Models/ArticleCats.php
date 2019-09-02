@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model,
+    App\Contracts\QueryConditions;
 
-class ArticleCats extends Model
+class ArticleCats extends Model implements QueryConditions
 {
     public $timestamps = false;
 
@@ -14,4 +15,13 @@ class ArticleCats extends Model
         'name',
     	'description',
    	];
+
+    /**
+     * @inheritdoc
+     */
+    public static function getSearchConditions(array $params): array
+    {
+        $conditions = array();
+        return $conditions;
+    }
 }

@@ -1,9 +1,11 @@
 <?php
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider,
+use
+    Illuminate\Support\ServiceProvider,
+    Illuminate\Support\Facades\Auth,
     Illuminate\Support\Facades\View,
-    App\Contracts\UsersRepositoryInterface;
+    App\Models\Users;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,11 +15,11 @@ class AppServiceProvider extends ServiceProvider
      * @param UsersRepositoryInterface $repo
      * @return void
      */
-    public function boot(UsersRepositoryInterface $repo)
+    public function boot(Users $users)
     {
-        View::composer('*', function ($view) use ($repo) {
-            if ($user = $repo->findCurrent()) {
-                $view->with('user', $user);
+        View::composer('*', function ($view) use ($users) {
+            if ($id = Auth::id()) {
+                $view->with('user', Users::find($id));
             }
         });
     }

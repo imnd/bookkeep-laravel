@@ -42,4 +42,24 @@ class Contracts extends Model implements HasRows
     {
         return $this->hasMany(ContractsRows::class, 'contract_id', 'id');
     }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getSearchConditions(array $params): array
+    {
+        $conditions = array();
+        if (!empty($params['dateFrom'])) {
+            $conditions[] = array('date', '>=', addslashes($params['dateFrom']));
+        }
+        if (!empty($params['dateTo'])) {
+            $conditions[] = array('date', '<=', addslashes($params['dateTo']));
+        }
+        foreach (['number', 'client_id'] as $field) {
+            if (isset($params[$field]) && $params[$field]!=='') {
+                $conditions[] = array($field, '=', addslashes($params[$field]));
+            }
+        }
+        return $conditions;
+    }
 }

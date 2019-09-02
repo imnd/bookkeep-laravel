@@ -2,12 +2,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use
+    ReflectionClass,
     Illuminate\Http\Request,
     Illuminate\Http\Response,
     Illuminate\Http\Resources\Json\ResourceCollection,
     Illuminate\Database\Eloquent\Model,
     App\Http\Controllers\Controller,
-    HttpException,
     Validator
 ;
 
@@ -20,20 +20,47 @@ use
 class ApiController extends Controller
 {
     /**
-     * Repository instance
-     * @var \App\Contracts\RepositoryInterface
+     * Controller model class name
+     * @var string
      */
-    protected $repo;
+    protected $modelName;
+    /**
+     * Controller resource class name
+     * @var string
+     */
+    protected $resourceClassName;
+
+    public function __construct()
+    {
+        $reflection = new ReflectionClass(get_called_class());
+        $className = $reflection->getShortName();
+        $entityName = str_replace('Controller', '', $className);
+        if (is_null($this->modelName)) {
+            $this->modelName = "App\\Models\\$entityName";
+        }
+        if (is_null($this->resourceClassName)) {
+            $this->resourceClassName = "App\\Http\\Resources\\{$entityName}Resource";
+        }
+    }
 
     /**
      * All of the models from the database by query conditions
      * @param Request $request
      * @return ResourceCollection
      */
-    public function list(Request $request)
+    protected function makeList(Request $request)
     {
-        $conditions = $this->repo->getSearchConditions($request->all());
-        return new ResourceCollection($this->repo->get($conditions, [$request->get('field'), $request->get('order')]));
+        $modelName = $this->modelName;
+        $conditions = $modelName::getSearchConditions($request->all());
+        $orderBy = [
+            $request->get('field'),
+            $request->get('order')
+        ];
+        $query = $modelName::where($conditions);
+        if (!empty($orderBy[0]) && !empty($orderBy[1])) {
+            $query = $query->orderBy($orderBy[0], $orderBy[1]);
+        }
+        return new ResourceCollection($query->get());
     }
 
     /**
@@ -41,65 +68,45 @@ class ApiController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse|null
      */
-    public function store(Request $request)
+    protected function makeStore(Request $request)
     {
-        if (!request()->wantsJson()) {
-            return response()->json(['success' => false], 400);
-        }
-        $rules = $this->repo->getRules();
-        $validation = Validator::make($request->all(), $rules);
-        if ($validation->fails()) {
-            return response()->json($validation->errors(), 400);
-        }
-        $data = $request->validate($rules);
-        $this->repo->create($data);
-        return response()->json(['success' => true], 201);
+        $modelName = $this->modelName;
+        $model = $modelName::create(
+            $request->validated()
+        );
+        return response()->json(['success' => true], Response::HTTP_CREATED);
     }
 
     /**
-     * Shows model edit form.
-     * @param $id
+     * Display the specified resource.
+     *
+     * @param Model $model
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function edit($id)
+    protected function makeShow(Model $model)
     {
-        try {
-            return response()->json($this->_findModel($id));
-        } catch (HttpException $e) {
-            return response()->json([
-                'success' => false,
-                'error' => $e->getMessage()
-            ], 404);
-        }
+        $resourceClassName = $this->resourceClassName;
+        return $resourceClassName::make($model);
     }
 
     /**
      * Updates model in DB.
-     * @param $id
+     * 
+     * @param Model $model
      * @param Request $request
+     * 
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update($id, Request $request)
+    protected function makeUpdate(Model $model, Request $request)
     {
-        if (!request()->wantsJson()) {
-            return response()->json(['success' => false], 400);
-        }
-        $rules = $this->repo->getRules();
-        $validation = Validator::make($request->all(), $rules);
-        if ($validation->fails()) {
-            return response()->json($validation->errors(), 400);
-        }
-        $data = $request->validate($rules);
-        try {
-            $model = $this->_findModel($id);
-        } catch (HttpException $e) {
-            return response()->json([
-                'success' => false,
-                'error' => $e->getMessage()
-            ], 404);
-        }
-        $model->update($data);
-        return response()->json(['success' => true]);
+         $model
+            ->fill($request->validated())
+            ->save();
+
+         $resourceClassName = $this->resourceClassName;
+         return $resourceClassName::make($model);
+         //return response()->json(compact('resource'), Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -110,14 +117,14 @@ class ApiController extends Controller
      * @throws \Exception
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Model $model)
+    protected function makeDestroy(Model $model)
     {
         if ($model->delete()) {
-            return response('', Response::HTTP_OK)->json([
+            return response('', Response::HTTP_NO_CONTENT)->json([
                 'success' => true,
             ]);
         }
-        return response('', Response::HTTP_NOT_FOUND)->json([
+        return response()->json([
             'success' => false,
         ]);
     }

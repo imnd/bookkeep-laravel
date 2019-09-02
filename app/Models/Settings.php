@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model,
+    App\Contracts\QueryConditions;
 
-class Settings extends Model
+class Settings extends Model implements QueryConditions
 {
     public $timestamps = false;
 
@@ -13,4 +14,13 @@ class Settings extends Model
         'key',
         'value',
    	];
+
+    /**
+     * @inheritdoc
+     */
+    public function getSearchConditions(array $params): array
+    {
+        $conditions = array();
+        return $conditions;
+    }
 }

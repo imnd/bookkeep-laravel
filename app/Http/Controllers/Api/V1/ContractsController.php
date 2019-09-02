@@ -1,7 +1,12 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use App\Contracts\ContractsRepositoryInterface;
+use
+    App\Models\Contracts,
+    App\Http\Requests\SearchContract,
+    App\Http\Requests\StoreContract,
+    App\Http\Requests\UpdateContract
+;
 
 /**
  * Контроллер контрактов
@@ -12,11 +17,60 @@ use App\Contracts\ContractsRepositoryInterface;
 class ContractsController extends HasRowsController
 {
     /**
-     * @param ContractsRepositoryInterface $repo
-     * @return void
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
-    public function __construct(ContractsRepositoryInterface $repo)
+    public function list(SearchContract $request)
     {
-        $this->repo = $repo;
+        return $this->makeList($request);
+    }
+
+    /**
+     * Create new model and save in DB.
+     * @param StoreContract $request
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    public function store(StoreContract $request)
+    {
+        return $this->makeStore($request);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Contracts $model
+     *
+     * @return \App\Http\Resources\ContractResource
+     */
+    public function show(Contracts $model)
+    {
+        return $this->makeShow($model);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \App\Http\Requests\UpdateContract $request
+     * @param Contracts $model
+     *
+     * @return \App\Http\Resources\ContractResource
+     */
+    public function update(Contracts $model, UpdateContract $request)
+    {
+        $this->makeUpdate($model, $request);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Contracts $model
+     *
+     * @throws \Exception
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Contracts $model)
+    {
+        $this->makeDestroy($model);
     }
 }

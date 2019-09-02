@@ -22,4 +22,18 @@ class Clients extends Model
     {
         return $this->hasOne(Regions::class, 'id', 'region_id')->withDefault();
     }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getSearchConditions(array $params): array
+    {
+        $conditions = array();
+        foreach (['name', 'address'] as $field) {
+            if (!empty($params[$field])) {
+                $conditions[] = array($field, 'LIKE', '%' . addslashes($params[$field]). '%');
+            }
+        }
+        return $conditions;
+    }
 }

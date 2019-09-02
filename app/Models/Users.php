@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model,
     Illuminate\Notifications\Notifiable,
-    Illuminate\Foundation\Auth\User as Authenticatable;
+    Illuminate\Foundation\Auth\User as Authenticatable,
+    App\Contracts\QueryConditions;
 
-class Users extends Authenticatable
+class Users extends Authenticatable implements QueryConditions
 {
     use Notifiable;
 
@@ -30,5 +31,22 @@ class Users extends Authenticatable
     public function isAdmin()
     {
         return $this->role === 'admin';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getSearchConditions(array $params): array
+    {
+        $conditions = array();
+
+        if (!empty($params['name'])) {
+            $conditions[] = array('name', 'LIKE', '%' . addslashes($params['name']). '%');
+        }
+        if (!empty($params['email'])) {
+            $conditions[] = array('email', '=', addslashes($params['email']));
+        }
+
+        return $conditions;
     }
 }
