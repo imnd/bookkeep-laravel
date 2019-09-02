@@ -31,7 +31,11 @@ Route::group([
         Route::post("/$entityName/update/{id}", "$controllerName@update")->name("$pathPrefix.update");
         Route::delete("/$entityName/delete/{id}", "$controllerName@delete")->name("$pathPrefix.delete");
     }
-    foreach (['invoices', 'contracts', 'purchases'] as $entityName) {
+    foreach ([
+        'invoices',
+        'contracts',
+        'purchases'
+    ] as $entityName) {
         $controllerName = ucfirst($entityName) . 'Controller';
         Route::get("/$entityName/rows/{id}", "$controllerName@rows")->name("api.$entityName.rows");
     }

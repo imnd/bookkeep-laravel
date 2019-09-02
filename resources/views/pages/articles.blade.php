@@ -6,6 +6,6 @@
     $bodyClass = 'articles';
     $pageTitle = 'Товары';
     ?>
-    <article-component></article-component>
+    <article-component />
 
 @endsection

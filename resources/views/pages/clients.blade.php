@@ -6,6 +6,6 @@
     $bodyClass = 'clients';
     $pageTitle = 'Клиенты';
     ?>
-    <client-component></client-component>
+    <client-component />
 
 @endsection

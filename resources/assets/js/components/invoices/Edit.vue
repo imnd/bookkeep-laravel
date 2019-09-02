@@ -55,8 +55,8 @@
         methods: {
             update() {
                 this.axios.post(`/api/invoices/update/${this.$route.params.id}`, {
-                    'model': this.model,
-                    'rows': this.rows,
+                    model: this.model,
+                    rows: this.rows,
                 }).then(response => {
                     this.$router.push({name: 'invoicesList'});
                 });

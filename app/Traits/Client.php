@@ -1,6 +1,8 @@
 <?php
 namespace App\Traits;
 
+use App\Models\Clients;
+
 trait Client
 {
     /**
@@ -8,7 +10,7 @@ trait Client
      */
     public function client()
     {
-        return $this->belongsTo('App\Models\Clients', 'client_id')->withDefault();
+        return $this->belongsTo(Clients::class, 'client_id')->withDefault();
     }
 
     /**

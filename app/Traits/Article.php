@@ -1,6 +1,8 @@
 <?php
 namespace App\Traits;
 
+use App\Models\Articles;
+
 trait Article
 {
     /**
@@ -8,6 +10,6 @@ trait Article
      */
     public function article()
     {
-        return $this->hasOne('App\Models\Articles', 'article_id');
+        return $this->hasOne(Articles::class, 'article_id');
     }
 }

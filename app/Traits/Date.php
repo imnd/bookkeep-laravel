@@ -26,7 +26,7 @@ trait Date
     {
         if (
                 !$date = date_create_from_format($value, 'd.m.Y')
-            and !$date = date_create_from_format($value, 'Y-m-d')
+            and !$date = date_create_from_format($value, $this->dateFormat)
         ) {
             return;
         }
