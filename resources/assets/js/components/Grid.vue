@@ -71,7 +71,7 @@
             }
         },
         created() {
-            this.listUrl = `/api/${this.entity}/list`;
+            this.listUrl = `/api/${this.entity}`;
             this.axios.get(this.listUrl).then(response => {
                 this.listData = response.data.data;
                 this.setPaginatedData();
@@ -121,7 +121,7 @@
                     return;
                 }
                 let index = event.target.getAttribute('data-item-index');
-                this.axios.delete(`/api/${this.entity}/delete/${id}`).then(response => {
+                this.axios.delete(`/api/${this.entity}/${id}`).then(response => {
                     this.paginatedData.splice(index, 1);
                 });
             },

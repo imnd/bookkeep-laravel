@@ -37,7 +37,7 @@
         },
         methods: {
             create() {
-                this.axios.post('/api/purchase/store', this.model).then(response => {
+                this.axios.post('/api/purchase', this.model).then(response => {
                     this.$router.push({name: 'purchasesList'});
                 });
             }

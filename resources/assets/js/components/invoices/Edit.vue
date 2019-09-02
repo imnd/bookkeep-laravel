@@ -47,14 +47,14 @@
             }
         },
         created() {
-            this.axios.get(`/api/invoices/edit/${this.$route.params.id}`).then(response => {
+            this.axios.get(`/api/invoices/${this.$route.params.id}`).then(response => {
                 this.model = response.data.item;
                 this.rows = response.data.rows;
             });
         },
         methods: {
             update() {
-                this.axios.post(`/api/invoices/update/${this.$route.params.id}`, {
+                this.axios.post(`/api/invoices/${this.$route.params.id}`, {
                     model: this.model,
                     rows: this.rows,
                 }).then(response => {

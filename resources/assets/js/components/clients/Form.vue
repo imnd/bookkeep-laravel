@@ -74,7 +74,7 @@
             },
         },
         beforeCreate() {
-            this.axios.get(`/api/regions/list`).then(response => {
+            this.axios.get(`/api/regions`).then(response => {
                 this.regions = response.data.data;
             });
         },

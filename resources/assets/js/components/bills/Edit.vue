@@ -36,13 +36,13 @@
             }
         },
         created() {
-            this.axios.get(`/api/bills/edit/${this.$route.params.id}`).then(response => {
+            this.axios.get(`/api/bills/${this.$route.params.id}`).then(response => {
                 this.model = response.data;
             });
         },
         methods: {
             update() {
-                let uri = `/api/bills/update/${this.$route.params.id}`;
+                let uri = `/api/bills/${this.$route.params.id}`;
                 this.axios.post(uri, this.model).then(response => {
                     this.$router.push({name: 'billsList'});
                 });

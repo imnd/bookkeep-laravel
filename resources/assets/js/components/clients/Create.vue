@@ -32,7 +32,7 @@
         },
         methods: {
             create() {
-                this.axios.post('/api/client/store', this.model).then(response => {
+                this.axios.post('/api/client', this.model).then(response => {
                     this.$router.push({name: 'clientsList'});
                 });
             }

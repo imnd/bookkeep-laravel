@@ -43,7 +43,7 @@
             }
         },
         beforeCreate() {
-            this.axios.get(`/api/clients/list`).then(response => {
+            this.axios.get(`/api/clients`).then(response => {
                 this.clients = response.data.data;
             });
         },

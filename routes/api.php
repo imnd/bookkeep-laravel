@@ -22,22 +22,23 @@ Route::group([
     'namespace' => 'Api\V1',
     'middleware' => 'auth:api',
 ], function () {
-    foreach (['articles', 'articleCats', 'articleSubcats', 'bills', 'clients', 'contracts', 'invoices', 'purchases', 'regions', 'settings'] as $entityName) {
-        $pathPrefix = "api.$entityName";
-        $controllerName = ucfirst($entityName) . 'Controller';
-        Route::get("/$entityName/list", "$controllerName@list")->name("$pathPrefix.list");
-        Route::post("/$entityName/store", "$controllerName@store")->name("$pathPrefix.store");
-        Route::get("/$entityName/edit/{id}", "$controllerName@edit")->name("$pathPrefix.edit");
-        Route::post("/$entityName/update/{id}", "$controllerName@update")->name("$pathPrefix.update");
-        Route::delete("/$entityName/delete/{id}", "$controllerName@delete")->name("$pathPrefix.delete");
+    foreach (['articles', 'articleCats', 'articleSubcats', 'bills', 'clients', 'contracts', 'invoices', 'purchases', 'regions', 'settings'] as $modelName) {
+        $pathPrefix = "api.$modelName";
+        $controllerName = ucfirst($modelName) . 'Controller';
+        $entityName = "\{$modelName\}";
+        Route::get("/$modelName", "$controllerName@list")->name("$pathPrefix.list");
+        Route::post("/$modelName", "$controllerName@store")->name("$pathPrefix.store");
+        Route::get("/$modelName/$entityName", "$controllerName@edit")->name("$pathPrefix.show");
+        Route::put("/$modelName/$entityName", "$controllerName@update")->name("$pathPrefix.update");
+        Route::delete("/$modelName/$entityName", "$controllerName@delete")->name("$pathPrefix.delete");
     }
     foreach ([
         'invoices',
         'contracts',
         'purchases'
     ] as $entityName) {
-        $controllerName = ucfirst($entityName) . 'Controller';
-        Route::get("/$entityName/rows/{id}", "$controllerName@rows")->name("api.$entityName.rows");
+        $controllerName = ucfirst($modelName) . 'Controller';
+        Route::get("/$modelName/rows/{id}", "$controllerName@rows")->name("api.$modelName.rows");
     }
-    Route::get("/article-subcats/list", "ArticleSubcatsController@list");
+    Route::get('/article-subcats', 'ArticleSubcatsController@list');
 });

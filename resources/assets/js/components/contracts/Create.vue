@@ -39,7 +39,7 @@
         },
         methods: {
             create() {
-                this.axios.post(`/api/contracts/store`, {
+                this.axios.post(`/api/contracts`, {
                     'model': this.contract,
                     'rows': this.rows,
                 }).then(response => {

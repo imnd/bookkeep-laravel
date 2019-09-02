@@ -40,7 +40,7 @@
         },
         methods: {
             create() {
-                this.axios.post('/api/invoice/store', this.invoice).then(response => {
+                this.axios.post('/api/invoice', this.invoice).then(response => {
                     this.$router.push({name: 'invoicesList'});
                 });
             }

@@ -95,10 +95,10 @@
             },
         },
         beforeCreate() {
-            this.axios.get(`/api/clients/list`).then(response => {
+            this.axios.get(`/api/clients`).then(response => {
                 this.clients = response.data.data;
             });
-            this.axios.get('/api/articles/list').then(response => {
+            this.axios.get('/api/articles').then(response => {
                 this.articles = response.data.data;
             });
         },

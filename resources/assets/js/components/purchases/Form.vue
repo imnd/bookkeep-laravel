@@ -80,7 +80,7 @@
             },
         },
         beforeCreate() {
-            this.axios.get(`/api/article-subcats/list`).then(response => {
+            this.axios.get(`/api/article-subcats`).then(response => {
                 this.articleSubcats = response.data.data;
             });
         },
