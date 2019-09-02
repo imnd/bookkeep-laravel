@@ -10,8 +10,18 @@ abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase, CreatesApplication, WithFaker;
 
+    /**
+     * @var string
+     */
     protected $modelName;
+    /**
+     * @var \App\Models\Users
+     */
+    protected $user;
 
+    /**
+     * @inheritdoc
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -68,7 +78,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function createAuth()
     {
-        $modelName = $this->getModelName(true);
+        $modelName = '\\' . $this->getModelName();
         $this->assertEquals(0, $modelName::count());
         $data = $this->getData();
         $this
@@ -140,13 +150,14 @@ abstract class TestCase extends BaseTestCase
     /**
      * @return string
      */
-    protected function getModelName($prefix = false)
+    protected function getModelName()
     {
-        return ($prefix ? '\\' : '') . "App\\Models\\{$this->modelName}";
+        return "App\\Models\\{$this->modelName}";
     }
 
     /**
      * @param string $action
+     * @param boolean $api
      * @return string
      */
     protected function getRoute($action, $api = true)

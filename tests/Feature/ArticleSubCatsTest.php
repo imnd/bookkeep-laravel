@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase,
-    App\Models\ArticleSubcats;
+use Tests\TestCase;
 
 class ArticleSubcatsTest extends TestCase
 {
+    /**
+     * @inheritdoc
+     */
     protected $modelName = 'ArticleSubcats';
 
     /**

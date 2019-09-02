@@ -5,6 +5,7 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
             <div class="container-fluid">
+                @if (isset($user))
                 <div class="navbar-wrapper">
                     <a class="navbar-brand" href="#">{{ $user->username }}</a>
                 </div>
@@ -15,7 +16,7 @@
                                 <i class="material-icons">person</i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                                @if (isset($user) && $user->isAdmin())
+                                @if (isset($user))
                                     <a class="dropdown-item" href="/settings">Администрирование</a>
                                     <div class="dropdown-divider"></div>
                                 @endif
@@ -24,6 +25,7 @@
                         </li>
                     </ul>
                 </div>
+                @endif
             </div>
         </nav>
         <ul class="nav">
@@ -76,4 +78,3 @@
 </div>
 
 @include('footer')
-

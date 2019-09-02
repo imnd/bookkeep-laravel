@@ -2,11 +2,17 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase,
-    App\Models\Articles;
+use Tests\TestCase;
 
+/**
+ * Class ArticlesTest
+ * @package Tests\Feature
+ */
 class ArticlesTest extends TestCase
 {
+    /**
+     * @inheritdoc
+     */
     protected $modelName = 'Articles';
 
     /**

@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase,
-    App\Models\Contracts;
+use Tests\TestCase;
 
 class ContractsTest extends TestCase
 {
+    /**
+     * @inheritdoc
+     */
     protected $modelName = 'Contracts';
 
     /**

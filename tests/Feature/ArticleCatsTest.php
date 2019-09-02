@@ -2,8 +2,7 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase,
-    App\Models\ArticleCats;
+use Tests\TestCase;
 
 class ArticleCatsTest extends TestCase
 {
