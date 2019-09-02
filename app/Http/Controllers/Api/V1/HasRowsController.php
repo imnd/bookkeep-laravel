@@ -42,7 +42,10 @@ class HasRowsController extends ApiController
      */
     public function edit($id)
     {
-        $model = $this->_findModel($id);
+        try {
+            $model = $this->_findModel($id);
+        } catch (\HttpException $e) {
+        }
         return response()->json([
             'item' => $model,
             'rows' => $model->rows()->get()->all()
@@ -61,7 +64,10 @@ class HasRowsController extends ApiController
         }
         $data = $request->validate($rules);
         // главная модель
-        $model = $this->_findModel($id);
+        try {
+            $model = $this->_findModel($id);
+        } catch (\HttpException $e) {
+        }
         $model->update($data);
         // позиции модели
         // чистим

@@ -1,8 +1,11 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request,
+use
+    Illuminate\Http\Request,
+    Illuminate\Http\Response,
     Illuminate\Http\Resources\Json\ResourceCollection,
+    Illuminate\Database\Eloquent\Model,
     App\Http\Controllers\Controller,
     HttpException,
     Validator
@@ -60,7 +63,14 @@ class ApiController extends Controller
      */
     public function edit($id)
     {
-        return response()->json($this->_findModel($id));
+        try {
+            return response()->json($this->_findModel($id));
+        } catch (HttpException $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ], 404);
+        }
     }
 
     /**
@@ -77,38 +87,38 @@ class ApiController extends Controller
         $rules = $this->repo->getRules();
         $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
-            //print '<pre>'.print_r('bjcbiubui', true).'</pre>';die;
             return response()->json($validation->errors(), 400);
         }
         $data = $request->validate($rules);
-        $model = $this->_findModel($id);
+        try {
+            $model = $this->_findModel($id);
+        } catch (HttpException $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ], 404);
+        }
         $model->update($data);
         return response()->json(['success' => true]);
     }
 
     /**
-     * Deletes model from DB.
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * Remove the specified resource from storage.
+     *
+     * @param Model $model
+     *
      * @throws \Exception
+     * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function destroy(Model $model)
     {
-        $this->_findModel($id)->delete();
-        return response()->json([
-            'success' => true,
-        ]);
-    }
-
-    /**
-     * @param integer $id
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    protected function _findModel($id)
-    {
-        if (!$model = $this->repo->find($id)) {
-            throw new HttpException('Нет такой модели.');
+        if ($model->delete()) {
+            return response('', Response::HTTP_OK)->json([
+                'success' => true,
+            ]);
         }
-        return $model;
+        return response('', Response::HTTP_NOT_FOUND)->json([
+            'success' => false,
+        ]);
     }
 }
