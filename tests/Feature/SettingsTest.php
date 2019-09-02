@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase,
-    App\Models\Settings;
+use Tests\TestCase;
 
 class SettingsTest extends TestCase
 {
+    /**
+     * @inheritdoc
+     */
     protected $modelName = 'Settings';
 
     /**

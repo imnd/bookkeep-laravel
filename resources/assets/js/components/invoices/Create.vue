@@ -35,6 +35,7 @@
                     sum: '',
                     payed: 0
                 },
+                rows: [],
             }
         },
         methods: {

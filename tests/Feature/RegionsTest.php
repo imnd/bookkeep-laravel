@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase,
-    App\Models\Regions;
+use Tests\TestCase;
 
 class RegionsTest extends TestCase
 {
+    /**
+     * @inheritdoc
+     */
     protected $modelName = 'Regions';
 
     /**
