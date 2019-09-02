@@ -11,27 +11,9 @@ class Articles extends Model
 
     public $timestamps = false;
 
-    protected $table = 'articles';
-
     protected $fillable = [
     	'subcat_id', 'name', 'unit', 'price', 'active'
    	];
-
-    /**
-     * validation rules
-     *
-     * @return array
-     */
-    public static function getRules(): array
-    {
-        return [
-            'subcat_id' => 'required|numeric',
-            'name' => 'required|max:255',
-            'price' => 'required|max:255',
-            'unit' => 'required|in:' . implode(',', self::getUnits()),
-            'active' => 'numeric|min:0|max:1',
-        ];
-    }
 
     /**
      * @return array
@@ -54,6 +36,6 @@ class Articles extends Model
      */
     public function subcategory()
     {
-        return $this->belongsTo('App\Models\ArticleSubcats', 'subcat_id');
+        return $this->belongsTo(ArticleSubcats::class, 'subcat_id');
     }
 }

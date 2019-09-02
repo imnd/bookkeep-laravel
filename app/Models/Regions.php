@@ -9,19 +9,7 @@ class Regions extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name', 'description',
+        'name',
+        'description',
    	];
-
-    /**
-     * validation rules
-     *
-     * @return array
-     */
-    public static function getRules(): array
-    {
-        return [
-            'name' => 'required|max:255',
-            'description' => 'required',
-        ];
-    }
 }

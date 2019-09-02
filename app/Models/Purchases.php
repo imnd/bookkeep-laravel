@@ -12,30 +12,11 @@ class Purchases extends Model implements HasRows
 {
     public $timestamps = false;
 
-    protected $table = 'purchases';
-
     protected $fillable = [
         'number',
         'sum',
         'date',
    	];
-
-    /**
-     * validation rules
-     * 
-     * @return array
-     */
-    public static function getRules()
-    {
-        return [
-            'number' => 'required|numeric',
-            'sum' => 'numeric',
-            'date' => 'required|date',
-            'rows' => 'array',
-        ];
-    }
-
-    # relations
 
     /**
      * Get the purchase rows.

@@ -15,23 +15,10 @@ class ArticleSubcats extends Model
    	];
 
     /**
-     * validation rules
-     *
-     * @return array
-     */
-    public static function getRules(): array
-    {
-        return [
-            'cat_id' => 'required|numeric',
-            'name' => 'required|max:255',
-        ];
-    }
-
-    /**
      * Get the category.
      */
     public function category()
     {
-        return $this->belongsTo('App\Models\ArticleCats', 'cat_id');
+        return $this->belongsTo(ArticleCats::class, 'cat_id');
     }
 }

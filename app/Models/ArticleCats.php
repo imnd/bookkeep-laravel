@@ -14,17 +14,4 @@ class ArticleCats extends Model
         'name',
     	'description',
    	];
-
-    /**
-     * validation rules
-     *
-     * @return array
-     */
-    public static function getRules(): array
-    {
-        return [
-            'name' => 'required|max:255',
-            'description' => 'required',
-        ];
-    }
 }

@@ -15,8 +15,6 @@ class Invoices extends Model implements HasRows
 
     public $timestamps = false;
 
-    protected $table = 'invoices';
-
     protected $fillable = [
         'client_id',
         'contract_num',
@@ -28,32 +26,14 @@ class Invoices extends Model implements HasRows
 
     protected $with = ['client'];
 
-    //protected $dates = ['date'];
+    /*protected $dates = ['date'];
 
     public function getDates()
     {
         return $this->dates;
-    }
+    }*/
 
     protected $dateFormat = 'Y-m-d';
-
-    /**
-     * validation rules
-     * 
-     * @return array
-     */
-    public static function getRules()
-    {
-        return [
-            'client_id' => 'required|numeric',
-            'contract_num' => 'required|numeric',
-            'number' => 'required|numeric',
-            'sum' => 'numeric',
-            'payed' => 'numeric',
-            'date' => 'required|date',
-            'rows' => 'array',
-        ];
-    }
 
     # relations
 
