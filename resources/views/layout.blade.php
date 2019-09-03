@@ -26,6 +26,7 @@
                         </li>
                     </ul>
                 </div>
+                @endif
             </div>
         </nav>
         <ul class="nav">
