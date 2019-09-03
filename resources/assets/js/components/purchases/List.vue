@@ -1,5 +1,9 @@
 <template>
-    <grid heading="Закупки" entity="purchases" pageSize=20></grid>
+    <grid
+        heading="Закупки"
+        entity="purchases"
+        pageSize=20
+    />
 </template>
 
 <script>

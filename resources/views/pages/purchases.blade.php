@@ -6,6 +6,5 @@
     $bodyClass = 'purchases';
     $pageTitle = 'Закупки';
     ?>
-    <purchases-component />
 
 @endsection

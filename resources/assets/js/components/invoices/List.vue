@@ -1,5 +1,13 @@
 <template>
-    <grid heading="Фактуры" subheading="Список с возможностью фильтрации и сортировки" entity="invoices" pageSize=50></grid>
+    <div class="control">
+        <grid
+            heading="Фактуры"
+            subheading="Список с возможностью фильтрации и сортировки"
+            entity="invoices"
+            pageSize=50
+        />
+    </div>
+
 </template>
 
 <script>
@@ -12,11 +20,11 @@
             <div class="row">
                 <div class="control">
                     <label>дата с:</label>
-                    <date-picker class="form-control" name="dateFrom"></date-picker>
+                    <!--<date-picker class="form-control" name="dateFrom"></date-picker>-->
                 </div>
                 <div class="control">
                     <label>дата по:</label>
-                    <date-picker class="form-control" name="dateTo"></date-picker>
+                    <!--<date-picker class="form-control" name="dateTo"></date-picker>-->
                 </div>
                 <div class="control">
                     <label>номер:</label>
@@ -36,7 +44,7 @@
                 </div>
             </div>
         </div>`,
-        components: {'date-picker': Datepicker},
+        // components: {'date-picker': Datepicker},
         data() {
             return {
                 clients: [],
@@ -72,8 +80,14 @@
                 <td>{{ item.date }}</td>
                 <td>{{ item.sum }}</td>
                 <td>{{ item.payed }}</td>
-                <td><router-link :to="{name: 'invoicesEdit', params: { id: item.id }}" ><i class="material-icons">edit</i></router-link></td>
-                <td><a href="#"><i :data-item-id="item.id" :data-item-index="index" class="material-icons">delete</i></a></td>
+                <td><router-link :to="{name: 'invoicesEdit', params: { id: item.id }}" >
+                    <i class="material-icons">edit</i>
+                </router-link></td>
+                <td>
+                    <a href="#">
+                        <i :data-item-id="item.id" :data-item-index="index" class="material-icons">delete</i>
+                    </a>
+                </td>
                 <td><router-link :to="{name: 'invoicesPrintoutBill', params: { id: item.id }}" class="button-printout">&nbsp;</router-link></td>
                 <td><router-link :to="{name: 'invoicesPrintoutInvoice', params: { id: item.id }}" class="button-printout">&nbsp;</router-link></td>
             </tr>

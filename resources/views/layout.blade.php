@@ -9,6 +9,7 @@
                 <div class="navbar-wrapper">
                     <a class="navbar-brand" href="#">{{ $user->username }}</a>
                 </div>
+                @endif
                 <div class="collapse navbar-collapse justify-content-end">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
@@ -25,7 +26,6 @@
                         </li>
                     </ul>
                 </div>
-                @endif
             </div>
         </nav>
         <ul class="nav">

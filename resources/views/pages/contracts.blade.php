@@ -6,6 +6,5 @@
     $bodyClass = 'contracts';
     $pageTitle = 'Договоры и контракты';
     ?>
-    <contracts-component />
 
 @endsection

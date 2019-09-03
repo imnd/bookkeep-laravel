@@ -6,6 +6,5 @@
     $bodyClass = 'contracts';
     $pageTitle = 'Платежи';
     ?>
-    <bills-component />
 
 @endsection

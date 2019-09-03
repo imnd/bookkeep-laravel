@@ -6,6 +6,5 @@
     $bodyClass = 'invoices';
     $pageTitle = 'Фактуры';
     ?>
-    <invoice-component />
 
 @endsection
