@@ -36,14 +36,13 @@
             }
         },
         created() {
-            let uri = `/api/articles/${this.$route.params.id}`;
-            this.axios.get(uri).then(response => {
+            this.axios.get(`/api/article/${this.$route.params.id}`).then(response => {
                 this.model = response.data;
             });
         },
         methods: {
             update() {
-                let uri = `/api/articles/${this.$route.params.id}`;
+                let uri = `/api/article/${this.$route.params.id}`;
                 this.axios.post(uri, this.article).then(response => {
                     this.$router.push({name: 'articlesList'});
                 });

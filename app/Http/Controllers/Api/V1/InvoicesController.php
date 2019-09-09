@@ -21,9 +21,9 @@ class InvoicesController extends HasRowsController
      *
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
-    public function list(SearchInvoice $request)
+    public function index(SearchInvoice $request)
     {
-        return $this->makeList($request);
+        return $this->doList($request);
     }
 
     /**
@@ -33,7 +33,7 @@ class InvoicesController extends HasRowsController
      */
     public function store(StoreInvoice $request)
     {
-        return $this->makeStore($request);
+        return $this->doStore($request);
     }
 
     /**
@@ -45,7 +45,7 @@ class InvoicesController extends HasRowsController
      */
     public function show(Invoices $model)
     {
-        return $this->makeShow($model);
+        return $this->doShow($model);
     }
 
     /**
@@ -58,7 +58,7 @@ class InvoicesController extends HasRowsController
      */
     public function update(Invoices $model, UpdateInvoice $request)
     {
-        $this->makeUpdate($model, $request);
+        $this->doUpdate($model, $request);
     }
 
     /**
@@ -71,6 +71,6 @@ class InvoicesController extends HasRowsController
      */
     public function destroy(Invoices $model)
     {
-        $this->makeDestroy($model);
+        $this->doDestroy($model);
     }
 }

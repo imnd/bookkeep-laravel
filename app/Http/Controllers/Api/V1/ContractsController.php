@@ -21,9 +21,9 @@ class ContractsController extends HasRowsController
      *
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
-    public function list(SearchContract $request)
+    public function index(SearchContract $request)
     {
-        return $this->makeList($request);
+        return $this->doList($request);
     }
 
     /**
@@ -33,7 +33,7 @@ class ContractsController extends HasRowsController
      */
     public function store(StoreContract $request)
     {
-        return $this->makeStore($request);
+        return $this->doStore($request);
     }
 
     /**
@@ -45,7 +45,7 @@ class ContractsController extends HasRowsController
      */
     public function show(Contracts $model)
     {
-        return $this->makeShow($model);
+        return $this->doShow($model);
     }
 
     /**
@@ -58,7 +58,7 @@ class ContractsController extends HasRowsController
      */
     public function update(Contracts $model, UpdateContract $request)
     {
-        $this->makeUpdate($model, $request);
+        $this->doUpdate($model, $request);
     }
 
     /**
@@ -71,6 +71,6 @@ class ContractsController extends HasRowsController
      */
     public function destroy(Contracts $model)
     {
-        $this->makeDestroy($model);
+        $this->doDestroy($model);
     }
 }

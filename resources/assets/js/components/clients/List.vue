@@ -59,4 +59,5 @@
             </tr>
         </tbody>`
     });
+    export default {}
 </script>

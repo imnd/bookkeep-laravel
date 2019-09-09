@@ -26,41 +26,40 @@
                         </li>
                     </ul>
                 </div>
-                @endif
             </div>
         </nav>
         <ul class="nav">
-            <li class="nav-item active">
+            <li class="nav-item <?=$pageAction=='invoices' ? 'active' : ''?>">
                 <a class="nav-link" href="/invoices/list">
                     <i class="material-icons">description</i>
                     <p>Фактуры</p>
                 </a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item <?=$pageAction=='contracts' ? 'active' : ''?>">
                 <a class="nav-link" href="/contracts/list">
                     <i class="material-icons">list</i>
                     <p>Договоры и контракты</p>
                 </a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item <?=$pageAction=='purchases' ? 'active' : ''?>">
                 <a class="nav-link" href="/purchases/list">
                     <i class="material-icons">shopping_cart</i>
                     <p>Закупки</p>
                 </a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item <?=$pageAction=='articles' ? 'active' : ''?>">
                 <a class="nav-link" href="/articles/list">
                     <i class="material-icons">group_work</i>
                     <p>Товары</p>
                 </a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item <?=$pageAction=='clients' ? 'active' : ''?>">
                 <a class="nav-link" href="/clients/list">
                     <i class="material-icons">supervisor_account</i>
                     <p>Клиенты</p>
                 </a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item <?=$pageAction=='bills' ? 'active' : ''?>">
                 <a class="nav-link" href="/bills/list">
                     <i class="material-icons">credit_card</i>
                     <p>Платежи</p>

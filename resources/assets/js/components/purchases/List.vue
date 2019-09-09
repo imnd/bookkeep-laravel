@@ -45,9 +45,10 @@
                 <td>{{ item.date }}</td>
                 <td>{{ item.sum }}</td>
                 <td><a href="#"><i :data-item-id="item.id" :data-item-index="index" class="material-icons">delete</i></a></td>
-                <td><router-link :to="{name: 'purchasesEdit', params: { id: item.id }}" ><i class="material-icons">edit</i></router-link></td>
-                <td><router-link :to="{name: 'purchasesPrintout', params: { id: item.id }}" class="button-printout">&nbsp;</router-link></td>
+                <td><router-link :to="{name: 'purchaseEdit', params: { id: item.id }}" ><i class="material-icons">edit</i></router-link></td>
+                <td><router-link :to="{name: 'purchasePrintout', params: { id: item.id }}" class="button-printout"><i class="material-icons">print</i></router-link></td>
             </tr>
         </tbody>`
     });
+    export default {}
 </script>

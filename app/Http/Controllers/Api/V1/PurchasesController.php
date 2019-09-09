@@ -23,7 +23,7 @@ class PurchasesController extends HasRowsController
      */
     public function list(SearchPurchase $request)
     {
-        return $this->makeList($request);
+        return $this->doList($request);
     }
 
     /**
@@ -33,7 +33,7 @@ class PurchasesController extends HasRowsController
      */
     public function store(StorePurchase $request)
     {
-        return $this->makeStore($request);
+        return $this->doStore($request);
     }
 
     /**
@@ -45,7 +45,7 @@ class PurchasesController extends HasRowsController
      */
     public function show(Purchases $model)
     {
-        return $this->makeShow($model);
+        return $this->doShow($model);
     }
 
     /**
@@ -58,7 +58,7 @@ class PurchasesController extends HasRowsController
      */
     public function update(Purchases $model, UpdatePurchase $request)
     {
-        $this->makeUpdate($model, $request);
+        $this->doUpdate($model, $request);
     }
 
     /**
@@ -71,6 +71,6 @@ class PurchasesController extends HasRowsController
      */
     public function destroy(Purchases $model)
     {
-        $this->makeDestroy($model);
+        $this->doDestroy($model);
     }
 }

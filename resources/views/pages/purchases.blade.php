@@ -3,8 +3,9 @@
 @section('content')
 
     <?php
-    $bodyClass = 'purchases';
+    $pageAction = 'purchases';
     $pageTitle = 'Закупки';
     ?>
+    <purchases-component />
 
 @endsection

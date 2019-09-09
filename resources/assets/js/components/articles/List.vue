@@ -91,4 +91,5 @@
             listData: Array,
         },
     });
+    export default {}
 </script>

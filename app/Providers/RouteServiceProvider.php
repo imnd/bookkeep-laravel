@@ -23,11 +23,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //$this->app['router']->pattern('id', '[0-9]+');
-
         parent::boot();
 
-        $this->app['router']->model('article', 'App\Models\Articles');
+//        $this->app['router']->model('article', 'App\Models\Articles');
+//        $this->app['invoice']->model('article', 'App\Models\Invoices');
     }
 
     /**
@@ -38,7 +37,6 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
         $this->mapApiRoutes();
-
         $this->mapWebRoutes();
     }
 

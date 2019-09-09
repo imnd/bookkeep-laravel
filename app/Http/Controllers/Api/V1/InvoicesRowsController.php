@@ -8,9 +8,7 @@ use
     App\Http\Requests\UpdateInvoiceRow
 ;
 
-use 
-    Illuminate\Http\Resources\Json\ResourceCollection,
-    App\Models\InvoicesRows;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 /**
  * Контроллер позиций фактур
@@ -25,9 +23,9 @@ class InvoicesRowsController extends ApiController
      *
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
-    public function list(SearchInvoiceRow $request)
+    public function index(SearchInvoiceRow $request)
     {
-        return $this->makeList($request);
+        return $this->doList($request);
     }
 
     public function list($invoiceId)
@@ -42,7 +40,7 @@ class InvoicesRowsController extends ApiController
      */
     public function store(StoreInvoiceRow $request)
     {
-        return $this->makeStore($request);
+        return $this->doStore($request);
     }
 
     /**
@@ -54,7 +52,7 @@ class InvoicesRowsController extends ApiController
      */
     public function show(InvoicesRows $model)
     {
-        return $this->makeShow($model);
+        return $this->doShow($model);
     }
 
     /**
@@ -67,7 +65,7 @@ class InvoicesRowsController extends ApiController
      */
     public function update(InvoicesRows $model, UpdateInvoiceRow $request)
     {
-        $this->makeUpdate($model, $request);
+        $this->doUpdate($model, $request);
     }
 
     /**
@@ -80,6 +78,6 @@ class InvoicesRowsController extends ApiController
      */
     public function destroy(InvoicesRows $model)
     {
-        $this->makeDestroy($model);
+        $this->doDestroy($model);
     }
 }

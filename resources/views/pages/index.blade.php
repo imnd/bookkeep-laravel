@@ -2,4 +2,6 @@
 
 @section('content')
 
+    <home-component />
+
 @endsection

@@ -45,6 +45,7 @@ import ContractEdit from './components/contracts/Edit.vue';
 import ContractPrintout from './components/contracts/Printout.vue';
 
 import VueRouter from 'vue-router';
+
 Vue.use(VueRouter);
 const router = new VueRouter({
     mode: 'history',
@@ -215,7 +216,7 @@ const router = new VueRouter({
             }
         },
         {
-            name: 'purchasesEdit',
+            name: 'purchaseEdit',
             path: '/purchases/edit/:id',
             component: PurchaseEdit,
             meta: {
@@ -223,7 +224,7 @@ const router = new VueRouter({
             }
         },
         {
-            name: 'purchasesPrintout',
+            name: 'purchasePrintout',
             path: '/purchases/printout/:id',
             component: PurchasePrintout,
             meta: {

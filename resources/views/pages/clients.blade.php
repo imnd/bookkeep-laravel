@@ -3,8 +3,8 @@
 @section('content')
 
     <?php
-    $bodyClass = 'clients';
+    $pageAction = 'clients';
     $pageTitle = 'Клиенты';
     ?>
-
+    <client-component />
 @endsection

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model,
     App\Contracts\HasRows,
     App\Traits\Date,
     App\Traits\Client
-    /*Carbon\Carbon*/
 ;
 
 class Invoices extends Model implements HasRows
@@ -26,13 +25,6 @@ class Invoices extends Model implements HasRows
 
     protected $with = ['client'];
 
-    /*protected $dates = ['date'];
-
-    public function getDates()
-    {
-        return $this->dates;
-    }*/
-
     protected $dateFormat = 'Y-m-d';
 
     /**
@@ -46,7 +38,7 @@ class Invoices extends Model implements HasRows
     /**
      * @inheritdoc
      */
-    public function getSearchConditions(array $params): array
+    public static function getSearchConditions(array $params): array
     {
         $conditions = array();
         if (!empty($params['dateFrom'])) {

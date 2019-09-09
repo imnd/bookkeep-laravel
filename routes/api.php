@@ -1,6 +1,16 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\V1\ArticleCatsController;
+use App\Http\Controllers\Api\V1\ArticlesController;
+use App\Http\Controllers\Api\V1\ArticleSubcatsController;
+use App\Http\Controllers\Api\V1\BillsController;
+use App\Http\Controllers\Api\V1\ClientsController;
+use App\Http\Controllers\Api\V1\ContractsController;
+use App\Http\Controllers\Api\V1\InvoicesController;
+use App\Http\Controllers\Api\V1\PurchasesController;
+use App\Http\Controllers\Api\V1\RegionsController;
+use App\Http\Controllers\Api\V1\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,16 +32,30 @@ Route::group([
     'namespace' => 'Api\V1',
     'middleware' => 'auth:api',
 ], function () {
+
     foreach (['articles', 'articleCats', 'articleSubcats', 'bills', 'clients', 'contracts', 'invoices', 'purchases', 'regions', 'settings'] as $modelName) {
-        $pathPrefix = "api.$modelName";
         $controllerName = ucfirst($modelName) . 'Controller';
-        $entityName = "\{$modelName\}";
-        Route::get("/$modelName", "$controllerName@list")->name("$pathPrefix.list");
-        Route::post("/$modelName", "$controllerName@store")->name("$pathPrefix.store");
-        Route::get("/$modelName/$entityName", "$controllerName@edit")->name("$pathPrefix.show");
-        Route::put("/$modelName/$entityName", "$controllerName@update")->name("$pathPrefix.update");
-        Route::delete("/$modelName/$entityName", "$controllerName@delete")->name("$pathPrefix.delete");
+        Route::get($modelName, "$controllerName@index")->name("api.$modelName.index");
+        Route::post($modelName, "$controllerName@store")->name("api.$modelName.store");
     }
+
+    foreach ([
+        'get' => 'show',
+        'put' => 'update',
+        'delete' => 'destroy',
+    ] as $method => $action) {
+        Route::get('articles/{article}', [ArticlesController::class, $action]);
+        Route::get('articleCats/{articleCat}', [ArticleCatsController::class, $action]);
+        Route::get('article-subcats/{articleSubcat}', [ArticleSubcatsController::class, $action]);
+        Route::get('bills/{bill}', [BillsController::class, $action]);
+        Route::get('clients/{client}', [ClientsController::class, $action]);
+        Route::get('contracts/{contract}', [ContractsController::class, $action]);
+        Route::get('invoices/{invoice}', [InvoicesController::class, $action]);
+        Route::get('purchases/{purchase}', [PurchasesController::class, $action]);
+        Route::get('regions/{region}', [RegionsController::class, $action]);
+        Route::get('settings/{setting}', [SettingsController::class, $action]);
+    }
+    // rows
     foreach ([
         'invoices',
         'contracts',
@@ -40,5 +64,5 @@ Route::group([
         $controllerName = ucfirst($modelName) . 'Controller';
         Route::get("/$modelName/rows/{id}", "$controllerName@rows")->name("api.$modelName.rows");
     }
-    Route::get('/article-subcats', 'ArticleSubcatsController@list');
+    Route::get('/article-subcats', 'ArticleSubcatsController@index');
 });

@@ -48,7 +48,7 @@ class ApiController extends Controller
      * @param Request $request
      * @return ResourceCollection
      */
-    protected function makeList(Request $request)
+    protected function doList(Request $request)
     {
         $modelName = $this->modelName;
         $conditions = $modelName::getSearchConditions($request->all());
@@ -68,10 +68,10 @@ class ApiController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse|null
      */
-    protected function makeStore(Request $request)
+    protected function doStore(Request $request)
     {
         $modelName = $this->modelName;
-        $model = $modelName::create(
+        $modelName::create(
             $request->validated()
         );
         return response()->json(['success' => true], Response::HTTP_CREATED);
@@ -84,7 +84,7 @@ class ApiController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function makeShow(Model $model)
+    protected function doShow(Model $model)
     {
         $resourceClassName = $this->resourceClassName;
         return $resourceClassName::make($model);
@@ -98,15 +98,15 @@ class ApiController extends Controller
      * 
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function makeUpdate(Model $model, Request $request)
+    protected function doUpdate(Model $model, Request $request)
     {
          $model
             ->fill($request->validated())
             ->save();
 
          $resourceClassName = $this->resourceClassName;
-         return $resourceClassName::make($model);
-         //return response()->json(compact('resource'), Response::HTTP_NO_CONTENT);
+         $resource = $resourceClassName::make($model);
+         return response()->json(compact('resource'), Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -117,7 +117,7 @@ class ApiController extends Controller
      * @throws \Exception
      * @return \Illuminate\Http\Response
      */
-    protected function makeDestroy(Model $model)
+    protected function doDestroy(Model $model)
     {
         if ($model->delete()) {
             return response('', Response::HTTP_NO_CONTENT)->json([

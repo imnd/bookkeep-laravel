@@ -7,7 +7,6 @@
             pageSize=50
         />
     </div>
-
 </template>
 
 <script>
@@ -20,11 +19,11 @@
             <div class="row">
                 <div class="control">
                     <label>дата с:</label>
-                    <!--<date-picker class="form-control" name="dateFrom"></date-picker>-->
+                    <date-picker class="form-control" name="dateFrom"></date-picker>
                 </div>
                 <div class="control">
                     <label>дата по:</label>
-                    <!--<date-picker class="form-control" name="dateTo"></date-picker>-->
+                    <date-picker class="form-control" name="dateTo"></date-picker>
                 </div>
                 <div class="control">
                     <label>номер:</label>
@@ -44,7 +43,7 @@
                 </div>
             </div>
         </div>`,
-        // components: {'date-picker': Datepicker},
+        components: {'date-picker': Datepicker},
         data() {
             return {
                 clients: [],
@@ -93,4 +92,5 @@
             </tr>
         </tbody>`
     });
+    export default {}
 </script>

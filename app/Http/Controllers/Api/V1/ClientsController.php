@@ -21,9 +21,9 @@ class ClientsController extends ApiController
      *
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
-    public function list(SearchClient $request)
+    public function index(SearchClient $request)
     {
-        return $this->makeList($request);
+        return $this->doList($request);
     }
 
     /**
@@ -33,7 +33,7 @@ class ClientsController extends ApiController
      */
     public function store(StoreClient $request)
     {
-        return $this->makeStore($request);
+        return $this->doStore($request);
     }
 
     /**
@@ -45,7 +45,7 @@ class ClientsController extends ApiController
      */
     public function show(Clients $model)
     {
-        return $this->makeShow($model);
+        return $this->doShow($model);
     }
 
     /**
@@ -58,7 +58,7 @@ class ClientsController extends ApiController
      */
     public function update(Clients $model, UpdateClient $request)
     {
-        $this->makeUpdate($model, $request);
+        $this->doUpdate($model, $request);
     }
 
     /**
@@ -71,6 +71,6 @@ class ClientsController extends ApiController
      */
     public function destroy(Clients $model)
     {
-        $this->makeDestroy($model);
+        $this->doDestroy($model);
     }
 }

@@ -21,9 +21,9 @@ class SettingsController extends ApiController
      *
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
-    public function list(SearchSetting $request)
+    public function index(SearchSetting $request)
     {
-        return $this->makeList($request);
+        return $this->doList($request);
     }
 
     /**
@@ -33,7 +33,7 @@ class SettingsController extends ApiController
      */
     public function store(StoreSettings $request)
     {
-        return $this->makeStore($request);
+        return $this->doStore($request);
     }
 
     /**
@@ -45,7 +45,7 @@ class SettingsController extends ApiController
      */
     public function show(Settings $model)
     {
-        return $this->makeShow($model);
+        return $this->doShow($model);
     }
 
     /**
@@ -58,7 +58,7 @@ class SettingsController extends ApiController
      */
     public function update(Settings $model, UpdateSettings $request)
     {
-        $this->makeUpdate($model, $request);
+        $this->doUpdate($model, $request);
     }
 
     /**
@@ -71,6 +71,6 @@ class SettingsController extends ApiController
      */
     public function destroy(Settings $model)
     {
-        $this->makeDestroy($model);
+        $this->doDestroy($model);
     }
 }

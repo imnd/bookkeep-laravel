@@ -21,9 +21,9 @@ class BillsController extends ApiController
      *
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
-    public function list(SearchBill $request)
+    public function index(SearchBill $request)
     {
-        return $this->makeList($request);
+        return $this->doList($request);
     }
 
     /**
@@ -33,7 +33,7 @@ class BillsController extends ApiController
      */
     public function store(StoreBill $request)
     {
-        return $this->makeStore($request);
+        return $this->doStore($request);
     }
 
     /**
@@ -45,7 +45,7 @@ class BillsController extends ApiController
      */
     public function show(Bills $model)
     {
-        return $this->makeShow($model);
+        return $this->doShow($model);
     }
 
     /**
@@ -58,7 +58,7 @@ class BillsController extends ApiController
      */
     public function update(Bills $model, UpdateBill $request)
     {
-        $this->makeUpdate($model, $request);
+        $this->doUpdate($model, $request);
     }
 
     /**
@@ -71,6 +71,6 @@ class BillsController extends ApiController
      */
     public function destroy(Bills $model)
     {
-        $this->makeDestroy($model);
+        $this->doDestroy($model);
     }
 }

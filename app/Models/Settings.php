@@ -18,7 +18,7 @@ class Settings extends Model implements QueryConditions
     /**
      * @inheritdoc
      */
-    public function getSearchConditions(array $params): array
+    public static function getSearchConditions(array $params): array
     {
         $conditions = array();
         return $conditions;

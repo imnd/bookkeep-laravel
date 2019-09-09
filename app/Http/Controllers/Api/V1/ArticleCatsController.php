@@ -23,9 +23,9 @@ class ArticleCatsController extends ApiController
      * 
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
-    public function list(SearchArticleCat $request)
+    public function index(SearchArticleCat $request)
     {
-        return $this->makeList($request);
+        return $this->doList($request);
     }
 
     /**
@@ -36,7 +36,7 @@ class ArticleCatsController extends ApiController
      */
     public function store(StoreArticleCat $request)
     {
-        return $this->makeStore($request);
+        return $this->doStore($request);
     }
 
     /**
@@ -48,7 +48,7 @@ class ArticleCatsController extends ApiController
      */
     public function show(ArticleCats $model)
     {
-        return $this->makeShow($model);
+        return $this->doShow($model);
     }
 
     /**
@@ -61,7 +61,7 @@ class ArticleCatsController extends ApiController
      */
     public function update(ArticleCats $model, UpdateArticleCat $request)
     {
-        $this->makeUpdate($model, $request);
+        $this->doUpdate($model, $request);
     }
 
     /**
@@ -74,6 +74,6 @@ class ArticleCatsController extends ApiController
      */
     public function destroy(ArticleCats $model)
     {
-        $this->makeDestroy($model);
+        $this->doDestroy($model);
     }
 }

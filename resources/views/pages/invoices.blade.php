@@ -3,8 +3,9 @@
 @section('content')
 
     <?php
-    $bodyClass = 'invoices';
+    $pageAction = 'invoices';
     $pageTitle = 'Фактуры';
     ?>
+    <invoice-component />
 
 @endsection

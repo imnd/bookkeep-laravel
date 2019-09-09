@@ -23,7 +23,7 @@ class ArticleSubcatsController extends ApiController
      */
     public function list(SearchArticleSubcat $request)
     {
-        return $this->makeList($request);
+        return $this->doList($request);
     }
 
     /**
@@ -33,7 +33,7 @@ class ArticleSubcatsController extends ApiController
      */
     public function store(StoreArticleSubcat $request)
     {
-        return $this->makeStore($request);
+        return $this->doStore($request);
     }
 
     /**
@@ -45,7 +45,7 @@ class ArticleSubcatsController extends ApiController
      */
     public function show(ArticleSubcats $model)
     {
-        return $this->makeShow($model);
+        return $this->doShow($model);
     }
 
     /**
@@ -58,7 +58,7 @@ class ArticleSubcatsController extends ApiController
      */
     public function update(ArticleSubcats $model, UpdateArticleSubcat $request)
     {
-        $this->makeUpdate($model, $request);
+        $this->doUpdate($model, $request);
     }
 
     /**
@@ -71,6 +71,6 @@ class ArticleSubcatsController extends ApiController
      */
     public function destroy(ArticleSubcats $model)
     {
-        $this->makeDestroy($model);
+        $this->doDestroy($model);
     }
 }

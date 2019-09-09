@@ -10,15 +10,15 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <!--форма поиска-->
+                        <!-- форма поиска -->
                         <form @submit.prevent="listUpdate" class="search-form">
-                            <component :is="`search-form-${entity}`"/>
+                            <component :is="`search-form-${entity}`" />
                             <div class="pagination">
                                 <span> страница {{ pageNumber + 1 }}. всего: {{ pageCount }} страниц</span>
                             </div>
                             <input type="submit" class="btn btn-primary pull-right" value="Поиск">
                         </form>
-                        <!--список-->
+                        <!-- список -->
                         <table @click.prevent="deleteItem" class="table">
                             <thead @click.prevent="listSort" class="text-primary">
                                 <component :is="'grid-head-' + entity"/>

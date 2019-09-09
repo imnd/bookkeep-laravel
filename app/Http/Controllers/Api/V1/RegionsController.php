@@ -21,9 +21,9 @@ class RegionsController extends ApiController
      *
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
-    public function list(SearchRegion $request)
+    public function index(SearchRegion $request)
     {
-        return $this->makeList($request);
+        return $this->doList($request);
     }
 
     /**
@@ -33,7 +33,7 @@ class RegionsController extends ApiController
      */
     public function store(StoreRegion $request)
     {
-        return $this->makeStore($request);
+        return $this->doStore($request);
     }
 
     /**
@@ -45,7 +45,7 @@ class RegionsController extends ApiController
      */
     public function show(Regions $model)
     {
-        return $this->makeShow($model);
+        return $this->doShow($model);
     }
 
     /**
@@ -58,7 +58,7 @@ class RegionsController extends ApiController
      */
     public function update(Regions $model, UpdateRegion $request)
     {
-        $this->makeUpdate($model, $request);
+        $this->doUpdate($model, $request);
     }
 
     /**
@@ -71,6 +71,6 @@ class RegionsController extends ApiController
      */
     public function destroy(Regions $model)
     {
-        $this->makeDestroy($model);
+        $this->doDestroy($model);
     }
 }

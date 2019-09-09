@@ -18,7 +18,7 @@ class HasRowsController extends ApiController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function makeStore(Request $request)
+    protected function doStore(Request $request)
     {
         $modelName = $this->modelName;
         $model = $modelName::create(
@@ -37,7 +37,7 @@ class HasRowsController extends ApiController
      * 
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function makeShow(Model $model)
+    protected function doShow(Model $model)
     {
         return response()->json([
             'item' => $model,

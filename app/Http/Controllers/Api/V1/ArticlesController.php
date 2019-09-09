@@ -21,9 +21,9 @@ class ArticlesController extends ApiController
      *
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
-    public function list(SearchArticle $request)
+    public function index(SearchArticle $request)
     {
-        return $this->makeList($request);
+        return $this->doList($request);
     }
 
     /**
@@ -33,7 +33,7 @@ class ArticlesController extends ApiController
      */
     public function store(StoreArticle $request)
     {
-        return $this->makeStore($request);
+        return $this->doStore($request);
     }
 
     /**
@@ -45,7 +45,7 @@ class ArticlesController extends ApiController
      */
     public function show(Articles $model)
     {
-        return $this->makeShow($model);
+        return $this->doShow($model);
     }
 
     /**
@@ -58,7 +58,7 @@ class ArticlesController extends ApiController
      */
     public function update(Articles $model, UpdateArticle $request)
     {
-        $this->makeUpdate($model, $request);
+        $this->doUpdate($model, $request);
     }
 
     /**
@@ -71,6 +71,6 @@ class ArticlesController extends ApiController
      */
     public function destroy(Articles $model)
     {
-        $this->makeDestroy($model);
+        $this->doDestroy($model);
     }
 }
