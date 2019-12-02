@@ -9,7 +9,7 @@ Route::group([
     Route::view('/', 'pages.index', ['page' => '']);
     Route::view('settings', 'settings', ['page' => 'settings']);
     foreach (['articles', 'bills', 'clients', 'contracts', 'invoices', 'purchases'] as $entity) {
-        Route::get("$entity/{any}", function() use ($entity) {
+        Route::get("$entity/{any?}", function() use ($entity) {
             return view("pages.$entity");
         })->where('any', '.*');
     }
