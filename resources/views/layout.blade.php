@@ -2,7 +2,6 @@
 
 <div class="sidebar" data-color="azure" data-background-color="white">
     <ul class="sidebar-wrapper ps-container ps-theme-default">
-        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
             <div class="container-fluid">
                 @if (isset($user))
@@ -70,7 +69,6 @@
 </div>
 
 <div class="main-panel">
-    <!-- End Navbar -->
     <div class="content">
         <div id="app"></div>
         <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
