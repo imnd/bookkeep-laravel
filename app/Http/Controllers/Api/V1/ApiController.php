@@ -52,13 +52,9 @@ class ApiController extends Controller
     {
         $modelName = $this->modelName;
         $conditions = $modelName::getSearchConditions($request->all());
-        $orderBy = [
-            $request->get('field'),
-            $request->get('order')
-        ];
         $query = $modelName::where($conditions);
-        if (!empty($orderBy[0]) && !empty($orderBy[1])) {
-            $query = $query->orderBy($orderBy[0], $orderBy[1]);
+        if (!empty($field = $request->get('field')) && !empty($order = $request->get('order'))) {
+            $query = $query->orderBy($field, $order);
         }
         return new ResourceCollection($query->get());
     }
@@ -71,9 +67,7 @@ class ApiController extends Controller
     protected function doStore(Request $request)
     {
         $modelName = $this->modelName;
-        $modelName::create(
-            $request->validated()
-        );
+        $modelName::create($request->validated());
         return response()->json(['success' => true], Response::HTTP_CREATED);
     }
 
@@ -92,21 +86,22 @@ class ApiController extends Controller
 
     /**
      * Updates model in DB.
-     * 
+     *
      * @param Model $model
      * @param Request $request
-     * 
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     protected function doUpdate(Model $model, Request $request)
     {
-         $model
+        $model
             ->fill($request->validated())
             ->save();
 
-         $resourceClassName = $this->resourceClassName;
-         $resource = $resourceClassName::make($model);
-         return response()->json(compact('resource'), Response::HTTP_NO_CONTENT);
+        $resourceClassName = $this->resourceClassName;
+        return response()->json([
+            'resource' => $resourceClassName::make($model)
+        ], Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -119,13 +114,8 @@ class ApiController extends Controller
      */
     protected function doDestroy(Model $model)
     {
-        if ($model->delete()) {
-            return response('', Response::HTTP_NO_CONTENT)->json([
-                'success' => true,
-            ]);
-        }
         return response()->json([
-            'success' => false,
-        ]);
+            'success' => $model->delete(),
+        ], Response::HTTP_NO_CONTENT);
     }
 }

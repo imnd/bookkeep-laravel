@@ -33,16 +33,6 @@ class Contracts extends Model implements HasRows
         return $this->dates;
     }*/
 
-    # relations
-
-    /**
-     * Get the invoice rows.
-     */
-    public function rows()
-    {
-        return $this->hasMany(ContractsRows::class, 'contract_id', 'id');
-    }
-
     /**
      * @inheritdoc
      */
@@ -61,5 +51,15 @@ class Contracts extends Model implements HasRows
             }
         }
         return $conditions;
+    }
+
+    # relations
+
+    /**
+     * Get the invoice rows.
+     */
+    public function rows()
+    {
+        return $this->hasMany(ContractsRows::class, 'contract_id', 'id');
     }
 }

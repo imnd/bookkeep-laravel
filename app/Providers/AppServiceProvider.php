@@ -12,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      *
-     * @param UsersRepositoryInterface $repo
+     * @param Users $users
      * @return void
      */
     public function boot(Users $users)

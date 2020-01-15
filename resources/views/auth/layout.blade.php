@@ -1,8 +1,12 @@
 @include('header')
 
-<div class="col-md-6 center-block">
-    <div class="card">
-        @yield('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                @yield('content')
+            </div>
+        </div>
     </div>
 </div>
 

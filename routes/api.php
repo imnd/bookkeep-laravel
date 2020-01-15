@@ -44,23 +44,23 @@ Route::group([
         'put' => 'update',
         'delete' => 'destroy',
     ] as $method => $action) {
-        Route::get('articles/{article}', [ArticlesController::class, $action]);
-        Route::get('articleCats/{articleCat}', [ArticleCatsController::class, $action]);
-        Route::get('article-subcats/{articleSubcat}', [ArticleSubcatsController::class, $action]);
-        Route::get('bills/{bill}', [BillsController::class, $action]);
-        Route::get('clients/{client}', [ClientsController::class, $action]);
-        Route::get('contracts/{contract}', [ContractsController::class, $action]);
-        Route::get('invoices/{invoice}', [InvoicesController::class, $action]);
-        Route::get('purchases/{purchase}', [PurchasesController::class, $action]);
-        Route::get('regions/{region}', [RegionsController::class, $action]);
-        Route::get('settings/{setting}', [SettingsController::class, $action]);
+        Route::$method('articles/{article}', [ArticlesController::class, $action]);
+        Route::$method('articleCats/{articleCat}', [ArticleCatsController::class, $action]);
+        Route::$method('article-subcats/{articleSubcat}', [ArticleSubcatsController::class, $action]);
+        Route::$method('bills/{bill}', [BillsController::class, $action]);
+        Route::$method('clients/{client}', [ClientsController::class, $action]);
+        Route::$method('contracts/{contract}', [ContractsController::class, $action]);
+        Route::$method('invoices/{invoice}', [InvoicesController::class, $action]);
+        Route::$method('purchases/{purchase}', [PurchasesController::class, $action]);
+        Route::$method('regions/{region}', [RegionsController::class, $action]);
+        Route::$method('settings/{setting}', [SettingsController::class, $action]);
     }
     // rows
     foreach ([
         'invoices',
         'contracts',
         'purchases'
-    ] as $entityName) {
+    ] as $modelName) {
         $controllerName = ucfirst($modelName) . 'Controller';
         Route::get("/$modelName/rows/{id}", "$controllerName@rows")->name("api.$modelName.rows");
     }

@@ -3,8 +3,8 @@
 @section('content')
 
     <div class="card-header card-header-primary">
-        <h4 class="card-title">Авторизация</h4>
-        <p class="card-category">Заполните форму</p>
+        <h4 class="card-title">Authorization</h4>
+        <p class="card-category">Fill the form</p>
     </div>
     <div class="card-body">
         <form method="post">
@@ -23,12 +23,12 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group bmd-form-group {{ $errors->has('password') ? 'has-error' : '' }}">
-                        <label class="bmd-label-floating">Пароль</label>
+                        <label class="bmd-label-floating">Password</label>
                         <input name="password" type="password" class="form-control" />
                     </div>
                 </div>
             </div>
-            <div class="row">
+            {{--<div class="row">
                 <div class="col-md-4">
                     <div class="form-group bmd-form-group form-check">
                         <label class="form-check-label">
@@ -36,11 +36,11 @@
                             <span class="form-check-sign">
                                 <span class="check"></span>
                             </span>
-                            Запомнить
+                            Remember
                         </label>
                     </div>
                 </div>
-            </div>
+            </div>--}}
             <div class="row">
                 <div class="col-md-8 text-danger">
                     @if ($errors->has('username'))
@@ -48,20 +48,20 @@
                     @endif
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary pull-right">Войти</button>
+            <button type="submit" class="btn btn-primary pull-right">Login</button>
             <div class="clearfix"></div>
         </form>
-        <div class="row">
+        {{--<div class="row">
             <div class="col-md-4">
-                <a href="register" class="btn btn-primary btn-round">Регистрация</a>
+                <a href="register" class="btn btn-primary btn-round">Register</a>
             </div>
-        </div>
+        </div>--}}
     </div>
 
-    <style>
+    {{--<style>
         .form-check {
             margin-top: 18px;
         }
-    </style>
+    </style>--}}
 
 @endsection

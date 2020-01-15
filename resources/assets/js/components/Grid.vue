@@ -1,36 +1,38 @@
 <template>
-    <div>
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header card-header-primary">
-                    <h4 class="card-title">{{ this.heading }}</h4>
-                    <router-link data-color="azure" :to="`/${entity}/create`" class="btn btn-primary btn-round pull-right">Создать</router-link>
-                    <div class="clearfix"></div>
-                    <p v-if="this.subheading" class="card-category">{{ this.subheading }}</p>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <!-- форма поиска -->
-                        <form @submit.prevent="listUpdate" class="search-form">
-                            <component :is="`search-form-${entity}`" />
-                            <div class="pagination">
-                                <span> страница {{ pageNumber + 1 }}. всего: {{ pageCount }} страниц</span>
-                            </div>
-                            <input type="submit" class="btn btn-primary pull-right" value="Поиск">
-                        </form>
-                        <!-- список -->
-                        <table @click.prevent="deleteItem" class="table">
-                            <thead @click.prevent="listSort" class="text-primary">
-                                <component :is="'grid-head-' + entity"/>
-                            </thead>
-                            <component :is="'grid-body-' + entity" :listData="paginatedData"/>
-                        </table>
-                        <div class="pagination">
-                            <button class="btn" @click="prevPage"><</button>&nbsp;
-                            <button class="btn" @click="nextPage">></button>
-                            <span> страница {{ pageNumber + 1 }}. всего: {{ pageCount }} страниц</span>
-                        </div>
-                    </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">{{ this.heading }}</h4>
+                <router-link data-color="azure" :to="`/${entity}/create`" class="btn btn-primary btn-round pull-right">Создать</router-link>
+                <div class="clearfix"></div>
+                <p v-if="this.subheading" class="card-category">{{ this.subheading }}</p>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <!-- форма поиска -->
+                    <form @submit.prevent="listUpdate" class="search-form">
+                        <component :is="`search-form-${entity}`" />
+                        <pagination
+                            :pageNumber="pageNumber"
+                            :pageCount="pageCount"
+                            @prevPage="prevPage"
+                            @nextPage="nextPage"
+                        />
+                        <input type="submit" class="btn btn-primary pull-right" value="Поиск">
+                    </form>
+                    <!-- список -->
+                    <table @click.prevent="deleteItem" class="table">
+                        <thead @click.prevent="listSort" class="text-primary">
+                            <component :is="`grid-head-${entity}`"/>
+                        </thead>
+                        <component :is="`grid-body-${entity}`" :listData="paginatedData"/>
+                    </table>
+                    <pagination
+                        :pageNumber="pageNumber"
+                        :pageCount="pageCount"
+                        @prevPage="prevPage"
+                        @nextPage="nextPage"
+                    />
                 </div>
             </div>
         </div>
@@ -38,6 +40,8 @@
 </template>
 
 <script>
+    import Pagination from './Pagination.vue'
+
     export default {
         props: {
             heading: {
@@ -139,6 +143,7 @@
                 this.pageNumber--;
                 this.setPaginatedData();
             },
-        }
+        },
+        components: { Pagination },
     }
 </script>
