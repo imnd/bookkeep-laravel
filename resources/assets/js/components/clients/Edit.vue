@@ -21,7 +21,7 @@
         </div>
         <div class="card-body">
             <form @submit.prevent="update">
-                <form-body :model="model" />
+                <form-body :model="model" :errors="errors" />
             </form>
         </div>
     </div>
@@ -44,9 +44,13 @@
         methods: {
             update() {
                 let uri = `/api/clients/${this.$route.params.id}`;
-                this.axios.post(uri, this.model).then(response => {
-                    this.$router.push({name: 'clientsList'});
-                });
+                this.axios.post(uri, this.model)
+                    .then(response => {
+                        this.$router.push({name: 'clientsList'});
+                    })
+                    .catch(error => {
+                        this.errors = error.response.data.errors;
+                    });
             }
         },
         components: { FormBody },

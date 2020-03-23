@@ -84,6 +84,10 @@
                 type: Object,
                 required: true,
             },
+            errors: {
+                type: Object,
+                required: true,
+            },
             rows: {
                 type: Array,
                 default: () => [row]
@@ -111,6 +115,18 @@
             rowAdd() {
                 this.rows.push(Vue.util.extend({}, this.row))
             },
+            getError(key) {
+                if (this.errors[key]!==undefined) {
+                    return this.errors[key][0];
+                }
+            },
         },
     }
 </script>
+
+<style scoped>
+    .error {
+        color: red;
+        clear: both;
+    }
+</style>

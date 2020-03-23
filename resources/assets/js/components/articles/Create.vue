@@ -16,7 +16,7 @@
         </div>
         <div class="card-body">
             <form @submit.prevent="create">
-                <form-body :model="model" />
+                <form-body :model="model" :errors="errors" />
             </form>
         </div>
     </div>

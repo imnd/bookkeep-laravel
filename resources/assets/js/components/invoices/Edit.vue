@@ -31,7 +31,7 @@
         </div>
         <div class="card-body">
             <form @submit.prevent="update">
-                <form-body :model="model" :rows="rows"></form-body>
+                <form-body :model="model" :rows="rows" :errors="errors" />
             </form>
         </div>
     </div>

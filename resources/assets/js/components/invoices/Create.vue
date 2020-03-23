@@ -16,7 +16,7 @@
         </div>
         <div class="card-body">
             <form @submit.prevent="create">
-                <form-body :model="model" :rows="rows"></form-body>
+                <form-body :model="model" :errors="errors" />
             </form>
         </div>
     </div>
@@ -35,14 +35,18 @@
                     sum: '',
                     payed: 0
                 },
-                rows: [],
             }
         },
         methods: {
             create() {
-                this.axios.post('/api/invoices', this.invoice).then(response => {
-                    this.$router.push({name: 'invoicesList'});
-                });
+                this.axios
+                    .post('/api/invoices', this.invoice)
+                    .then(response => {
+                        this.$router.push({name: 'invoicesList'});
+                    })
+                    .catch(error => {
+                        this.errors = error.response.data.errors;
+                    });
             }
         },
         components: { FormBody },
