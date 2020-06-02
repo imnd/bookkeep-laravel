@@ -24,10 +24,10 @@ class SearchInvoice extends FormRequest
     public function rules()
     {
         return [
-            'client_id' => 'numeric',
+            'client_id'    => 'numeric',
             'contract_num' => 'numeric',
-            'number' => 'numeric',
-            'date' => 'date',
+            'number'       => 'numeric',
+            'date'         => 'date',
         ];
     }
 }

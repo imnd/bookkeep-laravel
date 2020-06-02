@@ -24,12 +24,12 @@ class StoreBill extends FormRequest
     public function rules()
     {
         return [
-            'client_id' => 'required|numeric',
+            'client_id'    => 'required|numeric',
             'contract_num' => 'required|numeric',
-            'sum' => 'numeric',
-            'remainder' => 'numeric',
-            'date' => 'date',
-            'contents' => 'string',
+            'sum'          => 'numeric',
+            'remainder'    => 'numeric',
+            'date'         => 'date',
+            'contents'     => 'string',
         ];
     }
 }

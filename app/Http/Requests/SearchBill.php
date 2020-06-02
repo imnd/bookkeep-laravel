@@ -25,9 +25,9 @@ class SearchBill extends FormRequest
     {
         return [
             'contract_num' => 'numeric',
-            'client_id' => 'numeric|exists:clients,id',
-            'dateFrom' => 'date',
-            'dateTo' => 'date',
+            'client_id'    => 'numeric|exists:clients,id',
+            'dateFrom'     => 'date',
+            'dateTo'       => 'date',
         ];
     }
 }

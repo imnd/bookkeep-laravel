@@ -26,11 +26,11 @@ class SearchArticle extends FormRequest
     {
         return [
             'priceFrom' => 'numeric',
-            'priceTo' => 'numeric',
-            'name' => 'max:255',
+            'priceTo'   => 'numeric',
+            'name'      => 'max:255',
             'subcat_id' => 'numeric',
-            'unit' => 'in:' . Articles::getUnitsList(),
-            'active' => 'numeric|min:0|max:1',
+            'unit'      => 'in:' . Articles::getUnitsList(),
+            'active'    => 'numeric|min:0|max:1',
         ];
     }
 }

@@ -7,8 +7,7 @@ use
     Illuminate\Http\Response,
     Illuminate\Http\Resources\Json\ResourceCollection,
     Illuminate\Database\Eloquent\Model,
-    App\Http\Controllers\Controller,
-    Validator
+    App\Http\Controllers\Controller
 ;
 
 /**
@@ -80,8 +79,7 @@ class ApiController extends Controller
      */
     protected function doShow(Model $model)
     {
-        $resourceClassName = $this->resourceClassName;
-        return $resourceClassName::make($model);
+        return ($this->resourceClassName)::make($model);
     }
 
     /**
@@ -98,9 +96,8 @@ class ApiController extends Controller
             ->fill($request->validated())
             ->save();
 
-        $resourceClassName = $this->resourceClassName;
         return response()->json([
-            'resource' => $resourceClassName::make($model)
+            'resource' => ($this->resourceClassName)::make($model)
         ], Response::HTTP_NO_CONTENT);
     }
 

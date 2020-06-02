@@ -25,9 +25,9 @@ class StorePurchase extends FormRequest
     {
         return [
             'number' => 'required|numeric',
-            'sum' => 'numeric',
-            'date' => 'required|date',
-            'rows' => 'array',
+            'sum'    => 'numeric',
+            'date'   => 'required|date',
+            'rows'   => 'array',
         ];
     }
 }

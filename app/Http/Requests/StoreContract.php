@@ -24,15 +24,15 @@ class StoreContract extends FormRequest
     public function rules()
     {
         return [
-            'client_id' => 'required|numeric',
+            'client_id'    => 'required|numeric',
             'contract_num' => 'required|numeric',
-            'sum' => 'numeric',
-            'payed' => 'numeric',
-            'date' => 'required|date',
-            'term_start' => 'date',
-            'term_end' => 'date',
-            'type' => 'in:contract,agreement',
-            'rows' => 'array',
+            'sum'          => 'numeric',
+            'payed'        => 'numeric',
+            'date'         => 'required|date',
+            'term_start'   => 'date',
+            'term_end'     => 'date',
+            'type'         => 'in:contract,agreement',
+            'rows'         => 'array',
         ];
     }
 }

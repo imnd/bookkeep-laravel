@@ -25,9 +25,9 @@ class StoreContractsRow extends FormRequest
     {
         return [
             'contract_id' => 'required|numeric',
-            'article_id' => 'required|numeric',
-            'quantity' => 'required|numeric',
-            'price' => 'required|numeric',
+            'article_id'  => 'required|numeric',
+            'quantity'    => 'required|numeric',
+            'price'       => 'required|numeric',
         ];
     }
 }

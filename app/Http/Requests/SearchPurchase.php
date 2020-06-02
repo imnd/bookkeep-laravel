@@ -24,9 +24,9 @@ class SearchPurchase extends FormRequest
     public function rules()
     {
         return [
-            'number' => 'numeric',
+            'number'   => 'numeric',
             'dateFrom' => 'date',
-            'dateTo' => 'date',
+            'dateTo'   => 'date',
         ];
     }
 }

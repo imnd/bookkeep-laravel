@@ -25,7 +25,7 @@ class StoreArticleSubcat extends FormRequest
     {
         return [
             'cat_id' => 'required|numeric',
-            'name' => 'required|max:255',
+            'name'   => 'required|max:255',
         ];
     }
 }

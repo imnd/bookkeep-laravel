@@ -1,16 +1,18 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Api\V1\ArticleCatsController;
-use App\Http\Controllers\Api\V1\ArticlesController;
-use App\Http\Controllers\Api\V1\ArticleSubcatsController;
-use App\Http\Controllers\Api\V1\BillsController;
-use App\Http\Controllers\Api\V1\ClientsController;
-use App\Http\Controllers\Api\V1\ContractsController;
-use App\Http\Controllers\Api\V1\InvoicesController;
-use App\Http\Controllers\Api\V1\PurchasesController;
-use App\Http\Controllers\Api\V1\RegionsController;
-use App\Http\Controllers\Api\V1\SettingsController;
+use App\Http\Controllers\Api\V1\{
+    ArticleCatsController,
+    ArticlesController,
+    ArticleSubcatsController,
+    BillsController,
+    ClientsController,
+    ContractsController,
+    InvoicesController,
+    PurchasesController,
+    RegionsController,
+    SettingsController
+};
 
 /*
 |--------------------------------------------------------------------------

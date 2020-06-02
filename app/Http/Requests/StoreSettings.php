@@ -24,8 +24,8 @@ class StoreSettings extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
-            'key' => 'required',
+            'name'  => 'required|max:255',
+            'key'   => 'required',
             'value' => 'required',
         ];
     }

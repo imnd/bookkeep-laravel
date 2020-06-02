@@ -25,10 +25,10 @@ class StoreArticle extends FormRequest
     {
         return [
             'subcat_id' => 'required|numeric',
-            'name' => 'required|max:255',
-            'price' => 'required|max:255',
-            'unit' => 'required|in:' . implode(',', self::getUnits()),
-            'active' => 'numeric|min:0|max:1',
+            'name'      => 'required|max:255',
+            'price'     => 'required|max:255',
+            'unit'      => 'required|in:' . implode(',', self::getUnits()),
+            'active'    => 'numeric|min:0|max:1',
         ];
     }
 }

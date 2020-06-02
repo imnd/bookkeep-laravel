@@ -24,7 +24,7 @@ class SearchClient extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'string',
+            'name'    => 'string',
             'address' => 'string',
         ];
     }
