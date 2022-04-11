@@ -24,13 +24,13 @@ class StoreInvoiceRow extends FormRequest
     public function rules()
     {
         return [
-            'client_id' => 'required|numeric',
+            'client_id'    => 'required|numeric',
             'contract_num' => 'required|numeric',
-            'number' => 'required|numeric',
-            'sum' => 'numeric',
-            'payed' => 'numeric',
-            'date' => 'required|date',
-            'rows' => 'array',
+            'number'       => 'required|numeric',
+            'sum'          => 'numeric',
+            'payed'        => 'numeric',
+            'date'         => 'required|date',
+            'rows'         => 'array',
         ];
     }
 }
