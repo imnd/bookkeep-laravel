@@ -28,42 +28,39 @@
             </div>
         </nav>
         <ul class="nav">
-            <li class="nav-item <?=$pageAction=='invoices' ? 'active' : ''?>">
-                <a class="nav-link" href="/invoices/list">
-                    <i class="material-icons">description</i>
-                    <p>Фактуры</p>
-                </a>
-            </li>
-            <li class="nav-item <?=$pageAction=='contracts' ? 'active' : ''?>">
-                <a class="nav-link" href="/contracts/list">
-                    <i class="material-icons">list</i>
-                    <p>Договоры и контракты</p>
-                </a>
-            </li>
-            <li class="nav-item <?=$pageAction=='purchases' ? 'active' : ''?>">
-                <a class="nav-link" href="/purchases/list">
-                    <i class="material-icons">shopping_cart</i>
-                    <p>Закупки</p>
-                </a>
-            </li>
-            <li class="nav-item <?=$pageAction=='articles' ? 'active' : ''?>">
-                <a class="nav-link" href="/articles/list">
-                    <i class="material-icons">group_work</i>
-                    <p>Товары</p>
-                </a>
-            </li>
-            <li class="nav-item <?=$pageAction=='clients' ? 'active' : ''?>">
-                <a class="nav-link" href="/clients/list">
-                    <i class="material-icons">supervisor_account</i>
-                    <p>Клиенты</p>
-                </a>
-            </li>
-            <li class="nav-item <?=$pageAction=='bills' ? 'active' : ''?>">
-                <a class="nav-link" href="/bills/list">
-                    <i class="material-icons">credit_card</i>
-                    <p>Платежи</p>
-                </a>
-            </li>
+            <?php foreach ([
+                'invoices' => [
+                    'icon' => 'description',
+                    'title' => 'Фактуры',
+                ],
+                'contracts' => [
+                    'icon' => 'list',
+                    'title' => 'Договоры и контракты',
+                ],
+                'purchases' => [
+                    'icon' => 'shopping_cart',
+                    'title' => 'Закупки',
+                ],
+                'articles' => [
+                    'icon' => 'group_work',
+                    'title' => 'Товары',
+                ],
+                'clients' => [
+                    'icon' => 'supervisor_account',
+                    'title' => 'Клиенты',
+                ],
+                'bills' => [
+                    'icon' => 'credit_card',
+                    'title' => 'Платежи',
+                ],
+            ] as $action => $options) { ?>
+                <li class="nav-item <?=$pageAction===$action ? 'active' : ''?>">
+                    <a class="nav-link" href="/<?=$action?>/list">
+                        <i class="material-icons"><?=$options['icon']?></i>
+                        <p><?=$options['title']?></p>
+                    </a>
+                </li>
+            <?php }?>
         </ul>
     </ul>
 </div>

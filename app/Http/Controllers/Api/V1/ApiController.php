@@ -7,8 +7,7 @@ use
     Illuminate\Http\Response,
     Illuminate\Http\Resources\Json\ResourceCollection,
     Illuminate\Database\Eloquent\Model,
-    App\Http\Controllers\Controller,
-    Validator
+    App\Http\Controllers\Controller
 ;
 
 /**
