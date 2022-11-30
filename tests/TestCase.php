@@ -2,9 +2,12 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase,
-    Illuminate\Foundation\Testing\WithFaker,
-    Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Users;
+use Illuminate\Foundation\Testing\{
+    TestCase as BaseTestCase,
+    WithFaker,
+    RefreshDatabase
+};
 
 abstract class TestCase extends BaseTestCase
 {
@@ -15,7 +18,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected $modelName;
     /**
-     * @var \App\Models\Users
+     * @var Users
      */
     protected $user;
 
@@ -26,13 +29,13 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->user = factory('App\Models\Users')->create();
+        $this->user = factory(Users::class)->create();
         $this->withoutExceptionHandling();
     }
 
     /**
      * Авторизированные пользователи могут видеть список моделей
-     * 
+     *
      * @param string $modelName
      * @return void
      */
@@ -56,8 +59,8 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Авторизированные пользователи могут видеть список моделей
-     * 
+     * Неавторизированные пользователи не могут видеть список моделей
+     *
      * @param string $modelName
      * @return void
      */
@@ -71,8 +74,8 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Авторизированные пользователи могут видеть список моделей
-     * 
+     * Авторизированные пользователи могут создавать список моделей
+     *
      * @param string $modelName
      * @return void
      */
@@ -93,8 +96,8 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Неавторизированные пользователи не могут видеть список моделей
-     * 
+     * Неавторизированные пользователи не могут создавать список моделей
+     *
      * @param string $modelName
      * @return void
      */
@@ -108,7 +111,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Авторизированные пользователи могут редактировать модели
-     * 
+     *
      * @param string $modelName
      * @return void
      */
@@ -127,7 +130,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Неавторизированные пользователи не могут редактировать модели
-     * 
+     *
      * @param string $modelName
      * @return void
      */
@@ -167,7 +170,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Проверяем сохранились ли данные модели
-     * 
+     *
      * @param array $model модель
      * @param array $data данные
      * @return void
