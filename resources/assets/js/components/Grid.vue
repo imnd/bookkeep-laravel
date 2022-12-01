@@ -43,6 +43,7 @@
     import Pagination from './Pagination.vue'
 
     export default {
+        name: 'grid',
         props: {
             heading: {
                 type: String,

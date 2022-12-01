@@ -7,10 +7,8 @@
 </template>
 
 <script>
-    window.Vue = require('vue');
-
     // форма поиска
-    Vue.component('search-form-purchases', {
+    app.component('search-form-purchases', {
         template: `<div class="row">
             <div class="control">
                 <label>дата с:</label>
@@ -27,7 +25,7 @@
         </div>`
     });
     // шапка таблицы
-    Vue.component('grid-head-purchases', {
+    app.component('grid-head-purchases', {
         template: `<tr>
             <th><a href="#" data-sort="number">номер</a></th>
             <th><a href="#" data-sort="date">дата</a></th>
@@ -35,7 +33,7 @@
         </tr>`
     });
     // строки таблицы
-    Vue.component('grid-body-purchases', {
+    app.component('grid-body-purchases', {
         props: {
             listData: Array,
         },

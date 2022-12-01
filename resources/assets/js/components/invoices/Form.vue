@@ -48,7 +48,7 @@
             </tr>
             <tr class="total text-primary">
                 <td colspan="4"><b>Итого:</b></td>
-                <td v-model="total">{{ total }}</td>
+                <td>{{ total }}</td>
             </tr>
             <tr>
                 <td colspan="5"></td>

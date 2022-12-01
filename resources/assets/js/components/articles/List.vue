@@ -3,10 +3,8 @@
 </template>
 
 <script>
-    window.Vue = require('vue');
-
     // форма поиска
-    Vue.component('search-form-articles', {
+    app.component('search-form-articles', {
         template: `<div>
             <div class="row">
                 <div class="control">
@@ -30,7 +28,7 @@
                 <div class="control">
                     <label>активный:</label>
                     <select class="form-control" name="active">
-                        <option v-for="active, key in ['нет', 'да']" v-bind:value="key">{{ active }}</option>
+                        <option v-for="(active, key) in ['нет', 'да']" v-bind:value="key">{{ active }}</option>
                     </select>
                 </div>
             </div>
@@ -55,7 +53,7 @@
         },
     });
     // шапка таблицы
-    Vue.component('grid-head-articles', {
+    app.component('grid-head-articles', {
         template: `<tr>
             <th><a href="#" data-sort="name">название</a></th>
             <th><a href="#" data-sort="unit">ед.изм.</a></th>
@@ -64,7 +62,7 @@
         </tr>`
     });
     // строки таблицы
-    Vue.component('grid-body-articles', {
+    app.component('grid-body-articles', {
         template: `<tbody>
             <tr v-for="item, index in listData">
                 <td>{{ item.name }}</td>

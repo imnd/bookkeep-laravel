@@ -3,10 +3,8 @@
 </template>
 
 <script>
-    window.Vue = require('vue');
-
     // форма поиска
-    Vue.component('search-form-bills', {
+    app.component('search-form-bills', {
         template: `<div>
         <div class="row">
             <div class="control">
@@ -43,7 +41,7 @@
         },
     });
     // шапка таблицы
-    Vue.component('grid-head-bills', {
+    app.component('grid-head-bills', {
         template: `<tr>
             <th><a href="#" data-sort="contract_num">номер договора</a></th>
             <th><a href="#" data-sort="client_id">клиент</a></th>
@@ -53,7 +51,7 @@
         </tr>`
     });
     // строки таблицы
-    Vue.component('grid-body-bills', {
+    app.component('grid-body-bills', {
         props: {
             listData: Array,
         },

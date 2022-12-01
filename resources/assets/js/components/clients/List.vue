@@ -3,10 +3,8 @@
 </template>
 
 <script>
-    window.Vue = require('vue');
-
     // форма поиска
-    Vue.component('search-form-clients', {
+    app.component('search-form-clients', {
         template: `<div class="row col-md-8">
             <div class="control">
                 <label>название:</label>
@@ -19,7 +17,7 @@
         </div>`
     });
     // шапка таблицы
-    Vue.component('grid-head-clients', {
+    app.component('grid-head-clients', {
         template: `<tr>
             <th><a href="#" data-sort="name">название</a></th>
             <th><a href="#" data-sort="address">адрес</a></th>
@@ -36,7 +34,7 @@
         </tr>`
     });
     // строки таблицы
-    Vue.component('grid-body-clients', {
+    app.component('grid-body-clients', {
         props: {
             listData: Array,
         },

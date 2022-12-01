@@ -1,12 +1,10 @@
 <template>
-    <grid heading="Контракты" entity="contracts" pageSize=50></grid>
+    <grid heading="Контракты" entity="contracts" pageSize=50 />
 </template>
 
 <script>
-    window.Vue = require('vue');
-
     // форма поиска
-    Vue.component('search-form-contracts', {
+    app.component('search-form-contracts', {
         data() {
             return {
                 clients: [],
@@ -43,7 +41,7 @@
         </div>`
     });
     // шапка таблицы
-    Vue.component('grid-head-contracts', {
+    app.component('grid-head-contracts', {
         template: `<tr>
             <th><a href="#" data-sort="contract_num">номер</a></th>
             <th><a href="#" data-sort="client_id">клиент</a></th>
@@ -58,12 +56,12 @@
         </tr>`
     });
     // строки таблицы
-    Vue.component('grid-body-contracts', {
+    app.component('grid-body-contracts', {
         props: {
             listData: Array,
         },
         template: `<tbody>
-        <tr v-for="item, index in listData">
+        <tr v-for="(item, index) in listData">
             <td>{{ item.contract_num }}</td>
             <td>{{ item.client.name }}</td>
             <td>{{ item.date }}</td>

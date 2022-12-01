@@ -10,11 +10,9 @@
 </template>
 
 <script>
-    window.Vue = require('vue');
-
     // форма поиска
     import Datepicker from 'vuejs-datepicker';
-    Vue.component('search-form-invoices', {
+    app.component('search-form-invoices', {
         template: `<div>
             <div class="row">
                 <div class="control">
@@ -56,7 +54,7 @@
         },
     });
     // шапка таблицы
-    Vue.component('grid-head-invoices', {
+    app.component('grid-head-invoices', {
         template: `<tr>
             <th><a href="#" data-sort="number">номер</a></th>
             <th><a href="#" data-sort="contract_num">номер договора</a></th>
@@ -67,7 +65,7 @@
         </tr>`
     });
     // строки таблицы
-    Vue.component('grid-body-invoices', {
+    app.component('grid-body-invoices', {
         props: {
             listData: Array,
         },
