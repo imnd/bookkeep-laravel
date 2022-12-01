@@ -10,37 +10,26 @@
         <form method="post">
             {{ csrf_field() }}
             <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group bmd-form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                        <label class="bmd-label-floating">Email</label>
-                        <input name="email" type="email" class="form-control">
+                <div class="col-md-6">
+                    <div class="flex-column form-group bmd-form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <div class="flex-row">
+                            <label class="bmd-label-floating">Email</label>
+                            <input name="email" type="email" class="form-control">
+                        </div>
                         @if ($errors->has('email'))
-                            <span class="text-danger">
+                            <div class="text-danger clear pt-2">
                                 <strong>{{ $errors->first('email') }}</strong>
-                            </span>
+                            </div>
                         @endif
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group bmd-form-group {{ $errors->has('password') ? 'has-error' : '' }}">
                         <label class="bmd-label-floating">Password</label>
                         <input name="password" type="password" class="form-control" />
                     </div>
                 </div>
             </div>
-            {{--<div class="row">
-                <div class="col-md-4">
-                    <div class="form-group bmd-form-group form-check">
-                        <label class="form-check-label">
-                            <input name="remember" type="checkbox" class="form-check-input" checked="checked" value="1" />
-                            <span class="form-check-sign">
-                                <span class="check"></span>
-                            </span>
-                            Remember
-                        </label>
-                    </div>
-                </div>
-            </div>--}}
             <div class="row">
                 <div class="col-md-8 text-danger">
                     @if ($errors->has('username'))
@@ -51,17 +40,6 @@
             <button type="submit" class="btn btn-primary pull-right">Login</button>
             <div class="clearfix"></div>
         </form>
-        {{--<div class="row">
-            <div class="col-md-4">
-                <a href="register" class="btn btn-primary btn-round">Register</a>
-            </div>
-        </div>--}}
     </div>
-
-    {{--<style>
-        .form-check {
-            margin-top: 18px;
-        }
-    </style>--}}
 
 @endsection
