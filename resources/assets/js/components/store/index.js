@@ -1,11 +1,17 @@
 import { createStore } from "vuex";
 
+import CRUD      from "./CRUD";
+import enums      from "./enums";
+import articles  from "./articles";
+import bills     from "./bills";
+import clients   from "./clients";
+import contracts from "./contracts";
+import invoices  from "./invoices";
+import purchases from "./purchases";
+
 export default createStore({
+    modules: { CRUD, enums, articles, bills, clients, contracts, invoices, purchases },
     state: {
-        jsonld: {
-            "@context": "https://schema.org",
-            "@type": "PaymentService",
-        },
         breadcrumbs: [
             {
                 title: "",
@@ -24,7 +30,7 @@ export default createStore({
             {
                 name: "articlesList",
                 path: "/articles/list",
-                component: () => import("../articles/List.vue"),
+                component: () => import("../pages/articles/List.vue"),
                 meta: {
                     title: "Список товаров"
                 }
@@ -32,7 +38,7 @@ export default createStore({
             {
                 name: "articlesCreate",
                 path: "/articles/create",
-                component: () => import("../articles/Create.vue"),
+                component: () => import("../pages/articles/Create.vue"),
                 meta: {
                     title: "Новый товар"
                 }
@@ -40,7 +46,7 @@ export default createStore({
             {
                 name: "articlesEdit",
                 path: "/articles/edit/:id",
-                component: () => import("../articles/Edit.vue"),
+                component: () => import("../pages/articles/Edit.vue"),
                 meta: {
                     title: "Редактирование товара"
                 }
@@ -48,7 +54,7 @@ export default createStore({
             {
                 name: "billsList",
                 path: "/bills/list",
-                component: () => import("../bills/List.vue"),
+                component: () => import("../pages/bills/List.vue"),
                 meta: {
                     title: "Список платежей"
                 }
@@ -56,7 +62,7 @@ export default createStore({
             {
                 name: "billsCreate",
                 path: "/bills/create",
-                component: () => import("../bills/Create.vue"),
+                component: () => import("../pages/bills/Create.vue"),
                 meta: {
                     title: "Новый платеж"
                 }
@@ -64,7 +70,7 @@ export default createStore({
             {
                 name: "billsEdit",
                 path: "/bills/edit/:id",
-                component: () => import("../bills/Edit.vue"),
+                component: () => import("../pages/bills/Edit.vue"),
                 meta: {
                     title: "Редактирование платежа"
                 }
@@ -72,7 +78,7 @@ export default createStore({
             {
                 name: "clientsCreate",
                 path: "/clients/create",
-                component: () => import("../clients/Create.vue"),
+                component: () => import("../pages/clients/Create.vue"),
                 meta: {
                     title: "Новый клиент"
                 }
@@ -80,7 +86,7 @@ export default createStore({
             {
                 name: "clientsList",
                 path: "/clients/list",
-                component: () => import("../clients/List.vue"),
+                component: () => import("../pages/clients/List.vue"),
                 meta: {
                     title: "Список клиентов"
                 }
@@ -88,7 +94,7 @@ export default createStore({
             {
                 name: "clientEdit",
                 path: "/clients/edit/:id",
-                component: () => import("../clients/Edit.vue"),
+                component: () => import("../pages/clients/Edit.vue"),
                 meta: {
                     title: "Редактирование клиента"
                 }
@@ -96,7 +102,7 @@ export default createStore({
             {
                 name: "contractsList",
                 path: "/contracts/list",
-                component: () => import("../contracts/List.vue"),
+                component: () => import("../pages/contracts/List.vue"),
                 meta: {
                     title: "Список контрактов"
                 }
@@ -104,7 +110,7 @@ export default createStore({
             {
                 name: "contractsCreate",
                 path: "/contracts/create",
-                component: () => import("../contracts/Create.vue"),
+                component: () => import("../pages/contracts/Create.vue"),
                 meta: {
                     title: "Новый контракт"
                 }
@@ -112,7 +118,7 @@ export default createStore({
             {
                 name: "contractsEdit",
                 path: "/contracts/edit/:id",
-                component: () => import("../contracts/Edit.vue"),
+                component: () => import("../pages/contracts/Edit.vue"),
                 meta: {
                     title: "Редактирование контракта"
                 }
@@ -120,7 +126,7 @@ export default createStore({
             {
                 name: "contractsPrintout",
                 path: "/contracts/printout/:id",
-                component: () => import("../contracts/Printout.vue"),
+                component: () => import("../pages/contracts/Printout.vue"),
                 meta: {
                     title: "Печать контракта"
                 }
@@ -128,7 +134,7 @@ export default createStore({
             {
                 name: "invoicesList",
                 path: "/invoices/list",
-                component: () => import("../invoices/List.vue"),
+                component: () => import("../pages/invoices/List.vue"),
                 meta: {
                     title: "Список фактур"
                 }
@@ -136,7 +142,7 @@ export default createStore({
             {
                 name: "invoicesCreate",
                 path: "/invoices/create",
-                component: () => import("../invoices/Create.vue"),
+                component: () => import("../pages/invoices/Create.vue"),
                 meta: {
                     title: "Новая фактура"
                 }
@@ -144,7 +150,7 @@ export default createStore({
             {
                 name: "invoicesEdit",
                 path: "/invoices/edit/:id",
-                component: () => import("../invoices/Edit.vue"),
+                component: () => import("../pages/invoices/Edit.vue"),
                 meta: {
                     title: "Редактирование фактуры"
                 }
@@ -152,7 +158,7 @@ export default createStore({
             {
                 name: "invoicesPrintoutBill",
                 path: "/invoices/printout/bill/:id",
-                component: () => import("../invoices/PrintoutBill.vue"),
+                component: () => import("../pages/invoices/PrintoutBill.vue"),
                 meta: {
                     title: "Печать счета"
                 }
@@ -160,7 +166,7 @@ export default createStore({
             {
                 name: "invoicesPrintoutInvoice",
                 path: "/invoices/printout/invoice/:id",
-                component: () => import("../invoices/PrintoutInvoice.vue"),
+                component: () => import("../pages/invoices/PrintoutInvoice.vue"),
                 meta: {
                     title: "Печать фактуры"
                 }
@@ -168,7 +174,7 @@ export default createStore({
             {
                 name: "purchasesList",
                 path: "/purchases/list",
-                component: () => import("../purchases/List.vue"),
+                component: () => import("../pages/purchases/List.vue"),
                 meta: {
                     title: "Список закупок"
                 }
@@ -176,7 +182,7 @@ export default createStore({
             {
                 name: "purchasesCreate",
                 path: "/purchases/create",
-                component: () => import("../purchases/Create.vue"),
+                component: () => import("../pages/purchases/Create.vue"),
                 meta: {
                     title: "Новая закупка"
                 }
@@ -184,7 +190,7 @@ export default createStore({
             {
                 name: "purchaseEdit",
                 path: "/purchases/edit/:id",
-                component: () => import("../purchases/Edit.vue"),
+                component: () => import("../pages/purchases/Edit.vue"),
                 meta: {
                     title: "Редактирование закупки"
                 }
@@ -192,7 +198,7 @@ export default createStore({
             {
                 name: "purchasePrintout",
                 path: "/purchases/printout/:id",
-                component: () => import("../purchases/Printout.vue"),
+                component: () => import("../pages/purchases/Printout.vue"),
                 meta: {
                     title: "Печать закупки"
                 }

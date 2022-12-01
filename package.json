@@ -16,17 +16,20 @@
         "laravel-vite-plugin": "^0.7.0",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.56.1",
+        "sass-loader": "^12.1.0",
         "vite": "^3.0.0",
         "vue": "^3.2.36",
         "vue-loader": "^17.0.1"
     },
     "dependencies": {
+        "@vuepic/vue-datepicker": "^3.6.0",
         "bootstrap-sass": "^3.4.3",
         "luxon": "^1.17.2",
         "serviceworker-webpack-plugin": "^1.0.1",
         "vue-axios": "^3.5.2",
         "vue-router": "^4.1.6",
-        "vuejs-datepicker": "^1.6.2",
         "vuex": "^4.0.2",
         "weekstart": "^1.0.0"
     }

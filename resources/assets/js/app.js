@@ -1,11 +1,9 @@
 require("./bootstrap");
 
-// import runtime from "serviceworker-webpack-plugin/lib/runtime"
-// if ("serviceWorker" in navigator) {
-//     runtime.register()
-// }
-
-window.Vue = require("vue");
+/*import runtime from "serviceworker-webpack-plugin/lib/runtime"
+if ("serviceWorker" in navigator) {
+    runtime.register()
+}*/
 
 import { createApp } from "vue"
 import App from "./components/App.vue";
