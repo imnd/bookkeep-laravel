@@ -1,34 +1,38 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use
-    App\Models\InvoicesRows,
-    App\Http\Requests\SearchInvoiceRow,
-    App\Http\Requests\StoreInvoiceRow,
-    App\Http\Requests\UpdateInvoiceRow
-;
-
+use App\Models\InvoicesRows;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Requests\InvoiceRow\{
+    Search as SearchInvoiceRow,
+    Store as StoreInvoiceRow,
+    Update as UpdateInvoiceRow,
+};
+
 
 /**
  * Контроллер позиций фактур
- * 
+ *
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
- */ 
+ */
 class InvoicesRowsController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\ResourceCollection
+     * @param SearchInvoiceRow $request
+     *
+     * @return ResourceCollection
      */
-    public function index(SearchInvoiceRow $request)
+    public function index(SearchInvoiceRow $request): ResourceCollection
     {
         return $this->doList($request);
     }
 
-    public function list($invoiceId)
+    public function list($invoiceId): ResourceCollection
     {
         return new ResourceCollection(InvoicesRows::where('invoice_id', $invoiceId)->get());
     }
@@ -36,9 +40,9 @@ class InvoicesRowsController extends ApiController
     /**
      * Create new model and save in DB.
      * @param StoreInvoiceRow $request
-     * @return \Illuminate\Http\JsonResponse|null
+     * @return JsonResponse|null
      */
-    public function store(StoreInvoiceRow $request)
+    public function store(StoreInvoiceRow $request): ?JsonResponse
     {
         return $this->doStore($request);
     }
@@ -48,9 +52,9 @@ class InvoicesRowsController extends ApiController
      *
      * @param InvoicesRows $model
      *
-     * @return \App\Http\Resources\InvoiceRowResource
+     * @return JsonResponse
      */
-    public function show(InvoicesRows $model)
+    public function show(InvoicesRows $model): JsonResponse
     {
         return $this->doShow($model);
     }
@@ -58,14 +62,14 @@ class InvoicesRowsController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateInvoiceRow $request
-     * @param InvoicesRows $model
+     * @param InvoicesRows     $model
+     * @param UpdateInvoiceRow $request
      *
-     * @return \App\Http\Resources\InvoiceRowResource
+     * @return JsonResponse
      */
-    public function update(InvoicesRows $model, UpdateInvoiceRow $request)
+    public function update(InvoicesRows $model, UpdateInvoiceRow $request): JsonResponse
     {
-        $this->doUpdate($model, $request);
+        return $this->doUpdate($model, $request);
     }
 
     /**
@@ -73,11 +77,11 @@ class InvoicesRowsController extends ApiController
      *
      * @param InvoicesRows $model
      *
-     * @throws \Exception
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy(InvoicesRows $model)
+    public function destroy(InvoicesRows $model): JsonResponse
     {
-        $this->doDestroy($model);
+        return $this->doDestroy($model);
     }
 }

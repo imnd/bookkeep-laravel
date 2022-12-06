@@ -1,69 +1,70 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request,
-    Illuminate\Database\Eloquent\Model,
-    Validator;
+use Illuminate\Http\JsonResponse,
+    Illuminate\Http\Request,
+    Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 /**
  * Контроллер табличных моделей (фактур и т.д.)
- * 
+ *
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
- */ 
+ */
 class HasRowsController extends ApiController
 {
     /**
      * Create new model and save in DB.
+     *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    protected function doStore(Request $request)
+    protected function doStore(Request $request): JsonResponse
     {
         $modelName = $this->modelName;
         $model = $modelName::create(
             $request->validated()
         );
-        foreach ($data['rows'] as $row) {
+        foreach ($request->rows as $row) {
             $model->rows()->create($row);
         }
         return response()->json(['success' => true], 201);
     }
 
     /**
-     * Shows model edit form.
-     * 
+     * Return rows of the specified resource.
+     *
      * @param Model $model
-     * 
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    protected function doShow(Model $model)
+    public function doGetRows(Model $model): JsonResponse
     {
         return response()->json([
-            'item' => $model,
-            'rows' => $model->rows()->get()->all()
+            'success' => true,
+            'data'    => new ResourceCollection($model->rows)
         ]);
     }
 
     /**
-     * Updates model in DB.
-     * 
+     * Update model in DB.
+     *
      * @param Model $model
      * @param Request $request
-     * 
-     * @return \Illuminate\Http\JsonResponse
+     *
+     * @return JsonResponse
      */
-    protected function makeUpdate(Model $model, Request $request)
+    protected function makeUpdate(Model $model, Request $request): JsonResponse
     {
         $model
             ->fill($request->validated())
             ->save();
 
-        // позиции модели
-        // чистим
+        // model rows
+        // clean
         $model->rows()->delete();
-        // пересоздаем новые
-        foreach ($data['rows'] as $row) {
+        // create new
+        foreach ($request->rows as $row) {
             $model->rows()->create($row);
         }
         $resourceClassName = $this->resourceClassName;

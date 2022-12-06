@@ -1,27 +1,34 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use
-    App\Models\Purchases,
-    App\Http\Requests\SearchPurchase,
-    App\Http\Requests\StorePurchase,
-    App\Http\Requests\UpdatePurchase
-;
+use App\Models\Purchases;
+use Exception;
+use App\Http\Requests\Purchase\{
+    Search as SearchPurchase,
+    Store as StorePurchase,
+    Update as UpdatePurchase,
+};
+use Illuminate\Http\{
+    JsonResponse,
+    Resources\Json\ResourceCollection
+};
 
 /**
  * Контроллер закупок
- * 
+ *
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
- */ 
+ */
 class PurchasesController extends HasRowsController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\ResourceCollection
+     * @param SearchPurchase $request
+     *
+     * @return ResourceCollection
      */
-    public function list(SearchPurchase $request)
+    public function index(SearchPurchase $request): ResourceCollection
     {
         return $this->doList($request);
     }
@@ -29,9 +36,9 @@ class PurchasesController extends HasRowsController
     /**
      * Create new model and save in DB.
      * @param StorePurchase $request
-     * @return \Illuminate\Http\JsonResponse|null
+     * @return JsonResponse|null
      */
-    public function store(StorePurchase $request)
+    public function store(StorePurchase $request): ?JsonResponse
     {
         return $this->doStore($request);
     }
@@ -41,9 +48,9 @@ class PurchasesController extends HasRowsController
      *
      * @param Purchases $model
      *
-     * @return \App\Http\Resources\PurchaseResource
+     * @return JsonResponse
      */
-    public function show(Purchases $model)
+    public function show(Purchases $model): JsonResponse
     {
         return $this->doShow($model);
     }
@@ -51,14 +58,14 @@ class PurchasesController extends HasRowsController
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdatePurchase $request
-     * @param Purchases $model
+     * @param Purchases      $model
+     * @param UpdatePurchase $request
      *
-     * @return \App\Http\Resources\PurchaseResource
+     * @return JsonResponse
      */
-    public function update(Purchases $model, UpdatePurchase $request)
+    public function update(Purchases $model, UpdatePurchase $request): JsonResponse
     {
-        $this->doUpdate($model, $request);
+        return $this->doUpdate($model, $request);
     }
 
     /**
@@ -66,11 +73,22 @@ class PurchasesController extends HasRowsController
      *
      * @param Purchases $model
      *
-     * @throws \Exception
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy(Purchases $model)
+    public function destroy(Purchases $model): JsonResponse
     {
-        $this->doDestroy($model);
+        return $this->doDestroy($model);
+    }
+
+    /**
+     * Returns rows of the specified resource.
+     *
+     * @param Purchases $model
+     * @return JsonResponse
+     */
+    public function getRows(Purchases $model): JsonResponse
+    {
+        return $this->doGetRows($model);
     }
 }

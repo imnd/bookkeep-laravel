@@ -1,27 +1,31 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use
-    App\Models\Regions,
-    App\Http\Requests\SearchRegion,
-    App\Http\Requests\StoreRegion,
-    App\Http\Requests\UpdateRegion
-;
+use App\Models\Regions;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Requests\Region\{
+    Search as SearchRegion,
+    Store as StoreRegion,
+    Update as UpdateRegion,
+};
 
 /**
  * Контроллер районов города
- * 
+ *
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
- */ 
+ */
 class RegionsController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\ResourceCollection
+     * @param SearchRegion $request
+     *
+     * @return ResourceCollection
      */
-    public function index(SearchRegion $request)
+    public function index(SearchRegion $request): ResourceCollection
     {
         return $this->doList($request);
     }
@@ -29,9 +33,9 @@ class RegionsController extends ApiController
     /**
      * Create new model and save in DB.
      * @param StoreRegion $request
-     * @return \Illuminate\Http\JsonResponse|null
+     * @return JsonResponse|null
      */
-    public function store(StoreRegion $request)
+    public function store(StoreRegion $request): ?JsonResponse
     {
         return $this->doStore($request);
     }
@@ -41,7 +45,7 @@ class RegionsController extends ApiController
      *
      * @param Regions $model
      *
-     * @return \App\Http\Resources\RegionResource
+     * @return JsonResponse
      */
     public function show(Regions $model)
     {
@@ -51,14 +55,14 @@ class RegionsController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateRegion $request
-     * @param Regions $model
+     * @param Regions      $model
+     * @param UpdateRegion $request
      *
-     * @return \App\Http\Resources\RegionResource
+     * @return JsonResponse
      */
-    public function update(Regions $model, UpdateRegion $request)
+    public function update(Regions $model, UpdateRegion $request): JsonResponse
     {
-        $this->doUpdate($model, $request);
+        return $this->doUpdate($model, $request);
     }
 
     /**
@@ -66,11 +70,11 @@ class RegionsController extends ApiController
      *
      * @param Regions $model
      *
+     * @return JsonResponse
      * @throws \Exception
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Regions $model)
+    public function destroy(Regions $model): JsonResponse
     {
-        $this->doDestroy($model);
+        return $this->doDestroy($model);
     }
 }

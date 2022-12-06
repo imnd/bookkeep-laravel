@@ -1,37 +1,44 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use
-    App\Models\Articles,
-    App\Http\Requests\SearchArticle,
-    App\Http\Requests\StoreArticle,
-    App\Http\Requests\UpdateArticle
-;
+use App\Models\Articles;
+use Exception;
+use Illuminate\Http\{
+    JsonResponse,
+    Resources\Json\ResourceCollection
+};
+use App\Http\Requests\Article\{
+    Search as SearchArticle,
+    Store as StoreArticle,
+    Update as UpdateArticle,
+};
 
 /**
  * Контроллер товаров
- * 
+ *
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
- */ 
+ */
 class ArticlesController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\ResourceCollection
+     * @param SearchArticle $request
+     * @return ResourceCollection
      */
-    public function index(SearchArticle $request)
+    public function index(SearchArticle $request): ResourceCollection
     {
         return $this->doList($request);
     }
 
     /**
      * Create new model and save in DB.
+     *
      * @param StoreArticle $request
-     * @return \Illuminate\Http\JsonResponse|null
+     * @return JsonResponse|null
      */
-    public function store(StoreArticle $request)
+    public function store(StoreArticle $request): ?JsonResponse
     {
         return $this->doStore($request);
     }
@@ -40,10 +47,9 @@ class ArticlesController extends ApiController
      * Display the specified resource.
      *
      * @param Articles $model
-     *
-     * @return \App\Http\Resources\ArticleResource
+     * @return JsonResponse
      */
-    public function show(Articles $model)
+    public function show(Articles $model): JsonResponse
     {
         return $this->doShow($model);
     }
@@ -51,14 +57,14 @@ class ArticlesController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\StoreArticle $request
-     * @param Articles $model
+     * @param Articles      $model
+     * @param UpdateArticle $request
      *
-     * @return \App\Http\Resources\ArticleResource
+     * @return JsonResponse
      */
-    public function update(Articles $model, UpdateArticle $request)
+    public function update(Articles $model, UpdateArticle $request): JsonResponse
     {
-        $this->doUpdate($model, $request);
+        return $this->doUpdate($model, $request);
     }
 
     /**
@@ -66,11 +72,11 @@ class ArticlesController extends ApiController
      *
      * @param Articles $model
      *
-     * @throws \Exception
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy(Articles $model)
+    public function destroy(Articles $model): JsonResponse
     {
-        $this->doDestroy($model);
+        return $this->doDestroy($model);
     }
 }

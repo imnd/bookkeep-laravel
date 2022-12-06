@@ -3,25 +3,31 @@ namespace App\Http\Controllers\Api\V1;
 
 use
     App\Models\Bills,
-    App\Http\Requests\SearchBill,
-    App\Http\Requests\StoreBill,
-    App\Http\Requests\UpdateBill
-;
+    Illuminate\Http\JsonResponse,
+    Illuminate\Http\Resources\Json\ResourceCollection;
+
+use App\Http\Requests\Bill\{
+    Search as SearchBill,
+    Store as StoreBill,
+    Update as UpdateBill,
+};
 
 /**
  * Контроллер счетов
- * 
+ *
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
- */ 
+ */
 class BillsController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\ResourceCollection
+     * @param SearchBill $request
+     *
+     * @return ResourceCollection
      */
-    public function index(SearchBill $request)
+    public function index(SearchBill $request): ResourceCollection
     {
         return $this->doList($request);
     }
@@ -29,9 +35,9 @@ class BillsController extends ApiController
     /**
      * Create new model and save in DB.
      * @param StoreBill $request
-     * @return \Illuminate\Http\JsonResponse|null
+     * @return JsonResponse|null
      */
-    public function store(StoreBill $request)
+    public function store(StoreBill $request): ?JsonResponse
     {
         return $this->doStore($request);
     }
@@ -41,9 +47,9 @@ class BillsController extends ApiController
      *
      * @param Bills $model
      *
-     * @return \App\Http\Resources\BillResource
+     * @return JsonResponse
      */
-    public function show(Bills $model)
+    public function show(Bills $model): JsonResponse
     {
         return $this->doShow($model);
     }
@@ -51,14 +57,14 @@ class BillsController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateBill $request
-     * @param Bills $model
+     * @param Bills      $model
+     * @param UpdateBill $request
      *
-     * @return \App\Http\Resources\BillResource
+     * @return JsonResponse
      */
-    public function update(Bills $model, UpdateBill $request)
+    public function update(Bills $model, UpdateBill $request): JsonResponse
     {
-        $this->doUpdate($model, $request);
+        return $this->doUpdate($model, $request);
     }
 
     /**
@@ -66,11 +72,11 @@ class BillsController extends ApiController
      *
      * @param Bills $model
      *
-     * @throws \Exception
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     *@throws \Exception
      */
-    public function destroy(Bills $model)
+    public function destroy(Bills $model): JsonResponse
     {
-        $this->doDestroy($model);
+        return $this->doDestroy($model);
     }
 }

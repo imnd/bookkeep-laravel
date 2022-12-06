@@ -1,16 +1,21 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use
-    App\Models\ArticleCats,
-    App\Http\Requests\SearchArticle,
-    App\Http\Requests\StoreArticle,
-    App\Http\Requests\UpdateArticle
-;
+use App\Models\ArticleCats;
+use Exception;
+use Illuminate\Http\{
+    JsonResponse,
+    Resources\Json\ResourceCollection
+};
+use App\Http\Requests\ArticleCat\{
+    Search as SearchArticleCat,
+    Store as StoreArticleCat,
+    Update as UpdateArticleCat,
+};
 
 /**
  * Контроллер подкатегорий товаров
- * 
+ *
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
  */
@@ -20,21 +25,21 @@ class ArticleCatsController extends ApiController
      * Display a listing of the resource.
      *
      * @param SearchArticleCat $request
-     * 
-     * @return \Illuminate\Http\Resources\Json\ResourceCollection
+     *
+     * @return ResourceCollection
      */
-    public function index(SearchArticleCat $request)
+    public function index(SearchArticleCat $request): ResourceCollection
     {
         return $this->doList($request);
     }
 
     /**
      * Create new model and save in DB.
-     * 
+     *
      * @param StoreArticleCat $request
-     * @return \Illuminate\Http\JsonResponse|null
+     * @return JsonResponse|null
      */
-    public function store(StoreArticleCat $request)
+    public function store(StoreArticleCat $request): ?JsonResponse
     {
         return $this->doStore($request);
     }
@@ -44,9 +49,9 @@ class ArticleCatsController extends ApiController
      *
      * @param ArticleCats $model
      *
-     * @return \App\Http\Resources\ArticleCatResource
+     * @return JsonResponse
      */
-    public function show(ArticleCats $model)
+    public function show(ArticleCats $model): JsonResponse
     {
         return $this->doShow($model);
     }
@@ -54,14 +59,14 @@ class ArticleCatsController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateArticleCat $request
+     * @param UpdateArticleCat $request
      * @param ArticleCats $model
      *
-     * @return \App\Http\Resources\ArticleCatResource
+     * @return JsonResponse
      */
-    public function update(ArticleCats $model, UpdateArticleCat $request)
+    public function update(ArticleCats $model, UpdateArticleCat $request): JsonResponse
     {
-        $this->doUpdate($model, $request);
+        return $this->doUpdate($model, $request);
     }
 
     /**
@@ -69,11 +74,11 @@ class ArticleCatsController extends ApiController
      *
      * @param ArticleCats $model
      *
-     * @throws \Exception
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy(ArticleCats $model)
+    public function destroy(ArticleCats $model): JsonResponse
     {
-        $this->doDestroy($model);
+        return $this->doDestroy($model);
     }
 }

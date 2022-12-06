@@ -1,27 +1,32 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use
-    App\Models\Contracts,
-    App\Http\Requests\SearchContract,
-    App\Http\Requests\StoreContract,
-    App\Http\Requests\UpdateContract
-;
+use App\Models\Contracts;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Requests\Contract\{
+    Search as SearchContract,
+    Store  as StoreContract,
+    Update as UpdateContract,
+};
 
 /**
  * Контроллер контрактов
- * 
+ *
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
- */ 
+ */
 class ContractsController extends HasRowsController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\ResourceCollection
+     * @param SearchContract $request
+     *
+     * @return ResourceCollection
      */
-    public function index(SearchContract $request)
+    public function index(SearchContract $request): ResourceCollection
     {
         return $this->doList($request);
     }
@@ -29,9 +34,9 @@ class ContractsController extends HasRowsController
     /**
      * Create new model and save in DB.
      * @param StoreContract $request
-     * @return \Illuminate\Http\JsonResponse|null
+     * @return JsonResponse|null
      */
-    public function store(StoreContract $request)
+    public function store(StoreContract $request): ?JsonResponse
     {
         return $this->doStore($request);
     }
@@ -40,10 +45,9 @@ class ContractsController extends HasRowsController
      * Display the specified resource.
      *
      * @param Contracts $model
-     *
-     * @return \App\Http\Resources\ContractResource
+     * @return JsonResponse
      */
-    public function show(Contracts $model)
+    public function show(Contracts $model): JsonResponse
     {
         return $this->doShow($model);
     }
@@ -51,14 +55,14 @@ class ContractsController extends HasRowsController
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateContract $request
-     * @param Contracts $model
+     * @param Contracts      $model
+     * @param UpdateContract $request
      *
-     * @return \App\Http\Resources\ContractResource
+     * @return JsonResponse
      */
-    public function update(Contracts $model, UpdateContract $request)
+    public function update(Contracts $model, UpdateContract $request): JsonResponse
     {
-        $this->doUpdate($model, $request);
+        return $this->doUpdate($model, $request);
     }
 
     /**
@@ -66,11 +70,22 @@ class ContractsController extends HasRowsController
      *
      * @param Contracts $model
      *
-     * @throws \Exception
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy(Contracts $model)
+    public function destroy(Contracts $model): JsonResponse
     {
-        $this->doDestroy($model);
+        return $this->doDestroy($model);
+    }
+
+    /**
+     * Returns rows of the specified resource.
+     *
+     * @param Contracts $model
+     * @return JsonResponse
+     */
+    public function getRows(Contracts $model): JsonResponse
+    {
+        return $this->doGetRows($model);
     }
 }

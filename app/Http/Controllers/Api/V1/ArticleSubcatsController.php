@@ -1,16 +1,19 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use
-    App\Models\ArticleSubcats,
-    App\Http\Requests\SearchArticleSubcat,
-    App\Http\Requests\StoreArticleSubcat,
-    App\Http\Requests\UpdateArticleSubcat
-;
+use App\Models\ArticleSubcats;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Requests\ArticleSubcat\{
+    Search as SearchArticleSubcat,
+    Store as StoreArticleSubcat,
+    Update as UpdateArticleSubcat,
+};
 
 /**
  * Контроллер подкатегорий товаров
- * 
+ *
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
  */
@@ -19,9 +22,11 @@ class ArticleSubcatsController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\ResourceCollection
+     * @param SearchArticleSubcat $request
+     *
+     * @return ResourceCollection
      */
-    public function list(SearchArticleSubcat $request)
+    public function index(SearchArticleSubcat $request): ResourceCollection
     {
         return $this->doList($request);
     }
@@ -29,9 +34,9 @@ class ArticleSubcatsController extends ApiController
     /**
      * Create new model and save in DB.
      * @param StoreArticleSubcat $request
-     * @return \Illuminate\Http\JsonResponse|null
+     * @return JsonResponse|null
      */
-    public function store(StoreArticleSubcat $request)
+    public function store(StoreArticleSubcat $request): ?JsonResponse
     {
         return $this->doStore($request);
     }
@@ -41,9 +46,9 @@ class ArticleSubcatsController extends ApiController
      *
      * @param ArticleSubcats $model
      *
-     * @return \App\Http\Resources\ArticleSubcatResource
+     * @return JsonResponse
      */
-    public function show(ArticleSubcats $model)
+    public function show(ArticleSubcats $model): JsonResponse
     {
         return $this->doShow($model);
     }
@@ -51,14 +56,14 @@ class ArticleSubcatsController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateArticleSubcat $request
-     * @param ArticleSubcats $model
+     * @param ArticleSubcats      $model
+     * @param UpdateArticleSubcat $request
      *
-     * @return \App\Http\Resources\ArticleSubcatResource
+     * @return JsonResponse
      */
-    public function update(ArticleSubcats $model, UpdateArticleSubcat $request)
+    public function update(ArticleSubcats $model, UpdateArticleSubcat $request): JsonResponse
     {
-        $this->doUpdate($model, $request);
+        return $this->doUpdate($model, $request);
     }
 
     /**
@@ -66,11 +71,11 @@ class ArticleSubcatsController extends ApiController
      *
      * @param ArticleSubcats $model
      *
-     * @throws \Exception
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy(ArticleSubcats $model)
+    public function destroy(ArticleSubcats $model): JsonResponse
     {
-        $this->doDestroy($model);
+        return $this->doDestroy($model);
     }
 }

@@ -19,7 +19,7 @@ class Articles extends Model implements QueryConditions
     /**
      * @return array
      */
-    public static function getUnits()
+    public static function getUnits(): array
     {
         return ['кг', 'шт'];
     }
@@ -27,15 +27,15 @@ class Articles extends Model implements QueryConditions
     /**
      * @return string
      */
-    public static function getUnitsList()
+    public static function getUnitsList(): string
     {
         return implode(',', self::getUnits());
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getActiveReadable()
+    public function getActiveReadable(): string
     {
         return ['нет', 'да'][$this->active];
     }

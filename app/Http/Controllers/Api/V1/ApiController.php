@@ -2,6 +2,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use
+    Exception,
+    Illuminate\Http\JsonResponse,
     ReflectionClass,
     Illuminate\Http\Request,
     Illuminate\Http\Response,
@@ -22,22 +24,22 @@ class ApiController extends Controller
      * Controller model class name
      * @var string
      */
-    protected $modelName;
+    protected string $modelName = '';
     /**
      * Controller resource class name
      * @var string
      */
-    protected $resourceClassName;
+    protected string $resourceClassName = '';
 
     public function __construct()
     {
         $reflection = new ReflectionClass(get_called_class());
         $className = $reflection->getShortName();
         $entityName = str_replace('Controller', '', $className);
-        if (is_null($this->modelName)) {
+        if (empty($this->modelName)) {
             $this->modelName = "App\\Models\\$entityName";
         }
-        if (is_null($this->resourceClassName)) {
+        if (empty($this->resourceClassName)) {
             $this->resourceClassName = "App\\Http\\Resources\\{$entityName}Resource";
         }
     }
@@ -47,11 +49,10 @@ class ApiController extends Controller
      * @param Request $request
      * @return ResourceCollection
      */
-    protected function doList(Request $request)
+    protected function doList(Request $request): ResourceCollection
     {
-        $modelName = $this->modelName;
-        $conditions = $modelName::getSearchConditions($request->all());
-        $query = $modelName::where($conditions);
+        $conditions = ($this->modelName)::getSearchConditions($request->all());
+        $query = ($this->modelName)::where($conditions);
         if (!empty($field = $request->get('field')) && !empty($order = $request->get('order'))) {
             $query = $query->orderBy($field, $order);
         }
@@ -61,12 +62,11 @@ class ApiController extends Controller
     /**
      * Create new model and save in DB.
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse|null
+     * @return JsonResponse|null
      */
-    protected function doStore(Request $request)
+    protected function doStore(Request $request): ?JsonResponse
     {
-        $modelName = $this->modelName;
-        $modelName::create($request->validated());
+        ($this->modelName)::create($request->validated());
         return response()->json(['success' => true], Response::HTTP_CREATED);
     }
 
@@ -75,11 +75,14 @@ class ApiController extends Controller
      *
      * @param Model $model
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    protected function doShow(Model $model)
+    protected function doShow(Model $model): JsonResponse
     {
-        return ($this->resourceClassName)::make($model);
+        return response()->json([
+            'success' => true,
+            'data' => ($this->resourceClassName)::make($model)
+        ]);
     }
 
     /**
@@ -88,17 +91,16 @@ class ApiController extends Controller
      * @param Model $model
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    protected function doUpdate(Model $model, Request $request)
+    protected function doUpdate(Model $model, Request $request): JsonResponse
     {
-        $model
-            ->fill($request->validated())
-            ->save();
+        $model->update($request->validated());
 
         return response()->json([
+            'success'  => true,
             'resource' => ($this->resourceClassName)::make($model)
-        ], Response::HTTP_NO_CONTENT);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -106,13 +108,13 @@ class ApiController extends Controller
      *
      * @param Model $model
      *
-     * @throws \Exception
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    protected function doDestroy(Model $model)
+    protected function doDestroy(Model $model): JsonResponse
     {
         return response()->json([
             'success' => $model->delete(),
-        ], Response::HTTP_NO_CONTENT);
+        ], Response::HTTP_OK);
     }
 }

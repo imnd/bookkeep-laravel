@@ -1,27 +1,32 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use
-    App\Models\Settings,
-    App\Http\Requests\SearchSettings,
-    App\Http\Requests\StoreSettings,
-    App\Http\Requests\UpdateSettings
-;
+use App\Models\Settings;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Requests\Settings\{
+    Search as SearchSettings,
+    Store as StoreSettings,
+    Update as UpdateSettings,
+};
 
 /**
  * Контроллер районов города
- * 
+ *
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
- */ 
+ */
 class SettingsController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\ResourceCollection
+     * @param SearchSettings $request
+     *
+     * @return ResourceCollection
      */
-    public function index(SearchSetting $request)
+    public function index(SearchSettings $request): ResourceCollection
     {
         return $this->doList($request);
     }
@@ -29,9 +34,9 @@ class SettingsController extends ApiController
     /**
      * Create new model and save in DB.
      * @param StoreSettings $request
-     * @return \Illuminate\Http\JsonResponse|null
+     * @return JsonResponse|null
      */
-    public function store(StoreSettings $request)
+    public function store(StoreSettings $request): ?JsonResponse
     {
         return $this->doStore($request);
     }
@@ -41,9 +46,9 @@ class SettingsController extends ApiController
      *
      * @param Settings $model
      *
-     * @return \App\Http\Resources\SettingResource
+     * @return JsonResponse
      */
-    public function show(Settings $model)
+    public function show(Settings $model): JsonResponse
     {
         return $this->doShow($model);
     }
@@ -51,14 +56,14 @@ class SettingsController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateSettings $request
-     * @param Settings $model
+     * @param Settings       $model
+     * @param UpdateSettings $request
      *
-     * @return \App\Http\Resources\SettingsResource
+     * @return JsonResponse
      */
-    public function update(Settings $model, UpdateSettings $request)
+    public function update(Settings $model, UpdateSettings $request): JsonResponse
     {
-        $this->doUpdate($model, $request);
+        return $this->doUpdate($model, $request);
     }
 
     /**
@@ -66,11 +71,11 @@ class SettingsController extends ApiController
      *
      * @param Settings $model
      *
-     * @throws \Exception
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy(Settings $model)
+    public function destroy(Settings $model): JsonResponse
     {
-        $this->doDestroy($model);
+        return $this->doDestroy($model);
     }
 }

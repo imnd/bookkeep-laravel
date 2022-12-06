@@ -3,35 +3,43 @@ namespace App\Http\Controllers\Api\V1;
 
 use
     App\Models\Clients,
-    App\Http\Requests\SearchClient,
-    App\Http\Requests\StoreClient,
-    App\Http\Requests\UpdateClient
+    Exception,
+    Illuminate\Http\JsonResponse,
+    Illuminate\Http\Resources\Json\ResourceCollection
 ;
+use App\Http\Requests\Client\{
+    Search as SearchClient,
+    Store as StoreClient,
+    Update as UpdateClient,
+};
 
 /**
  * Контроллер клиентов
- * 
+ *
  * @author Андрей Сердюк
  * @copyright (c) 2019 IMND
- */ 
+ */
 class ClientsController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\ResourceCollection
+     * @param SearchClient $request
+     *
+     * @return ResourceCollection
      */
-    public function index(SearchClient $request)
+    public function index(SearchClient $request): ResourceCollection
     {
         return $this->doList($request);
     }
 
     /**
      * Create new model and save in DB.
+     *
      * @param StoreClient $request
-     * @return \Illuminate\Http\JsonResponse|null
+     * @return JsonResponse|null
      */
-    public function store(StoreClient $request)
+    public function store(StoreClient $request): ?JsonResponse
     {
         return $this->doStore($request);
     }
@@ -40,10 +48,9 @@ class ClientsController extends ApiController
      * Display the specified resource.
      *
      * @param Clients $model
-     *
-     * @return \App\Http\Resources\ClientResource
+     * @return JsonResponse
      */
-    public function show(Clients $model)
+    public function show(Clients $model): JsonResponse
     {
         return $this->doShow($model);
     }
@@ -51,14 +58,14 @@ class ClientsController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateClient $request
-     * @param Clients $model
+     * @param UpdateClient $request
+     * @param Clients      $model
      *
-     * @return \App\Http\Resources\ClientResource
+     * @return JsonResponse
      */
-    public function update(Clients $model, UpdateClient $request)
+    public function update(Clients $model, UpdateClient $request): JsonResponse
     {
-        $this->doUpdate($model, $request);
+        return $this->doUpdate($model, $request);
     }
 
     /**
@@ -66,11 +73,11 @@ class ClientsController extends ApiController
      *
      * @param Clients $model
      *
-     * @throws \Exception
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy(Clients $model)
+    public function destroy(Clients $model): JsonResponse
     {
-        $this->doDestroy($model);
+        return $this->doDestroy($model);
     }
 }
