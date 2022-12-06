@@ -4,7 +4,7 @@
             <select-control
                 label="Подкатегория"
                 name="subcat_id"
-                :value="model.subcat_id"
+                v-model="model.subcat_id"
                 :options="subcats"
                 css-class="col-md-8"
             />
@@ -12,27 +12,27 @@
                 label="Название"
                 name="name"
                 :required="true"
-                :value="model.name"
+                v-model="model.name"
             />
         </div>
         <div class="row">
             <select-control
                 label="Ед. изм."
                 name="unit"
-                :value="model.unit"
+                v-model="model.unit"
                 :required="true"
                 :options="units"
             />
             <input-control
                 label="Цена"
                 name="price"
-                :value="model.price"
+                v-model="model.price"
                 :required="true"
             />
             <select-control
                 label="Активный"
                 name="active"
-                :value="model.active"
+                v-model="model.active"
                 :options="noYes"
             />
         </div>

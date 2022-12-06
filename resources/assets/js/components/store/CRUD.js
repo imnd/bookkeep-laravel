@@ -39,11 +39,6 @@ export default {
         deleteModel(state, data) {
             state.models.splice(state.models.indexOf(data), 1);
         },
-        updateModelValue(state, data) {
-            for (let key in data) {
-                state.model[key] = data[key]
-            }
-        },
         setRow(state, data) {
             state.row = data;
         },

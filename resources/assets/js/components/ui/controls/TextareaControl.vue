@@ -1,8 +1,9 @@
 <template>
-    <control :label="label" :value="inputVal" :css-class="cssClass">
+    <control :label="label" :name="name" :css-class="cssClass">
         <textarea
             :name="name"
-            v-model="inputVal"
+            :value="modelValue"
+            @input="updateValue"
             class="form-control"
             :class="required ? 'required' : ''"
             type="text"
@@ -20,6 +21,22 @@
         components: { Control },
         mixins: [ controls ],
         props: {
+            name: {
+                type: String,
+                required: false,
+            },
+            modelValue: {
+                type: [String, Number],
+                required: true,
+            },
+            label: {
+                type: String,
+                required: false,
+            },
+            required: {
+                type: Boolean,
+                required: false,
+            },
             cols: {
                 type: Number,
                 required: false,
@@ -34,21 +51,6 @@
                 type: String,
                 required: false,
                 default: 'control',
-            },
-            label: {
-                type: String,
-                required: false,
-            },
-            name: {
-                type: String,
-                required: true,
-            },
-            value: {
-                required: false,
-            },
-            required: {
-                type: Boolean,
-                required: false,
             },
         },
     }

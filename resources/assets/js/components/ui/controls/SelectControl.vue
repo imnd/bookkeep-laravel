@@ -1,10 +1,10 @@
 <template>
-    <control :label="label" :value="inputVal" :css-class="cssClass">
+    <control :label="label" :name="name" :css-class="cssClass">
         <select
             class="form-control"
             :class="required ? 'required' : ''"
-            v-model="inputVal"
-            @change="updateValue($event)"
+            :value="modelValue"
+            @input="updateValue"
         >
             <option v-for="(option, key) in options" :value="option.id ?? key">
                 {{ option.name ?? option }}
@@ -24,10 +24,11 @@ export default {
     props: {
         name: {
             type: String,
-            required: true,
-        },
-        value: {
             required: false,
+        },
+        modelValue: {
+            type: [String, Number],
+            required: true,
         },
         cssClass: {
             type: String,

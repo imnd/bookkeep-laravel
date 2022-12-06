@@ -1,12 +1,11 @@
 <template>
-    <control :label="label" :value="inputVal" :css-class="cssClass">
+    <control :label="label" :name="name" :css-class="cssClass">
         <input
-            :name="name"
-            v-model="inputVal"
+            :value="modelValue"
+            @input="updateValue"
             class="form-control"
             :class="required ? 'required' : ''"
             type="text"
-            @change="updateValue($event)"
         />
     </control>
 </template>
@@ -20,11 +19,12 @@ export default {
     components: { Control },
     mixins: [ controls ],
     props: {
-        name: {
-            type: String,
+        modelValue: {
+            type: [String, Number],
             required: true,
         },
-        value: {
+        name: {
+            type: String,
             required: false,
         },
         label: {

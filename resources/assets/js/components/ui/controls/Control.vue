@@ -2,7 +2,7 @@
     <div :class="cssClass">
         <label>{{ label }}:</label>
         <slot></slot>
-        <div v-if="value" class="error">{{ getError(value) }}</div>
+        <div v-if="name" class="error">{{ getError(name) }}</div>
     </div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
             type: String,
             required: false,
         },
-        value: {
+        name: {
             required: false,
         },
         required: {

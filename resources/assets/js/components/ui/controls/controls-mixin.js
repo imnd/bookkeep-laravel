@@ -1,29 +1,19 @@
-import { mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
     methods: {
         updateValue($event) {
-            let data = {};
-            data[this.name] = $event.target.value
-            this.updateModelValue(data)
+            this.$emit('update:modelValue', $event.target.value)
         },
         getError: function (key) {
             if (this.errors[key] !== undefined) {
                 return this.errors[key][0];
             }
         },
-        ...mapMutations({
-            updateModelValue: "CRUD/updateModelValue",
-        }),
     },
     computed: {
-        inputVal: {
-            get() {
-                return this.value;
-            },
-            set(val) {
-                this.$emit('input', val);
-            }
-        },
-    }
+        ...mapGetters({
+            errors:  "CRUD/errors",
+        }),
+    },
 };

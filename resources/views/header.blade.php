@@ -12,7 +12,7 @@
         <!-- CSS Files -->
         <link href="/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
         <link href="/css/baseline.css" rel="stylesheet" />
-        <link href="/css/styles.css" rel="stylesheet" />
+        <link href="/css/app.css" rel="stylesheet" />
 
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <script>
