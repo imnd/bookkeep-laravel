@@ -27,7 +27,7 @@ class Update extends FormRequest
         return [
             'subcat_id' => 'required|numeric',
             'name'      => 'required|max:255',
-            'price'     => 'required|max:255',
+            'price'     => 'required|numeric',
             'unit'      => 'required|in:' . implode(',', Articles::getUnits()),
             'active'    => 'numeric|min:0|max:1',
         ];
