@@ -8,6 +8,7 @@ export default {
         entity: "",
         model: {},
         models: [],
+        loading: false,
         row: {},
         rows: [],
         errors: {},
@@ -18,10 +19,11 @@ export default {
         path:    state => `${prefix}/${state.entity}`,
         model:   state => state.model,
         models:  state => state.models,
+        loading: state => state.loading,
         rows:    state => state.rows,
+        total:   state => state.total,
         errors:  state => state.errors,
         message: state => state.message,
-        total:   state => state.total,
     },
     mutations: {
         setEntity(state, data) {
@@ -42,13 +44,20 @@ export default {
         setRow(state, data) {
             state.row = data;
         },
+        rowDelete(state, index) {
+            state.rows.splice(index, 1);
+        },
+        rowAdd(state) {
+            state.rows.push(app.util.extend({}, state.row));
+        },
         setRows(state, data) {
             state.rows = data;
         },
         setTotal(state, data) {
-            state.total = data.reduce(function (sum, item) {
-                return sum + item.price * item.quantity;
-            }, 0);
+            state.total = 0
+            data.forEach((item) => {
+                state.total += item.price * item.quantity
+            });
         },
         setMessage(state, data) {
             state.message = data;
@@ -58,6 +67,11 @@ export default {
         },
     },
     actions: {
+        newRow({ commit }, data) {
+            commit("setRow", data);
+            commit("setRows", [data]);
+            commit("setTotal", [data]);
+        },
         setEntity({ commit }, entity) {
             commit("setEntity", entity);
         },
@@ -65,8 +79,10 @@ export default {
             commit("setModel", model);
         },
         async fetchModels({ commit, getters }) {
+            this.loading = true
             axios.get(getters.path).then(response => {
                 commit("setModels", response.data.data);
+                this.loading = false
             });
         },
         async fetchModel({ commit, getters }, id) {
@@ -101,8 +117,8 @@ export default {
         },
         async fetchRows({ commit, getters }, id) {
             axios.get(`${getters.path}/rows/${id}`).then(response => {
-                commit('setRows', response.data.data);
-                commit('setTotal', response.data.data);
+                commit("setRows", response.data.data);
+                commit("setTotal", response.data.data);
             });
         },
     },

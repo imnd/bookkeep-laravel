@@ -1,50 +1,41 @@
 <template>
-    <div>
-        <div class="row">
-            <select-control
-                label="Подкатегория"
-                name="subcat_id"
-                v-model="model.subcat_id"
-                :options="subcats"
-                css-class="col-md-8"
-            />
-            <input-control
-                label="Название"
-                name="name"
-                :required="true"
-                v-model="model.name"
-            />
-        </div>
-        <div class="row">
-            <select-control
-                label="Ед. изм."
-                name="unit"
-                v-model="model.unit"
-                :required="true"
-                :options="units"
-            />
-            <input-control
-                label="Цена"
-                name="price"
-                v-model="model.price"
-                :required="true"
-            />
-            <select-control
-                label="Активный"
-                name="active"
-                v-model="model.active"
-                :options="noYes"
-            />
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <button class="btn btn-primary btn-round">Сохранить</button>
-            </div>
-            <div class="green font-weight-bold pt-3">
-                {{ message }}
-            </div>
-        </div>
+    <div class="row">
+        <select-control
+            label="Подкатегория"
+            name="subcat_id"
+            v-model="model.subcat_id"
+            :options="subcats"
+            css-class="col-md-8"
+        />
+        <input-control
+            label="Название"
+            name="name"
+            :required="true"
+            v-model="model.name"
+        />
     </div>
+    <div class="row">
+        <select-control
+            label="Ед. изм."
+            name="unit"
+            v-model="model.unit"
+            :required="true"
+            :options="units"
+        />
+        <input-control
+            label="Цена"
+            name="price"
+            v-model="model.price"
+            :required="true"
+        />
+        <select-control
+            label="Активный"
+            name="active"
+            v-model="model.active"
+            :options="noYes"
+        />
+    </div>
+    <form-footer />
 </template>
 
 <script>
@@ -57,8 +48,6 @@ export default {
     computed: {
         ...mapGetters({
             model:   "CRUD/model",
-            errors:  "CRUD/errors",
-            message: "CRUD/message",
             subcats: "articles/subcats",
             units:   "articles/units",
             noYes:   "enums/noYes",
@@ -67,7 +56,7 @@ export default {
     methods: {
         ...mapActions({
             fetchSubcats: "articles/fetchSubcats",
-            setModel: "articles/setModel",
+            setModel:     "articles/setModel",
         }),
     },
 };

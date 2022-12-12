@@ -16,7 +16,7 @@ import DeleteLink from "./DeleteLink";
 
 export default {
     components: { ListLink, DeleteLink },
-    name: 'navigation',
+    name: "navigation",
     props: {
         links: {
             type: Array,

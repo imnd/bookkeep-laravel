@@ -6,36 +6,36 @@
     </div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
-import controls from "./controls-mixin";
+<script setup>
+const props = defineProps({
+    cssClass: {
+        type: String,
+        required: false,
+        default: "col-md-8",
+    },
+    label: {
+        type: String,
+        required: false,
+    },
+    name: {
+        type: String,
+        required: false,
+    },
+});
 
-export default {
-    name: 'control',
-    mixins: [ controls ],
-    props: {
-        cssClass: {
-            type: String,
-            required: false,
-            default: 'col-md-8',
-        },
-        label: {
-            type: String,
-            required: false,
-        },
-        name: {
-            required: false,
-        },
-        required: {
-            type: Boolean,
-            required: false,
-        },
-    },
-    computed: {
-        ...mapGetters({
-            errors: "CRUD/errors",
-        }),
-    },
-}
+import { useStore } from "vuex"
+import { computed } from "vue"
+const getError = (key) => {
+    const store = useStore("CRUD")
+    const errors = computed(() => store.getters.errors)
+    if (errors[key] !== undefined) {
+        return errors[key][0];
+    }
+};
 </script>
 
+<script>
+export default {
+    name: "control",
+}
+</script>

@@ -1,85 +1,82 @@
 <template>
-    <div>
+    <div class="row">
         <input-control
             label="Название"
             name="name"
-            :value="model.name"
+            v-model="model.name"
             :required="true"
         />
         <input-control
             label="Адрес"
             name="address"
-            :value="model.address"
+            v-model="model.address"
             :required="true"
         />
         <select-control
             label="Район"
-            :value="model.region_id"
+            v-model="model.region_id"
             name="region_id"
             :options="regions"
         />
         <input-control
             label="Телефон"
             name="telephone"
-            :value="model.telephone"
+            v-model="model.telephone"
             :required="true"
         />
         <input-control
             label="Факс"
             name="fax"
-            :value="model.fax"
+            v-model="model.fax"
         />
         <input-control
             label="Контакт. лицо"
             name="contact_fio"
-            :value="model.contact_fio"
+            v-model="model.contact_fio"
             :required="true"
         />
         <input-control
             label="Должность конт. лица"
             name="contact_post"
-            :value="model.contact_post"
+            v-model="model.contact_post"
         />
         <input-control
             label="Расчетный счет"
             name="account"
-            :value="model.account"
+            v-model="model.account"
             :required="true"
         />
         <input-control
             label="В банке"
             name="bank"
-            :value="model.bank"
+            v-model="model.bank"
             :required="true"
         />
         <input-control
             label="ИНН"
             name="INN"
-            :value="model.INN"
+            v-model="model.INN"
             :required="true"
         />
         <input-control
             label="КПП"
             name="KPP"
-            :value="model.KPP"
+            v-model="model.KPP"
             :required="true"
         />
         <input-control
             label="БИК"
             name="BIK"
-            :value="model.BIK"
+            v-model="model.BIK"
             :required="true"
         />
         <input-control
             label="порядок сортировки"
             name="sort"
-            :value="model.sort"
+            v-model="model.sort"
         />
-        <br />
-        <div class="col-md-4">
-            <button class="btn btn-primary btn-round">Сохранить</button>
-        </div>
     </div>
+    <form-footer />
 </template>
 
 <script>
@@ -87,14 +84,12 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
     created() {
-        this.fetchRegions()
+        this.fetchRegions();
     },
     computed: {
         ...mapGetters({
             regions: "clients/regions",
-            model:   "CRUD/model",
-            errors:  "CRUD/errors",
-            message: "CRUD/message",
+            model: "CRUD/model",
         }),
     },
     methods: {
@@ -102,5 +97,5 @@ export default {
             fetchRegions: "clients/fetchRegions",
         }),
     },
-}
+};
 </script>

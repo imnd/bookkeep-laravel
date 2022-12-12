@@ -20,7 +20,7 @@ import Navigation from "../../ui/navigation/Navigation";
 export default {
     components: { FormBody, Navigation },
     beforeCreate() {
-        this.setRow({
+        this.newRow({
             number : "",
             date : "",
             sum : "",
@@ -46,7 +46,7 @@ export default {
             createModel: "CRUD/createModel",
         }),
         ...mapMutations({
-            setRow:   "CRUD/setRow",
+            newRow:   "CRUD/newRow",
             /*setModel: "CRUD/setModel"*/
         })
     },

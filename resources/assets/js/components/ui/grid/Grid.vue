@@ -21,7 +21,10 @@
                         @nextPage="nextPage"
                     />
                     <!-- список -->
-                    <table @click.prevent="deleteItem" class="table">
+                    <div v-if="this.loading">
+                        Загрузка
+                    </div>
+                    <table v-else @click.prevent="deleteItem" class="table">
                         <thead @click.prevent="listSort" class="text-primary">
                             <tr>
                                 <slot name="head" />
@@ -46,11 +49,11 @@
 </template>
 
 <script>
-    import Pagination from './Pagination.vue'
+    import Pagination from "./Pagination.vue"
 
     export default {
         components: { Pagination },
-        name: 'grid',
+        name: "grid",
         props: {
             heading: {
                 type: String,
@@ -75,6 +78,7 @@
         },
         data: function () {
             return {
+                loading: false,
                 listData: [],
                 pageNumber: 0,
                 orders: {},
@@ -82,9 +86,11 @@
             }
         },
         created() {
+            this.loading = true
             this.listUrl = `/api/${this.entity}`;
             this.axios.get(this.listUrl).then(response => {
                 this.listData = response.data.data;
+                this.loading = false
             });
         },
         computed: {
@@ -114,11 +120,11 @@
                 });
             },
             listSort(event) {
-                let field = event.target.getAttribute('data-sort');
-                if (this.orders[field]===undefined || this.orders[field]==='desc') {
-                    this.orders[field] = 'asc';
+                let field = event.target.getAttribute("data-sort");
+                if (this.orders[field]===undefined || this.orders[field]==="desc") {
+                    this.orders[field] = "asc";
                 } else {
-                    this.orders[field] = 'desc';
+                    this.orders[field] = "desc";
                 }
                 this.axios.get(this.listUrl, {
                     params: {
@@ -130,11 +136,11 @@
                 });
             },
             deleteItem(event) {
-                let id = event.target.getAttribute('data-item-id');
+                let id = event.target.getAttribute("data-item-id");
                 if (isNaN(parseFloat(id)) || !isFinite(id)) {
                     return;
                 }
-                let index = event.target.getAttribute('data-item-index');
+                let index = event.target.getAttribute("data-item-index");
                 this.axios.delete(`/api/${this.entity}/${id}`).then(response => {
                     this.listData.splice(this.start + parseInt(index), 1);
                 });

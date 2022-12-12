@@ -1,6 +1,6 @@
 <template>
     <li class="nav-item">
-        <router-link :to="'/' + entity + '/list'" class="nav-link">
+        <router-link :to="`/${entity}/list`" class="nav-link">
             <i class="material-icons">view_list</i> Список
         </router-link>
     </li>

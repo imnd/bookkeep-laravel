@@ -15,12 +15,13 @@
 <script>
 import FormBody from "./Form";
 import Navigation from "../../ui/navigation/Navigation";
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
     components: { FormBody, Navigation },
-    beforeCreate() {
-        this.setRow({
+    created() {
+        this.setEntity("invoices")
+        this.newRow({
             article_id : '',
             quantity : '',
             price : '',
@@ -34,23 +35,19 @@ export default {
             payed: 0
         });*/
     },
-    created() {
-        this.setEntity("invoices")
-    },
     computed: {
         ...mapGetters({
             entity:  "CRUD/entity",
+            row:  "CRUD/row",
         }),
     },
     methods: {
         ...mapActions({
             setEntity:   "CRUD/setEntity",
             createModel: "CRUD/createModel",
-        }),
-        ...mapMutations({
-            setRow: "CRUD/setRow",
+            newRow: "CRUD/newRow",
             /*setModel: "CRUD/setModel"*/
-        })
+        }),
     },
 }
 </script>
