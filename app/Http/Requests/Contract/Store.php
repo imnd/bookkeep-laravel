@@ -25,7 +25,7 @@ class Store extends FormRequest
     {
         return [
             'client_id'    => 'required|numeric',
-            'contract_num' => 'required|numeric',
+            'contract_num' => 'required',
             'sum'          => 'numeric',
             'payed'        => 'numeric',
             'date'         => 'required|date',
