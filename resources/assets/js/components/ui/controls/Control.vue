@@ -6,36 +6,37 @@
     </div>
 </template>
 
-<script setup>
-const props = defineProps({
-    cssClass: {
-        type: String,
-        required: false,
-        default: "col-md-8",
-    },
-    label: {
-        type: String,
-        required: false,
-    },
-    name: {
-        type: String,
-        required: false,
-    },
-});
-
+<script>
 import { useStore } from "vuex"
 import { computed } from "vue"
-const getError = (key) => {
-    const store = useStore("CRUD")
-    const errors = computed(() => store.getters.errors)
-    if (errors[key] !== undefined) {
-        return errors[key][0];
-    }
-};
-</script>
 
-<script>
 export default {
     name: "control",
-}
+    props: {
+        cssClass: {
+            type: String,
+            required: false,
+            default: "col-md-8",
+        },
+        label: {
+            type: String,
+            required: false,
+        },
+        name: {
+            type: String,
+            required: false,
+        },
+    },
+    setup(props) {
+        return {
+            getError: (key) => {
+                const store = useStore("CRUD")
+                const errors = computed(() => store.getters.errors)
+                if (errors[key] !== undefined) {
+                    return errors[key][0];
+                }
+            }
+        };
+    }
+};
 </script>

@@ -3,7 +3,7 @@
         <textarea
             :name="name"
             :value="modelValue"
-            @input="emit('update:modelValue', $event.target.value)"
+            @input="updateModelValue"
             class="form-control"
             :class="required ? 'required' : ''"
             type="text"
@@ -13,48 +13,49 @@
     </control>
 </template>
 
-<script setup>
-    import Control from "./Control";
-
-    const props = defineProps({
-        name: {
-            type: String,
-            required: false,
-        },
-        modelValue: {
-            type: [String, Number],
-            required: true,
-        },
-        label: {
-            type: String,
-            required: false,
-        },
-        required: {
-            type: Boolean,
-            required: false,
-        },
-        cols: {
-            type: Number,
-            required: false,
-            default: 30,
-        },
-        rows: {
-            type: Number,
-            required: false,
-            default: 10,
-        },
-        cssClass: {
-            type: String,
-            required: false,
-            default: 'control',
-        },
-    });
-    const emit = defineEmits(["update:modelValue"])
-</script>
-
 <script>
+    import Control from "./Control";
+    import updateModelValue from "./events";
+
     export default {
         name: 'textarea-control',
+        components: { Control },
+        props: {
+            name: {
+                type: String,
+                required: false,
+            },
+            modelValue: {
+                type: [String, Number],
+                required: true,
+            },
+            label: {
+                type: String,
+                required: false,
+            },
+            required: {
+                type: Boolean,
+                required: false,
+            },
+            cols: {
+                type: Number,
+                required: false,
+                default: 30,
+            },
+            rows: {
+                type: Number,
+                required: false,
+                default: 10,
+            },
+            cssClass: {
+                type: String,
+                required: false,
+                default: 'control',
+            },
+        },
+        setup(props) {
+            return { updateModelValue };
+        }
     }
 </script>
 

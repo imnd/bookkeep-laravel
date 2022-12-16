@@ -10,45 +10,47 @@
     </control>
 </template>
 
-<script setup>
+<script>
 import Control from "./Control";
 import DatepickerInput from "./DatepickerInput";
+import { ref, watch, defineEmits } from "vue";
 
-const props = defineProps({
-    cssClass: {
-        type: String,
-        required: false,
-        default: "col-md-4",
-    },
-    label: {
-        type: String,
-        required: false,
-    },
-    name: {
-        type: String,
-        required: false,
-    },
-    modelValue: {
-        type: [String, Number],
-        required: true,
-    },
-    required: {
-        type: Boolean,
-        required: false,
-    },
-})
-
-import { ref, watch } from "vue"
-let date = ref("")
-watch(() => props.modelValue, (first, second) => {
-    date.value = first
-});
-
-const emit = defineEmits(["update:modelValue"])
-</script>
-
-<script>
 export default {
     name: "datepicker-control",
+    components: { Control, DatepickerInput },
+    props: {
+        cssClass: {
+            type: String,
+            required: false,
+            default: "col-md-4",
+        },
+        label: {
+            type: String,
+            required: false,
+        },
+        name: {
+            type: String,
+            required: false,
+        },
+        modelValue: {
+            type: [String, Number],
+            required: true,
+        },
+        required: {
+            type: Boolean,
+            required: false,
+        },
+    },
+    setup(props) {
+        let date = ref("")
+        watch(() => props.modelValue, (first, second) => {
+            date.value = first
+        });
+
+        return {
+            date,
+            emit: defineEmits(["update:modelValue"])
+        };
+    }
 }
 </script>
