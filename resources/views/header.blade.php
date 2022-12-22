@@ -18,7 +18,7 @@
         <script>
             window.Laravel = {!! json_encode([
                 'csrfToken' => csrf_token(),
-                'apiToken' => $user->api_token ?? null,
+                'apiToken'  => $user->api_token ?? null,
             ]) !!};
         </script>
 

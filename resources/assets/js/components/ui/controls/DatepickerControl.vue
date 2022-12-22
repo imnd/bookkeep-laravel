@@ -10,9 +10,9 @@
     </control>
 </template>
 
-<script>
-import Control from "./Control";
-import DatepickerInput from "./DatepickerInput";
+<script lang="ts">
+import Control from "./Control.vue";
+import DatepickerInput from "./DatepickerInput.vue";
 import { ref, watch, defineEmits } from "vue";
 
 export default {
@@ -41,7 +41,7 @@ export default {
             required: false,
         },
     },
-    setup(props) {
+    setup(props: any) {
         let date = ref("")
         watch(() => props.modelValue, (first, second) => {
             date.value = first

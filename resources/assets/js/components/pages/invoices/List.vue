@@ -71,22 +71,16 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import { mapActions, mapGetters } from "vuex";
 
-export default {
-    created() {
-        this.fetchClients();
-    },
-    computed: {
-        ...mapGetters({
-            clients:  "clients/list",
-        }),
-    },
-    methods: {
-        ...mapActions({
-            fetchClients: "clients/fetchAll",
-        }),
-    },
-}
+const { clients } = mapGetters({
+    clients:  "clients/list",
+})
+const { fetchClients } = mapActions({
+    fetchClients: "clients/fetchAll",
+})
+
+fetchClients()
+
 </script>

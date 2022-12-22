@@ -44,29 +44,14 @@
     </grid>
 </template>
 
-<script>
-import Datepicker from "@vuepic/vue-datepicker";
-import '@vuepic/vue-datepicker/dist/main.css'
-
+<script setup lang="ts">
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
-export default {
-    components: { Datepicker },
-    created() {
-        this.fetchClients();
-    },
-    computed: {
-        ...mapGetters({
-            clients:  "clients/list",
-        }),
-    },
-    methods: {
-        ...mapMutations({
-            updateModelValue: "CRUD/updateModelValue",
-        }),
-        ...mapActions({
-            fetchClients: "clients/fetchAll",
-        }),
-    },
-}
+const { clients } = mapGetters({
+    clients:  "clients/list",
+})
+const { fetchClients } = mapActions({
+    fetchClients: "clients/fetchAll",
+})
+fetchClients()
 </script>

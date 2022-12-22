@@ -12,26 +12,19 @@
     </div>
 </template>
 
-<script>
-import FormBody from './Form.vue';
-import Navigation from "../../ui/navigation/Navigation";
+<script setup lang="ts">
+import FormBody from "./Form.vue";
+import Navigation from "../../ui/navigation/Navigation.vue";
 import { mapActions, mapGetters } from "vuex";
 
-export default {
-    components: { FormBody, Navigation },
-    created() {
-        this.setEntity("bills")
-    },
-    computed: {
-        ...mapGetters({
-            entity:  "CRUD/entity",
-        }),
-    },
-    methods: {
-        ...mapActions({
-            setEntity:   "CRUD/setEntity",
-            createModel: "CRUD/createModel",
-        }),
-    },
-}
+const { entity } = mapGetters({
+    entity:  "CRUD/entity",
+})
+const { setEntity, createModel } = mapActions({
+    setEntity:   "CRUD/setEntity",
+    createModel: "CRUD/createModel",
+})
+
+setEntity("bills")
+
 </script>

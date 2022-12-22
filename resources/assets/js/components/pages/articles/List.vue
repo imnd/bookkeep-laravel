@@ -49,24 +49,17 @@
     </grid>
 </template>
 
-<script>
+<script setup>
 import { mapActions, mapGetters } from "vuex";
 
-export default {
-    created() {
-        this.fetchSubcats()
-    },
-    computed: {
-        ...mapGetters({
-            subcats: "articles/subcats",
-            units:   "articles/units",
-            noYes:   "enums/noYes",
-        }),
-    },
-    methods: {
-        ...mapActions({
-            fetchSubcats: "articles/fetchSubcats",
-        }),
-    }
-};
+const { subcats, units, noYes } = mapGetters({
+    subcats: "articles/subcats",
+    units:   "articles/units",
+    noYes:   "enums/noYes",
+})
+const { fetchSubcats } = mapActions({
+    fetchSubcats: "articles/fetchSubcats",
+})
+
+fetchSubcats()
 </script>

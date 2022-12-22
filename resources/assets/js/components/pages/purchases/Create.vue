@@ -12,43 +12,25 @@
     </div>
 </template>
 
-<script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
+<script setup lang="ts">
 import FormBody from "./Form.vue";
-import Navigation from "../../ui/navigation/Navigation";
+import Navigation from "../../ui/navigation/Navigation.vue";
 
-export default {
-    components: { FormBody, Navigation },
-    beforeCreate() {
-        this.newRow({
-            number : "",
-            date : "",
-            sum : "",
-        });
-        /*this.setModel({
-            name: "",
-            unit: "",
-            price: "",
-            active: "",
-        });*/
-    },
-    created() {
-        this.setEntity("clients")
-    },
-    computed: {
-        ...mapGetters({
-            entity:  "CRUD/entity",
-        }),
-    },
-    methods: {
-        ...mapActions({
-            setEntity:   "CRUD/setEntity",
-            createModel: "CRUD/createModel",
-        }),
-        ...mapMutations({
-            newRow:   "CRUD/newRow",
-            /*setModel: "CRUD/setModel"*/
-        })
-    },
-}
+import { mapActions, mapGetters } from "vuex";
+const { entity, row } = mapGetters({
+    entity:  "CRUD/entity",
+    row:  "CRUD/row",
+})
+const { setEntity, createModel, newRow } = mapActions({
+    setEntity:   "CRUD/setEntity",
+    createModel: "CRUD/createModel",
+    newRow: "CRUD/newRow",
+})
+
+setEntity("purchases")
+newRow({
+    number : "",
+    date : "",
+    sum : "",
+})
 </script>

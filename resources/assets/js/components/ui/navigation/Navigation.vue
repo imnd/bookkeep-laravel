@@ -11,8 +11,8 @@
 
 <script>
 import { mapActions } from "vuex";
-import ListLink from "./ListLink";
-import DeleteLink from "./DeleteLink";
+import ListLink from "./ListLink.vue";
+import DeleteLink from "./DeleteLink.vue";
 
 export default {
     components: { ListLink, DeleteLink },

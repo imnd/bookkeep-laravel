@@ -1,12 +1,12 @@
 <template>
     <div :class="cssClass">
         <label>{{ label }}:</label>
-        <slot></slot>
+        <slot />
         <div v-if="name" class="error">{{ getError(name) }}</div>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useStore } from "vuex"
 import { computed } from "vue"
 
@@ -27,11 +27,11 @@ export default {
             required: false,
         },
     },
-    setup(props) {
+    setup(props: any) {
         return {
-            getError: (key) => {
+            getError: (key: string) => {
                 const store = useStore("CRUD")
-                const errors = computed(() => store.getters.errors)
+                const errors: any = computed(() => store.getters.errors)
                 if (errors[key] !== undefined) {
                     return errors[key][0];
                 }

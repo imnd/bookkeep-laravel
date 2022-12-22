@@ -35,32 +35,28 @@
     </div>
 </template>
 
-<script>
-import FormBody from './Form.vue';
-import ListLink from "../../ui/navigation/ListLink";
-import DeleteLink from "../../ui/navigation/DeleteLink";
+<script setup lang="ts">
+import FormBody from "./Form.vue";
+import ListLink from "../../ui/navigation/ListLink.vue";
+import DeleteLink from "../../ui/navigation/DeleteLink.vue";
 import { mapActions, mapGetters } from "vuex";
 
-export default {
-    components: { FormBody, ListLink, DeleteLink },
-    created() {
-        this.setEntity("invoices")
-        this.fetchModel(this.$route.params.id)
-        this.fetchRows(this.$route.params.id)
-    },
-    computed: {
-        ...mapGetters({
-            entity: "CRUD/entity",
-        }),
-    },
-    methods: {
-        ...mapActions({
-            setEntity:   "CRUD/setEntity",
-            fetchModel:  "CRUD/fetchModel",
-            updateModel: "CRUD/updateModel",
-            deleteModel: "CRUD/deleteModel",
-            fetchRows:   "CRUD/fetchRows",
-        }),
-    },
-}
+const { entity } = mapGetters({
+    entity:  "CRUD/entity",
+})
+const { setEntity, fetchModel, updateModel, deleteModel, fetchRows } = mapActions({
+    setEntity:   "CRUD/setEntity",
+    fetchModel:  "CRUD/fetchModel",
+    updateModel: "CRUD/updateModel",
+    deleteModel: "CRUD/deleteModel",
+    fetchRows:   "CRUD/fetchRows",
+})
+
+setEntity("invoices")
+
+import { useRoute } from 'vue-router'
+const route = useRoute()
+fetchModel(route.params.id)
+fetchRows(route.params.id)
+
 </script>

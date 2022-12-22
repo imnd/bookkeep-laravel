@@ -38,26 +38,27 @@
     <form-footer />
 </template>
 
-<script>
+<script setup lang="ts">
 import { mapActions, mapGetters } from "vuex";
 
-export default {
-    created() {
-        this.fetchSubcats();
-    },
-    computed: {
-        ...mapGetters({
-            model:   "CRUD/model",
-            subcats: "articles/subcats",
-            units:   "articles/units",
-            noYes:   "enums/noYes",
-        }),
-    },
-    methods: {
-        ...mapActions({
-            fetchSubcats: "articles/fetchSubcats",
-            setModel:     "articles/setModel",
-        }),
-    },
-};
+type Article = {
+    active: boolean,
+    name:   string,
+    price:  number,
+    subcat_id:  number,
+    unit:   string,
+}
+const { model: Article, subcats, units, noYes } = mapGetters({
+    model:   "CRUD/model",
+    subcats: "articles/subcats",
+    units:   "articles/units",
+    noYes:   "enums/noYes",
+})
+
+const { fetchSubcats, setModel } = mapActions({
+    fetchSubcats:   "articles/fetchSubcats",
+    setModel:     "articles/setModel",
+})
+
+fetchSubcats()
 </script>

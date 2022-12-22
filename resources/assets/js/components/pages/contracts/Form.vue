@@ -69,28 +69,23 @@
 
     <form-footer />
 </template>
-<script>
-import { mapActions, mapGetters } from "vuex";
 
-export default {
-    created() {
-        this.fetchArticles();
-        this.fetchClients();
-    },
-    computed: {
-        ...mapGetters({
-            model: "CRUD/model",
-            rows: "CRUD/rows",
-            total: "CRUD/total",
-            articles: "articles/list",
-            clients: "clients/list",
-        }),
-    },
-    methods: {
-        ...mapActions({
-            fetchClients: "clients/fetchAll",
-            fetchArticles: "articles/fetchAll",
-        }),
-    },
-};
+<script setup lang="ts">
+import { mapActions, mapGetters } from "vuex";
+const { model, rows, total, articles, clients } = mapGetters({
+    model: "CRUD/model",
+    rows: "CRUD/rows",
+    total: "CRUD/total",
+    articles: "articles/list",
+    clients: "clients/list",
+})
+
+const { fetchClients, fetchArticles } = mapActions({
+    fetchClients: "clients/fetchAll",
+    fetchArticles: "articles/fetchAll",
+})
+
+fetchArticles();
+fetchClients();
+
 </script>

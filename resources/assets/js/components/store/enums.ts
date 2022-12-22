@@ -1,6 +1,6 @@
 export default {
     namespaced: true,
     getters: {
-        noYes: state => [ "нет", "да" ],
+        noYes: (state: any) => [ "нет", "да" ],
     },
 };

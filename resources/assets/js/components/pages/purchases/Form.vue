@@ -61,27 +61,21 @@
         </div>
     </div>
 </template>
-<script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
 
-export default {
-    computed: {
-        ...mapGetters({
-            model:          "CRUD/model",
-            message:        "CRUD/message",
-            total:          "CRUD/total",
-            rows:           "CRUD/rows",
-            articleSubcats: "articles/subcats",
-        }),
-    },
-    methods: {
-        ...mapActions({
-            fetchSubcats: "articles/fetchSubcats",
-        }),
-        ...mapMutations({
-            rowDelete: "CRUD/rowDelete",
-            rowAdd:    "CRUD/rowAdd",
-        }),
-    },
-}
+<script setup lang="ts">
+import { mapActions, mapGetters, mapMutations } from "vuex";
+const { model, rows, total, articleSubcats } = mapGetters({
+    model:          "CRUD/model",
+    message:        "CRUD/message",
+    rows:           "CRUD/rows",
+    total:          "CRUD/total",
+    articleSubcats: "articles/subcats",
+})
+const { fetchSubcats } = mapActions({
+    fetchSubcats: "articles/fetchSubcats",
+})
+const { rowDelete, rowAdd } = mapMutations({
+    rowDelete: "CRUD/rowDelete",
+    rowAdd:    "CRUD/rowAdd",
+})
 </script>

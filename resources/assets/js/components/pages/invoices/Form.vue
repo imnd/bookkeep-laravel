@@ -60,35 +60,28 @@
     </table>
     <form-footer/>
 </template>
-<script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
-import Control from "../../ui/controls/Control";
-import DatepickerInput from "../../ui/controls/DatepickerInput";
 
-export default {
-    created() {
-        this.fetchArticles();
-        this.fetchClients();
-    },
-    components: { Control, DatepickerInput },
-    computed: {
-        ...mapGetters({
-            model:    "CRUD/model",
-            rows:     "CRUD/rows",
-            total:    "CRUD/total",
-            articles: "articles/list",
-            clients:  "clients/list",
-        }),
-    },
-    methods: {
-        ...mapActions({
-            fetchClients:  "clients/fetchAll",
-            fetchArticles: "articles/fetchAll",
-        }),
-        ...mapMutations({
-            rowDelete: "CRUD/rowDelete",
-            rowAdd:    "CRUD/rowAdd",
-        }),
-    },
-}
+<script setup lang="ts">
+import { mapActions, mapGetters, mapMutations } from "vuex";
+const { model, rows, total, articles, clients } = mapGetters({
+    model:    "CRUD/model",
+    rows:     "CRUD/rows",
+    total:    "CRUD/total",
+    articles: "articles/list",
+    clients:  "clients/list",
+})
+
+const { fetchClients, fetchArticles } = mapActions({
+    fetchClients: "clients/fetchAll",
+    fetchArticles: "articles/fetchAll",
+})
+
+const { rowDelete, rowAdd } = mapMutations({
+    rowDelete: "CRUD/rowDelete",
+    rowAdd:    "CRUD/rowAdd",
+})
+
+fetchArticles()
+fetchClients()
+
 </script>

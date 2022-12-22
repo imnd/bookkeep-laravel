@@ -13,8 +13,8 @@
     </control>
 </template>
 
-<script>
-import Control from "./Control";
+<script lang="ts">
+import Control from "./Control.vue";
 import updateModelValue from "./events";
 
 export default {
@@ -48,7 +48,7 @@ export default {
             required: true,
         },
     },
-    setup(props) {
+    setup(props: any) {
         return { updateModelValue };
     }
 }

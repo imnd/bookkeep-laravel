@@ -8,7 +8,7 @@
     />
 </template>
 
-<script>
+<script lang="ts">
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css"
 import { ref, watch } from "vue"
@@ -26,15 +26,15 @@ export default {
             required: true,
         },
     },
-    setup(props) {
-        const format = (date) => {
+    setup(props: any) {
+        const format = (date: Date | null): string => {
             if (date === null) {
                 return "";
             }
 
-            const day = date.getDate().toString().padStart(2, 0);
-            const month = (date.getMonth() + 1).toString().padStart(2, 0);
-            const year = date.getFullYear();
+            const day: string = date.getDate().toString().padStart(2, "0");
+            const month: string = (date.getMonth() + 1).toString().padStart(2, "0");
+            const year: number = date.getFullYear();
 
             return `${day}.${month}.${year}`;
         }
@@ -44,7 +44,7 @@ export default {
             date.value = first
         });
 
-        const update = (date) => {
+        const update = (date: Date): void => {
             const emit = defineEmits(["update:modelValue"])
             emit("update:modelValue",  date.toISOString().slice(0, 10))
         }

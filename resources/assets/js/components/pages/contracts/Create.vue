@@ -12,45 +12,35 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import FormBody from "./Form.vue";
-import Navigation from "../../ui/navigation/Navigation";
+import Navigation from "../../ui/navigation/Navigation.vue";
 
-export default {
-    components: { FormBody, Navigation },
-    beforeCreate() {
-        this.newRow({
-            'article_id' : '',
-            'quantity' : '',
-            'price' : '',
-        });
-        this.setModel({
-            client_id: '',
-            contract_num: '',
-            sum: '',
-            remainder: '',
-            date: '',
-            contents: '',
-        });
-    },
-    created() {
-        this.setEntity("contracts")
-    },
-    computed: {
-        ...mapGetters({
-            entity:  "CRUD/entity",
-        }),
-    },
-    methods: {
-        ...mapActions({
-            setEntity:   "CRUD/setEntity",
-            createModel: "CRUD/createModel",
-            newRow:      "CRUD/newRow",
-        }),
-        ...mapMutations({
-            setModel: "CRUD/setModel"
-        })
-    },
-}
+const { entity } = mapGetters({
+    entity:  "CRUD/entity",
+})
+const { setEntity, createModel, newRow } = mapActions({
+    setEntity:   "CRUD/setEntity",
+    createModel: "CRUD/createModel",
+    newRow:      "CRUD/newRow",
+})
+const { setModel } = mapMutations({
+    setModel: "CRUD/setModel"
+})
+
+newRow({
+    'article_id' : '',
+    'quantity' : '',
+    'price' : '',
+});
+setModel({
+    client_id: '',
+    contract_num: '',
+    sum: '',
+    remainder: '',
+    date: '',
+    contents: '',
+});
+setEntity("contracts")
 </script>

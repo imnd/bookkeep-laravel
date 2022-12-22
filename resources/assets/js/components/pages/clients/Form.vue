@@ -79,23 +79,16 @@
     <form-footer />
 </template>
 
-<script>
+<script setup lang="ts">
 import { mapActions, mapGetters } from "vuex";
 
-export default {
-    created() {
-        this.fetchRegions();
-    },
-    computed: {
-        ...mapGetters({
-            regions: "clients/regions",
-            model: "CRUD/model",
-        }),
-    },
-    methods: {
-        ...mapActions({
-            fetchRegions: "clients/fetchRegions",
-        }),
-    },
-};
+const { model, regions } = mapGetters({
+    model: "CRUD/model",
+    regions: "clients/regions",
+})
+const { fetchRegions } = mapActions({
+    fetchRegions: "clients/fetchRegions",
+})
+
+fetchRegions()
 </script>

@@ -39,7 +39,7 @@
     </div>
     <form-footer />
 </template>
-<script>
+<script lang="ts">
 import { mapGetters } from "vuex";
 
 export default {
